@@ -19,8 +19,8 @@ const Index = () => {
                   <Utensils size={24} />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-800">Sabores Caseros</h1>
-                  <p className="text-sm text-gray-600">Comida deliciosa a domicilio</p>
+                  <h1 className="text-2xl font-bold text-gray-800">Mi Super</h1>
+                  <p className="text-sm text-gray-600">Productos 100% Orgánicos</p>
                 </div>
               </div>
               
@@ -42,10 +42,10 @@ const Index = () => {
         <section className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-16">
           <div className="max-w-6xl mx-auto px-6 text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              ¡Bienvenido a Sabores Caseros!
+              ¡Bienvenido a Mi Super!
             </h2>
             <p className="text-xl md:text-2xl mb-8 opacity-90">
-              Los mejores sabores de la comida casera, directo a tu mesa
+              Los mejores productos orgánicos, directo a tu domicilio
             </p>
             <div className="flex flex-col md:flex-row justify-center gap-4 text-lg">
               <div className="flex items-center justify-center gap-2">
@@ -54,7 +54,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-center gap-2">
                 <Utensils size={20} />
-                <span>Ingredientes frescos</span>
+                <span>Producto 100% natural</span>
               </div>
               <div className="flex items-center justify-center gap-2">
                 <Clock size={20} />
@@ -95,13 +95,13 @@ const Index = () => {
               <div>
                 <h3 className="text-lg font-semibold mb-3">Sobre Nosotros</h3>
                 <p className="text-gray-300">
-                  Comida casera preparada con amor y los mejores ingredientes frescos.
+                  Alimento 100% natural y los mejores ingredientes frescos.
                 </p>
               </div>
             </div>
             
             <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
-              <p>&copy; 2024 Sabores Caseros. Todos los derechos reservados.</p>
+              <p>&copy; 2025 Mi Super. Todos los derechos reservados.</p>
             </div>
           </div>
         </footer>
