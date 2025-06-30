@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
@@ -26,7 +25,7 @@ const AdminPanel: React.FC = () => {
     minWeight: 500
   });
 
-  const ADMIN_CODE = 'admin123';
+  const ADMIN_CODE = 'Gutfeier9';
 
   const categories = [
     'Frutas y Verduras',
@@ -190,9 +189,6 @@ const AdminPanel: React.FC = () => {
                 <Button onClick={authenticate} className="w-full">
                   Acceder
                 </Button>
-                <p className="text-xs text-gray-500 text-center">
-                  Pista: admin123
-                </p>
               </div>
             </div>
           ) : (
