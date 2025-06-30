@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface Product {
@@ -23,6 +22,9 @@ interface CartContextType {
   updateWeight: (productId: string, oldWeight: number, newWeight: number) => void;
   clearCart: () => void;
   updateProductPrice: (productId: string, newPricePerKg: number) => void;
+  updateProductName: (productId: string, newName: string) => void;
+  addProduct: (newProduct: Omit<Product, 'id'>) => void;
+  removeProduct: (productId: string) => void;
   getTotalPrice: () => number;
   getTotalItems: () => number;
 }
@@ -198,6 +200,50 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     );
   };
 
+  const updateProductName = (productId: string, newName: string) => {
+    setProducts(prevProducts =>
+      prevProducts.map(product =>
+        product.id === productId
+          ? { ...product, name: newName }
+          : product
+      )
+    );
+    
+    // Actualizar nombres en el carrito
+    setCart(prevCart =>
+      prevCart.map(item => {
+        if (item.product.id === productId) {
+          return {
+            ...item,
+            product: { ...item.product, name: newName }
+          };
+        }
+        return item;
+      })
+    );
+  };
+
+  const addProduct = (newProductData: Omit<Product, 'id'>) => {
+    const newId = (Math.max(...products.map(p => parseInt(p.id))) + 1).toString();
+    const newProduct: Product = {
+      id: newId,
+      ...newProductData
+    };
+    
+    setProducts(prevProducts => [...prevProducts, newProduct]);
+  };
+
+  const removeProduct = (productId: string) => {
+    setProducts(prevProducts => 
+      prevProducts.filter(product => product.id !== productId)
+    );
+    
+    // Remover del carrito también
+    setCart(prevCart => 
+      prevCart.filter(item => item.product.id !== productId)
+    );
+  };
+
   const getTotalPrice = () => {
     return Math.round(cart.reduce((total, item) => total + item.totalPrice, 0) * 100) / 100;
   };
@@ -215,6 +261,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       updateWeight,
       clearCart,
       updateProductPrice,
+      updateProductName,
+      addProduct,
+      removeProduct,
       getTotalPrice,
       getTotalItems,
     }}>
