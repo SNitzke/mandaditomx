@@ -4,7 +4,7 @@ import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Settings, Save, Eye, EyeOff } from 'lucide-react';
+import { Settings, Save } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const AdminPanel: React.FC = () => {
@@ -14,15 +14,14 @@ const AdminPanel: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [prices, setPrices] = useState<Record<string, number>>({});
 
-  const ADMIN_CODE = 'admin123'; // En producción, esto debería ser más seguro
+  const ADMIN_CODE = 'admin123';
 
   const authenticate = () => {
     if (adminCode === ADMIN_CODE) {
       setIsAuthenticated(true);
-      // Inicializar precios actuales
       const currentPrices: Record<string, number> = {};
       products.forEach(product => {
-        currentPrices[product.id] = product.price;
+        currentPrices[product.id] = product.pricePerKg;
       });
       setPrices(currentPrices);
       toast({
@@ -42,7 +41,7 @@ const AdminPanel: React.FC = () => {
     updateProductPrice(productId, newPrice);
     toast({
       title: "Precio actualizado",
-      description: "El precio se ha actualizado correctamente",
+      description: "El precio por kg se ha actualizado correctamente",
     });
   };
 
@@ -71,11 +70,11 @@ const AdminPanel: React.FC = () => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-4xl max-h-[80vh] overflow-hidden">
+      <Card className="w-full max-w-6xl max-h-[80vh] overflow-hidden">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Settings size={20} />
-            Panel de Administración
+            Panel de Administración - Gestión de Precios
           </CardTitle>
           <Button
             variant="ghost"
@@ -113,14 +112,14 @@ const AdminPanel: React.FC = () => {
             <div className="space-y-6">
               <div className="text-center">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Gestión de Precios
+                  Gestión de Precios por Kilogramo
                 </h3>
                 <p className="text-gray-600 text-sm">
-                  Actualiza los precios de los productos
+                  Actualiza los precios base por kilogramo de los productos
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {products.map((product) => (
                   <Card key={product.id} className="border-orange-100">
                     <CardContent className="p-4">
@@ -128,24 +127,26 @@ const AdminPanel: React.FC = () => {
                         <div>
                           <h4 className="font-medium text-gray-800">{product.name}</h4>
                           <p className="text-sm text-gray-500">{product.category}</p>
+                          <p className="text-xs text-gray-400">Mín: {product.minWeight}g</p>
                         </div>
                         
                         <div className="flex items-center gap-2">
                           <div className="flex-1">
                             <label className="block text-xs text-gray-500 mb-1">
-                              Precio Actual: ${product.price}
+                              Precio Actual: ${product.pricePerKg}/kg
                             </label>
                             <Input
                               type="number"
-                              value={prices[product.id] || product.price}
+                              value={prices[product.id] || product.pricePerKg}
                               onChange={(e) => handlePriceChange(product.id, e.target.value)}
                               min="0"
                               step="0.01"
                               className="text-lg font-medium"
+                              placeholder="$/kg"
                             />
                           </div>
                           <Button
-                            onClick={() => updatePrice(product.id, prices[product.id] || product.price)}
+                            onClick={() => updatePrice(product.id, prices[product.id] || product.pricePerKg)}
                             size="sm"
                             className="bg-orange-500 hover:bg-orange-600"
                           >
@@ -163,13 +164,13 @@ const AdminPanel: React.FC = () => {
                   variant="outline"
                   onClick={() => {
                     products.forEach(product => {
-                      if (prices[product.id] && prices[product.id] !== product.price) {
+                      if (prices[product.id] && prices[product.id] !== product.pricePerKg) {
                         updateProductPrice(product.id, prices[product.id]);
                       }
                     });
                     toast({
                       title: "Todos los precios actualizados",
-                      description: "Se han guardado todos los cambios",
+                      description: "Se han guardado todos los cambios de precios por kg",
                     });
                   }}
                 >

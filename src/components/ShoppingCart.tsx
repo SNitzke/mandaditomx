@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShoppingCart, Minus, Plus, Trash2, MessageCircle } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ShoppingCart, Trash2, MessageCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const ShoppingCartComponent: React.FC = () => {
-  const { cart, updateQuantity, removeFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
+  const { cart, updateWeight, removeFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
 
   const sendToWhatsApp = () => {
@@ -24,10 +25,11 @@ const ShoppingCartComponent: React.FC = () => {
     let message = "¡Hola! Me gustaría hacer el siguiente pedido:\n\n";
     
     cart.forEach((item) => {
-      message += `• ${item.product.name} - Cantidad: ${item.quantity} - $${item.product.price * item.quantity}\n`;
+      const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
+      message += `• ${item.product.name} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
     });
     
-    message += `\n*Total: $${getTotalPrice()}*\n\n¡Gracias!`;
+    message += `\n*Total: $${getTotalPrice().toFixed(2)}*\n\n¡Gracias!`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -36,6 +38,23 @@ const ShoppingCartComponent: React.FC = () => {
       title: "¡Pedido enviado!",
       description: "Te redirigimos a WhatsApp para confirmar tu pedido",
     });
+  };
+
+  const getWeightOptions = (minWeight: number) => {
+    const options = [];
+    for (let weight = minWeight; weight <= 5000; weight += 250) {
+      if (weight < 1000) {
+        options.push({ value: weight, label: `${weight}g` });
+      } else {
+        const kg = weight / 1000;
+        options.push({ value: weight, label: `${kg}kg` });
+      }
+    }
+    return options;
+  };
+
+  const handleWeightChange = (productId: string, oldWeight: number, newWeight: string) => {
+    updateWeight(productId, oldWeight, parseInt(newWeight));
   };
 
   if (cart.length === 0 && !isOpen) {
@@ -94,56 +113,67 @@ const ShoppingCartComponent: React.FC = () => {
               ) : (
                 <>
                   <div className="flex-1 overflow-y-auto space-y-4">
-                    {cart.map((item) => (
-                      <Card key={item.product.id} className="border-orange-100">
-                        <CardContent className="p-4">
-                          <div className="flex justify-between items-start mb-2">
-                            <h3 className="font-medium text-gray-800">{item.product.name}</h3>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeFromCart(item.product.id)}
-                              className="text-red-500 hover:text-red-700 p-1"
-                            >
-                              <Trash2 size={16} />
-                            </Button>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-orange-600 font-bold">${item.product.price}</span>
-                            <div className="flex items-center gap-2">
+                    {cart.map((item, index) => {
+                      const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
+                      
+                      return (
+                        <Card key={`${item.product.id}-${item.weight}-${index}`} className="border-orange-100">
+                          <CardContent className="p-4">
+                            <div className="flex justify-between items-start mb-3">
+                              <div className="flex-1">
+                                <h3 className="font-medium text-gray-800">{item.product.name}</h3>
+                                <p className="text-sm text-gray-500">${item.product.pricePerKg}/kg</p>
+                              </div>
                               <Button
-                                variant="outline"
+                                variant="ghost"
                                 size="sm"
-                                onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                                className="w-8 h-8 p-0"
+                                onClick={() => removeFromCart(item.product.id, item.weight)}
+                                className="text-red-500 hover:text-red-700 p-1"
                               >
-                                <Minus size={16} />
-                              </Button>
-                              <span className="w-8 text-center font-medium">{item.quantity}</span>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                                className="w-8 h-8 p-0"
-                              >
-                                <Plus size={16} />
+                                <Trash2 size={16} />
                               </Button>
                             </div>
-                          </div>
-                          <div className="text-right mt-2">
-                            <span className="text-sm text-gray-600">
-                              Subtotal: ${item.product.price * item.quantity}
-                            </span>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                            
+                            <div className="space-y-2">
+                              <div>
+                                <label className="text-xs text-gray-500 mb-1 block">Peso:</label>
+                                <Select
+                                  value={item.weight.toString()}
+                                  onValueChange={(value) => handleWeightChange(item.product.id, item.weight, value)}
+                                >
+                                  <SelectTrigger className="w-full h-8 text-sm">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
+                                    {getWeightOptions(item.product.minWeight).map((option) => (
+                                      <SelectItem 
+                                        key={option.value} 
+                                        value={option.value.toString()}
+                                        className="hover:bg-orange-50 cursor-pointer"
+                                      >
+                                        {option.label}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              
+                              <div className="text-right">
+                                <span className="text-lg font-bold text-orange-600">
+                                  ${item.totalPrice.toFixed(2)}
+                                </span>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
                   </div>
 
                   <div className="border-t pt-4 mt-4">
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-xl font-bold text-gray-800">Total:</span>
-                      <span className="text-2xl font-bold text-orange-600">${getTotalPrice()}</span>
+                      <span className="text-2xl font-bold text-orange-600">${getTotalPrice().toFixed(2)}</span>
                     </div>
                     
                     <div className="space-y-2">
