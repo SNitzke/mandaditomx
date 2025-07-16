@@ -34,6 +34,10 @@ const ShoppingCartComponent: React.FC = () => {
     }
 
     const phoneNumber = "525564259421";
+    const subtotal = getTotalPrice();
+    const shippingCost = subtotal < 1500 ? 50 : 0;
+    const finalTotal = subtotal + shippingCost;
+    
     let message = "¡Hola! Me gustaría hacer el siguiente pedido:\n\n";
     
     cart.forEach((item) => {
@@ -41,8 +45,20 @@ const ShoppingCartComponent: React.FC = () => {
       message += `• ${item.product.name} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
     });
     
-    message += `\n*Total: $${getTotalPrice().toFixed(2)}*\n\n`;
-    message += `📍 *Dirección de entrega:*\n${address}\n\n¡Gracias!`;
+    message += `\n*Subtotal: $${subtotal.toFixed(2)}*\n`;
+    
+    if (shippingCost > 0) {
+      message += `*Envío: $${shippingCost.toFixed(2)}*\n`;
+    }
+    
+    message += `*Total: $${finalTotal.toFixed(2)}*\n\n`;
+    message += `📍 *Dirección de entrega:*\n${address}\n\n`;
+    
+    if (subtotal < 1500) {
+      message += `*Nota:* Pedidos menores a $1,500 tienen un costo de envío de $50.\n\n`;
+    }
+    
+    message += `¡Gracias!`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -184,9 +200,30 @@ const ShoppingCartComponent: React.FC = () => {
                   </div>
 
                   <div className="border-t pt-4 mt-4">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-xl font-bold text-gray-800">Total:</span>
-                      <span className="text-2xl font-bold text-orange-600">${getTotalPrice().toFixed(2)}</span>
+                    <div className="space-y-2 mb-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-lg text-gray-700">Subtotal:</span>
+                        <span className="text-lg text-gray-800">${getTotalPrice().toFixed(2)}</span>
+                      </div>
+                      {getTotalPrice() < 1500 && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg text-gray-700">Envío:</span>
+                          <span className="text-lg text-gray-800">$50.00</span>
+                        </div>
+                      )}
+                      <div className="border-t pt-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-xl font-bold text-gray-800">Total:</span>
+                          <span className="text-2xl font-bold text-orange-600">
+                            ${(getTotalPrice() + (getTotalPrice() < 1500 ? 50 : 0)).toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
+                      {getTotalPrice() < 1500 && (
+                        <p className="text-xs text-gray-500 text-center">
+                          *Pedidos menores a $1,500 tienen un costo de envío de $50
+                        </p>
+                      )}
                     </div>
                     
                     <div className="space-y-4">
