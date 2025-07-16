@@ -48,7 +48,7 @@ export const initialProducts: Product[] = [
   { id: '31', name: 'Melón Pz', pricePerKg: 50, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '31', name: 'Tomate', pricePerKg: 30, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '31', name: 'Perejil', pricePerKg: 70, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '31', name: 'Perejil Manojo Pz', pricePerKg: 10, category: 'Frutas y Verduras', minWeight: 15o },
+  { id: '31', name: 'Perejil Manojo Pz', pricePerKg: 10, category: 'Frutas y Verduras', minWeight: 150 },
   { id: '31', name: 'Cilantro', pricePerKg: 70, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '31', name: 'Cilantro Manojo Pz', pricePerKg: 70, category: 'Frutas y Verduras', minWeight: 150 },
   { id: '31', name: 'Apio Pz', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
