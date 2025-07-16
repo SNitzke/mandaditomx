@@ -53,6 +53,7 @@ const ShoppingCartComponent: React.FC = () => {
     
     message += `*Total: $${finalTotal.toFixed(2)}*\n\n`;
     message += `📍 *Dirección de entrega:*\n${address}\n\n`;
+    message += `🕐 *Horario de entrega:* 4:00 PM - 7:00 PM\n\n`;
     
     if (subtotal < 1500) {
       message += `*Nota:* Pedidos menores a $1,500 tienen un costo de envío de $50.\n\n`;
