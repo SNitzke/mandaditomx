@@ -4,18 +4,30 @@ import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ShoppingCart, Trash2, MessageCircle } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ShoppingCart, Trash2, MessageCircle, MapPin } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const ShoppingCartComponent: React.FC = () => {
   const { cart, updateWeight, removeFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
+  const [address, setAddress] = useState('');
 
   const sendToWhatsApp = () => {
     if (cart.length === 0) {
       toast({
         title: "Carrito vacío",
         description: "Agrega productos antes de realizar el pedido",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!address.trim()) {
+      toast({
+        title: "Dirección requerida",
+        description: "Por favor ingresa tu dirección de entrega",
         variant: "destructive",
       });
       return;
@@ -29,7 +41,8 @@ const ShoppingCartComponent: React.FC = () => {
       message += `• ${item.product.name} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
     });
     
-    message += `\n*Total: $${getTotalPrice().toFixed(2)}*\n\n¡Gracias!`;
+    message += `\n*Total: $${getTotalPrice().toFixed(2)}*\n\n`;
+    message += `📍 *Dirección de entrega:*\n${address}\n\n¡Gracias!`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -176,22 +189,39 @@ const ShoppingCartComponent: React.FC = () => {
                       <span className="text-2xl font-bold text-orange-600">${getTotalPrice().toFixed(2)}</span>
                     </div>
                     
-                    <div className="space-y-2">
-                      <Button
-                        onClick={sendToWhatsApp}
-                        className="w-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center gap-2"
-                      >
-                        <MessageCircle size={20} />
-                        Enviar Pedido por WhatsApp
-                      </Button>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="address" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                          <MapPin size={16} />
+                          Dirección de entrega
+                        </Label>
+                        <Input
+                          id="address"
+                          type="text"
+                          placeholder="Ingresa tu dirección completa..."
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          className="w-full"
+                        />
+                      </div>
                       
-                      <Button
-                        variant="outline"
-                        onClick={clearCart}
-                        className="w-full text-red-500 border-red-200 hover:bg-red-50"
-                      >
-                        Limpiar Carrito
-                      </Button>
+                      <div className="space-y-2">
+                        <Button
+                          onClick={sendToWhatsApp}
+                          className="w-full bg-green-500 hover:bg-green-600 text-white flex items-center justify-center gap-2"
+                        >
+                          <MessageCircle size={20} />
+                          Enviar Pedido por WhatsApp
+                        </Button>
+                        
+                        <Button
+                          variant="outline"
+                          onClick={clearCart}
+                          className="w-full text-red-500 border-red-200 hover:bg-red-50"
+                        >
+                          Limpiar Carrito
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </>
