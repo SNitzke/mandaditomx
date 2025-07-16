@@ -6,19 +6,29 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShoppingCart, Trash2, MessageCircle, MapPin } from 'lucide-react';
+import { ShoppingCart, Trash2, MessageCircle, MapPin, User } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const ShoppingCartComponent: React.FC = () => {
   const { cart, updateWeight, removeFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
+  const [customerName, setCustomerName] = useState('');
 
   const sendToWhatsApp = () => {
     if (cart.length === 0) {
       toast({
         title: "Carrito vacío",
         description: "Agrega productos antes de realizar el pedido",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!customerName.trim()) {
+      toast({
+        title: "Nombre requerido",
+        description: "Por favor ingresa tu nombre para el pedido",
         variant: "destructive",
       });
       return;
@@ -52,6 +62,7 @@ const ShoppingCartComponent: React.FC = () => {
     }
     
     message += `*Total: $${finalTotal.toFixed(2)}*\n\n`;
+    message += `👤 *Nombre:* ${customerName}\n`;
     message += `📍 *Dirección de entrega:*\n${address}\n\n`;
     message += `🕐 *Horario de entrega:* 4:00 PM - 7:00 PM\n\n`;
     
@@ -228,6 +239,21 @@ const ShoppingCartComponent: React.FC = () => {
                     </div>
                     
                     <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="customerName" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                          <User size={16} />
+                          Nombre para el pedido
+                        </Label>
+                        <Input
+                          id="customerName"
+                          type="text"
+                          placeholder="Ingresa tu nombre completo..."
+                          value={customerName}
+                          onChange={(e) => setCustomerName(e.target.value)}
+                          className="w-full"
+                        />
+                      </div>
+                      
                       <div className="space-y-2">
                         <Label htmlFor="address" className="text-sm font-medium text-gray-700 flex items-center gap-2">
                           <MapPin size={16} />
