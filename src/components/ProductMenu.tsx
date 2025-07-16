@@ -45,7 +45,7 @@ const ProductMenu: React.FC = () => {
 
   const getWeightOptions = (minWeight: number) => {
     const options = [];
-    for (let weight = minWeight; weight <= 5000; weight += 250) {
+    for (let weight = minWeight; weight <= 5000; weight += 500) {
       if (weight < 1000) {
         options.push({ value: weight, label: `${weight}g` });
       } else {
