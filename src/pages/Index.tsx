@@ -31,14 +31,14 @@ const Index = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone size={16} />
-                  <span>55 6425 9421</span>
+                  <span>55 6425 9421 / 55 4381 4332</span>
                 </div>
               </div>
               
               {/* Mobile contact info */}
               <div className="lg:hidden flex items-center text-xs text-gray-600">
                 <Phone size={14} />
-                <span className="ml-1">55 6425 9421</span>
+                <span className="ml-1">55 6425 9421 / 55 4381 4332</span>
               </div>
             </div>
           </div>
