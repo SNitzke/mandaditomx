@@ -83,7 +83,7 @@ export const initialProducts: Product[] = [
   { id: '74', name: 'Molida Mixta', pricePerKg: 135, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '75', name: 'Suadero Molido', pricePerKg: 140, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '76', name: 'Suadero de Primera', pricePerKg: 165, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '77', name: 'Falda de Res', pricePerKg: 182, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '77', name: 'Falda de Res', pricePerKg: 200, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '78', name: 'Retazo de Res', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '79', name: 'Cecina Selecta', pricePerKg: 270, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '80', name: 'Cecina de Yecapixtla', pricePerKg: 200, category: 'Carnes y Proteínas', minWeight: 500 },
@@ -108,5 +108,23 @@ export const initialProducts: Product[] = [
   { id: '95', name: 'Pechuga Caliente', pricePerKg: 140, category: 'Pollo', minWeight: 500 },
   { id: '96', name: 'Muslo y Pierna', pricePerKg: 80, category: 'Pollo', minWeight: 500 },
   { id: '97', name: 'Pollo Completo', pricePerKg: 90, category: 'Pollo', minWeight: 500 },
+
+
+
+   // Producto Orgánico (Pedidos para esta categoría con 1 semana de anticipación)
+  { id: '98', name: 'Queso Asadero', pricePerKg: 330, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '99', name: 'Manchego Natural', pricePerKg: 350, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '100', name: 'Manchego Aceituna', pricePerKg: 350, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '101', name: 'Manchego Chipotle', pricePerKg: 350, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '102', name: 'Manchego Jalapeño', pricePerKg: 350, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '103', name: 'Manchego Epazote', pricePerKg: 350, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '104', name: 'Manchego Romero', pricePerKg: 350, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '105', name: 'Manchego Vino Tinto', pricePerKg: 370, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '106', name: 'Manchego Arándano', pricePerKg: 370, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '107', name: 'Manchego Nuez', pricePerKg: 370, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '108', name: 'Ranchero', pricePerKg: 250, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '109', name: 'Panela', pricePerKg: 310, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '110', name: 'Requesón', pricePerKg: 210, category: 'Producto Orgánico', minWeight: 500 },
+  { id: '111', name: 'Yogurt', pricePerKg: 190, category: 'Producto Orgánico', minWeight: 500 },
   
 ];
