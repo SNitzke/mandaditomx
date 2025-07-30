@@ -117,7 +117,7 @@ export const initialProducts: Product[] = [
 
 
 
-   // Producto Orgánico (Pedidos para esta categoría con 1 semana de anticipación)
+   // Producto Orgánico *Pedidos para esta categoría con 1 semana de anticipación*
   { id: '104', name: 'Queso Asadero', pricePerKg: 330, category: 'Producto Orgánico', minWeight: 500 },
   { id: '105', name: 'Manchego Natural', pricePerKg: 350, category: 'Producto Orgánico', minWeight: 500 },
   { id: '106', name: 'Manchego Aceituna', pricePerKg: 350, category: 'Producto Orgánico', minWeight: 500 },
