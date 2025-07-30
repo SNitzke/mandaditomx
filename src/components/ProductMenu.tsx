@@ -73,7 +73,8 @@ const ProductMenu: React.FC = () => {
       <div className="text-center mb-6 md:mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Productos Frescos</h2>
         <p className="text-sm md:text-base text-gray-600">Productos de la más alta calidad directo del productor</p>
-        <p className="text-xs md:text-sm text-orange-600 mt-2">* Compra mínima: 500 gramos por producto</p>
+        <p className="text-xs md:text-sm text-orange-600 mt-2">Compra mínima: 500 gramos por producto</p>
+        <p className="text-xs md:text-sm text-orange-600 mt-2">Solicitar con 1 semana de anticipación cualquier producto en la categoría de "Producto Orgánico"</p>       
       </div>
 
       <div className="space-y-4 md:space-y-6">
