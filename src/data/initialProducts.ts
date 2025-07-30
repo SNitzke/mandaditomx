@@ -91,7 +91,7 @@ export const initialProducts: Product[] = [
   { id: '82', name: 'New York (Centro de Cara)', pricePerKg: 270, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '83', name: 'Falda de Res', pricePerKg: 210, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '84', name: 'Retazo de Res', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '85', name: 'Cecina Selecta', pricePerKg: 270, category: 'CarnNes y Proteínas', minWeight: 500 },
+  { id: '85', name: 'Cecina Selecta', pricePerKg: 270, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '86', name: 'Cecina de Yecapixtla', pricePerKg: 210, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '87', name: 'Chistorra', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '88', name: 'Arrachera de Res', pricePerKg: 250, category: 'Carnes y Proteínas', minWeight: 500 },
