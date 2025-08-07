@@ -6,7 +6,7 @@ export const initialProducts: Product[] = [
   { id: '1', name: 'Mango Manila', pricePerKg: 30, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '2', name: 'Mango Petacón', pricePerKg: 25, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '3', name: 'Mango Ataulfo', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '4', name: 'Guayaba', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '4', name: 'Guayaba', pricePerKg: 43, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '5', name: 'Chile Poblano', pricePerKg: 40, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '6', name: 'Papaya', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '7', name: 'Plátano', pricePerKg: 25, category: 'Frutas y Verduras', minWeight: 500 },
