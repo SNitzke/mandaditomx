@@ -30,8 +30,9 @@ const AdminPanel: React.FC = () => {
   const categories = [
     'Frutas y Verduras',
     'Carnes y Proteínas',
-    'Productos Especiales',
-    'Productos Frescos'
+    'Pollo',
+    'Productos Orgánicos'
+    'Huevo'
   ];
 
   const authenticate = () => {
