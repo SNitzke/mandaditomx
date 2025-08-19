@@ -5,22 +5,26 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ShoppingCart, Plus, ChevronDown, ChevronUp, Check } from 'lucide-react';
+import { ShoppingCart, Plus, ChevronDown, ChevronUp, Check, Clock } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const ProductMenu: React.FC = () => {
   const { products, addToCart, cart } = useCart();
   const [selectedWeights, setSelectedWeights] = useState<Record<string, number>>({});
+  const [selectedRipeness, setSelectedRipeness] = useState<Record<string, 'inmadura' | 'medio-madura' | 'madura'>>({});
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
 
   const handleAddToCart = (product: any) => {
     const selectedWeight = selectedWeights[product.id] || product.minWeight;
     const totalPrice = (product.pricePerKg * selectedWeight) / 1000;
+    const ripeness = product.category === 'Frutas y Verduras' ? selectedRipeness[product.id] || 'medio-madura' : undefined;
     
-    addToCart(product, selectedWeight);
+    addToCart(product, selectedWeight, ripeness);
+    
+    const ripenessText = ripeness ? ` - ${ripeness}` : '';
     toast({
       title: "¡Producto agregado!",
-      description: `${product.name} (${selectedWeight}g) - $${totalPrice.toFixed(2)}`,
+      description: `${product.name} (${selectedWeight}g)${ripenessText} - $${totalPrice.toFixed(2)}`,
       duration: 2000,
     });
   };
@@ -29,6 +33,13 @@ const ProductMenu: React.FC = () => {
     setSelectedWeights(prev => ({
       ...prev,
       [productId]: parseInt(weight)
+    }));
+  };
+
+  const handleRipenessChange = (productId: string, ripeness: 'inmadura' | 'medio-madura' | 'madura') => {
+    setSelectedRipeness(prev => ({
+      ...prev,
+      [productId]: ripeness
     }));
   };
 
@@ -108,8 +119,10 @@ const ProductMenu: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {categoryProducts.map((product) => {
                       const selectedWeight = selectedWeights[product.id] || product.minWeight;
+                      const selectedRipenessValue = selectedRipeness[product.id] || 'medio-madura';
                       const price = calculatePrice(product, selectedWeight);
                       const inCart = isProductInCart(product.id);
+                      const isFruitOrVegetable = product.category === 'Frutas y Verduras';
                       
                       return (
                         <Card 
@@ -136,6 +149,7 @@ const ProductMenu: React.FC = () => {
                             </div>
                           </CardHeader>
                           <CardContent className="space-y-3">
+                            {/* Selector de peso */}
                             <div>
                               <label className="text-sm font-medium text-gray-700 mb-2 block">
                                 Seleccionar peso:
@@ -160,6 +174,59 @@ const ProductMenu: React.FC = () => {
                                 </SelectContent>
                               </Select>
                             </div>
+                            
+                            {/* Selector de madurez - Solo para frutas y verduras */}
+                            {isFruitOrVegetable && (
+                              <div>
+                                <label className="text-sm font-medium text-gray-700 mb-3 block flex items-center gap-2">
+                                  <Clock size={16} />
+                                  Nivel de madurez:
+                                </label>
+                                <div className="relative">
+                                  {/* Timeline visual */}
+                                  <div className="flex items-center justify-between mb-3">
+                                    <div className="flex-1 h-1 bg-gray-200 rounded-full relative">
+                                      <div 
+                                        className={`absolute h-1 bg-gradient-to-r from-green-400 to-yellow-500 rounded-full transition-all duration-300 ${
+                                          selectedRipenessValue === 'inmadura' ? 'w-1/3' : 
+                                          selectedRipenessValue === 'medio-madura' ? 'w-2/3' : 'w-full'
+                                        }`}
+                                      />
+                                      <div 
+                                        className={`absolute w-3 h-3 rounded-full border-2 border-white shadow-md transition-all duration-300 -top-1 ${
+                                          selectedRipenessValue === 'inmadura' ? 'left-0 bg-green-500' :
+                                          selectedRipenessValue === 'medio-madura' ? 'left-1/2 -translate-x-1/2 bg-yellow-500' :
+                                          'right-0 bg-orange-500'
+                                        }`}
+                                      />
+                                    </div>
+                                  </div>
+                                  
+                                  {/* Opciones de madurez */}
+                                  <div className="grid grid-cols-3 gap-2">
+                                    {[
+                                      { value: 'inmadura', label: 'Verde', emoji: '🟢', color: 'border-green-500 bg-green-50 text-green-700' },
+                                      { value: 'medio-madura', label: 'Medio', emoji: '🟡', color: 'border-yellow-500 bg-yellow-50 text-yellow-700' },
+                                      { value: 'madura', label: 'Maduro', emoji: '🟠', color: 'border-orange-500 bg-orange-50 text-orange-700' }
+                                    ].map((option) => (
+                                      <button
+                                        key={option.value}
+                                        type="button"
+                                        onClick={() => handleRipenessChange(product.id, option.value as any)}
+                                        className={`p-2 rounded-lg border-2 transition-all text-xs font-medium flex flex-col items-center gap-1 ${
+                                          selectedRipenessValue === option.value
+                                            ? option.color + ' shadow-md scale-105'
+                                            : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                                        }`}
+                                      >
+                                        <span className="text-lg">{option.emoji}</span>
+                                        <span>{option.label}</span>
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                             
                             <div className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2">
                               <span className="text-xl md:text-2xl font-bold text-orange-600">

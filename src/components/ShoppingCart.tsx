@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShoppingCart, Trash2, MessageCircle, MapPin, User } from 'lucide-react';
+import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const ShoppingCartComponent: React.FC = () => {
@@ -52,7 +52,8 @@ const ShoppingCartComponent: React.FC = () => {
     
     cart.forEach((item) => {
       const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
-      message += `• ${item.product.name} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
+      const ripenessText = item.ripeness ? ` (${item.ripeness})` : '';
+      message += `• ${item.product.name}${ripenessText} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
     });
     
     message += `\n*Subtotal: $${subtotal.toFixed(2)}*\n`;
@@ -158,12 +159,20 @@ const ShoppingCartComponent: React.FC = () => {
                       const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
                       
                       return (
-                        <Card key={`${item.product.id}-${item.weight}-${index}`} className="border-orange-100">
+                         <Card key={`${item.product.id}-${item.weight}-${item.ripeness}-${index}`} className="border-orange-100">
                           <CardContent className="p-4">
                             <div className="flex justify-between items-start mb-3">
                               <div className="flex-1">
                                 <h3 className="font-medium text-gray-800">{item.product.name}</h3>
                                 <p className="text-sm text-gray-500">${item.product.pricePerKg}/kg</p>
+                                {item.ripeness && (
+                                  <p className="text-xs text-gray-600 mt-1 flex items-center gap-1">
+                                    <Clock size={12} />
+                                    {item.ripeness === 'inmadura' ? '🟢 Verde' : 
+                                     item.ripeness === 'medio-madura' ? '🟡 Medio maduro' : 
+                                     '🟠 Maduro'}
+                                  </p>
+                                )}
                               </div>
                               <Button
                                 variant="ghost"

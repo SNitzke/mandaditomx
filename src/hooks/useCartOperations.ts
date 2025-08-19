@@ -6,17 +6,18 @@ export const useCartOperations = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = (product: Product, weight: number) => {
+  const addToCart = (product: Product, weight: number, ripeness?: 'inmadura' | 'medio-madura' | 'madura') => {
     const totalPrice = (product.pricePerKg * weight) / 1000;
     const newItem: CartItem = {
       product,
       weight,
-      totalPrice: Math.round(totalPrice * 100) / 100
+      totalPrice: Math.round(totalPrice * 100) / 100,
+      ripeness
     };
 
     setCart(prevCart => {
       const existingItemIndex = prevCart.findIndex(
-        item => item.product.id === product.id && item.weight === weight
+        item => item.product.id === product.id && item.weight === weight && item.ripeness === ripeness
       );
       
       if (existingItemIndex >= 0) {

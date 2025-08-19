@@ -31,7 +31,7 @@ const AdminPanel: React.FC = () => {
     'Frutas y Verduras',
     'Carnes y Proteínas',
     'Pollo',
-    'Productos Orgánicos'
+    'Productos Orgánicos',
     'Huevo'
   ];
 
