@@ -87,7 +87,7 @@ export const initialProducts: Product[] = [
   { id: '78', name: 'Chuleta Ahumada', pricePerKg: 125, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '79', name: 'Milanesa de Res', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '80', name: 'Milanesa de Cerdo', pricePerKg: 120, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '81', name: 'Molida de Res', pricePerKg: 190, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '81', name: 'Molida de Res', pricePerKg: 205, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '82', name: 'Molida Mixta', pricePerKg: 145, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '83', name: 'Suadero Molido', pricePerKg: 140, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '84', name: 'Suadero de Primera', pricePerKg: 165, category: 'Carnes y Proteínas', minWeight: 500 },
