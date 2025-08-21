@@ -51,32 +51,31 @@ const GrillPackages: React.FC = () => {
 
   const calculatePackagePrice = (grillPackage: GrillPackage, packageId: string) => {
     let totalPrice = 0;
-    let meatWeight = 0;
-    let meatPrice = 0;
+    let totalDiscount = 0;
+    let meatDiscounts: Record<string, number> = {};
+    let hasAnyDiscount = false;
 
     grillPackage.items.forEach(item => {
       const weight = selectedWeights[packageId]?.[item.productId] || item.minWeight;
-      const itemPrice = (item.pricePerKg * weight) / 1000;
-      totalPrice += itemPrice;
-
-      if (!item.isComplement) {
-        meatWeight += weight;
-        meatPrice += itemPrice;
+      let itemPrice = (item.pricePerKg * weight) / 1000;
+      
+      // Aplicar descuento individual por carne si cumple el threshold
+      if (!item.isComplement && weight >= grillPackage.discount.threshold) {
+        const individualDiscount = (itemPrice * grillPackage.discount.percentage) / 100;
+        meatDiscounts[item.productId] = individualDiscount;
+        totalDiscount += individualDiscount;
+        itemPrice -= individualDiscount;
+        hasAnyDiscount = true;
       }
+      
+      totalPrice += itemPrice;
     });
-
-    // Aplicar descuento si se cumple el threshold
-    let discount = 0;
-    if (meatWeight >= grillPackage.discount.threshold) {
-      discount = (meatPrice * grillPackage.discount.percentage) / 100;
-      totalPrice -= discount;
-    }
 
     return {
       totalPrice: Math.round(totalPrice * 100) / 100,
-      meatWeight,
-      discount: Math.round(discount * 100) / 100,
-      hasDiscount: meatWeight >= grillPackage.discount.threshold
+      discount: Math.round(totalDiscount * 100) / 100,
+      hasDiscount: hasAnyDiscount,
+      meatDiscounts
     };
   };
 
@@ -102,17 +101,25 @@ const GrillPackages: React.FC = () => {
     const packageCartItem: PackageCartItem = {
       packageId: grillPackage.id,
       packageName: grillPackage.name,
-      items: grillPackage.items.map(item => ({
-        productId: item.productId,
-        name: item.name,
-        weight: selectedWeights[packageId]?.[item.productId] || item.minWeight,
-        pricePerKg: item.pricePerKg,
-        isComplement: item.isComplement || false,
-        ripeness: item.name.includes('Frutas y Verduras') ? 
-          selectedRipeness[packageId]?.[item.productId] || 'medio-madura' : undefined
-      })),
+      items: grillPackage.items.map(item => {
+        const weight = selectedWeights[packageId]?.[item.productId] || item.minWeight;
+        const originalPrice = (item.pricePerKg * weight) / 1000;
+        const hasIndividualDiscount = !item.isComplement && weight >= grillPackage.discount.threshold;
+        const individualDiscount = hasIndividualDiscount ? (originalPrice * grillPackage.discount.percentage) / 100 : 0;
+        
+        return {
+          productId: item.productId,
+          name: item.name,
+          weight,
+          pricePerKg: item.pricePerKg,
+          isComplement: item.isComplement || false,
+          ripeness: item.name.includes('Frutas y Verduras') ? 
+            selectedRipeness[packageId]?.[item.productId] || 'medio-madura' : undefined,
+          individualDiscount: individualDiscount > 0 ? individualDiscount : undefined
+        };
+      }),
       totalPrice: pricing.totalPrice,
-      meatDiscount: pricing.hasDiscount ? pricing.discount : undefined
+      totalDiscount: pricing.hasDiscount ? pricing.discount : undefined
     };
 
     addPackageToCart(packageCartItem);
@@ -138,7 +145,7 @@ const GrillPackages: React.FC = () => {
         </p>
         <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-full font-semibold shadow-lg">
           <Percent size={20} />
-          <span>¡Ahorra 10% en carnes al llevar más de 3kg!</span>
+          <span>¡Ahorra 10% por cada carne de 3kg o más!</span>
         </div>
       </div>
 
@@ -182,13 +189,33 @@ const GrillPackages: React.FC = () => {
                   <div className="space-y-3">
                     {meats.map((item) => {
                       const selectedWeight = selectedWeights[packageId]?.[item.productId] || item.minWeight;
-                      const itemPrice = ((item.pricePerKg * selectedWeight) / 1000).toFixed(2);
+                      const originalPrice = (item.pricePerKg * selectedWeight) / 1000;
+                      const hasIndividualDiscount = selectedWeight >= grillPackage.discount.threshold;
+                      const discountAmount = hasIndividualDiscount ? (originalPrice * grillPackage.discount.percentage) / 100 : 0;
+                      const finalPrice = originalPrice - discountAmount;
 
                       return (
                         <div key={item.productId} className="bg-red-50 border border-red-100 rounded-lg p-3">
                           <div className="flex justify-between items-start mb-2">
-                            <span className="font-medium text-sm text-gray-800">{item.name}</span>
-                            <span className="text-red-600 font-semibold">${itemPrice}</span>
+                            <div className="flex-1">
+                              <span className="font-medium text-sm text-gray-800">{item.name}</span>
+                              {hasIndividualDiscount && (
+                                <div className="flex items-center gap-1 mt-1">
+                                  <Percent size={12} className="text-green-600" />
+                                  <span className="text-xs text-green-600 font-medium">10% OFF</span>
+                                </div>
+                              )}
+                            </div>
+                            <div className="text-right">
+                              {hasIndividualDiscount ? (
+                                <div>
+                                  <span className="text-red-400 line-through text-xs">${originalPrice.toFixed(2)}</span>
+                                  <span className="text-red-600 font-semibold block">${finalPrice.toFixed(2)}</span>
+                                </div>
+                              ) : (
+                                <span className="text-red-600 font-semibold">${finalPrice.toFixed(2)}</span>
+                              )}
+                            </div>
                           </div>
                           <Select
                             value={selectedWeight.toString()}
@@ -215,7 +242,7 @@ const GrillPackages: React.FC = () => {
                   </div>
                   <div className="text-xs text-gray-500 mt-2 flex items-center gap-1">
                     <AlertTriangle size={12} />
-                    Peso total de carnes: {(pricing.meatWeight / 1000).toFixed(1)}kg
+                    Descuento individual por carne al llegar a 3kg
                   </div>
                 </div>
 
@@ -272,9 +299,9 @@ const GrillPackages: React.FC = () => {
                     <div className="text-3xl font-bold text-orange-600">
                       ${pricing.totalPrice.toFixed(2)}
                     </div>
-                    {!pricing.hasDiscount && pricing.meatWeight < grillPackage.discount.threshold && (
+                    {!pricing.hasDiscount && (
                       <div className="text-xs text-orange-500 mt-1">
-                        Agrega {((grillPackage.discount.threshold - pricing.meatWeight) / 1000).toFixed(1)}kg más de carne para obtener 10% de descuento
+                        Selecciona 3kg o más de cualquier carne para obtener 10% de descuento en esa carne
                       </div>
                     )}
                   </div>
@@ -304,8 +331,8 @@ const GrillPackages: React.FC = () => {
             </div>
             <div className="flex flex-col items-center">
               <Percent className="mb-2" size={32} />
-              <h4 className="font-semibold mb-1">Descuento Automático</h4>
-              <p className="opacity-90">10% off en carnes al superar 3kg</p>
+              <h4 className="font-semibold mb-1">Descuento Individual</h4>
+              <p className="opacity-90">10% off por cada carne de 3kg o más</p>
             </div>
             <div className="flex flex-col items-center">
               <Package className="mb-2" size={32} />

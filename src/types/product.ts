@@ -44,9 +44,10 @@ export interface PackageCartItem {
     pricePerKg: number;
     isComplement: boolean;
     ripeness?: 'inmadura' | 'medio-madura' | 'madura';
+    individualDiscount?: number; // descuento aplicado a este producto específico
   }>;
   totalPrice: number;
-  meatDiscount?: number; // descuento aplicado a las carnes
+  totalDiscount?: number; // suma de todos los descuentos individuales
 }
 
 export interface CartContextType {

@@ -74,8 +74,15 @@ const ShoppingCartComponent: React.FC = () => {
           message += "   🥩 Carnes:\n";
           meats.forEach(meat => {
             const weightDisplay = meat.weight < 1000 ? `${meat.weight}g` : `${meat.weight/1000}kg`;
-            const price = ((meat.pricePerKg * meat.weight) / 1000).toFixed(2);
-            message += `     • ${meat.name} - ${weightDisplay} - $${price}\n`;
+            const originalPrice = ((meat.pricePerKg * meat.weight) / 1000);
+            const finalPrice = meat.individualDiscount ? 
+              originalPrice - meat.individualDiscount : originalPrice;
+            
+            if (meat.individualDiscount) {
+              message += `     • ${meat.name} - ${weightDisplay} - ~$${originalPrice.toFixed(2)}~ $${finalPrice.toFixed(2)} (10% OFF)\n`;
+            } else {
+              message += `     • ${meat.name} - ${weightDisplay} - $${finalPrice.toFixed(2)}\n`;
+            }
           });
         }
         
@@ -91,8 +98,8 @@ const ShoppingCartComponent: React.FC = () => {
           });
         }
         
-        if (packageItem.meatDiscount) {
-          message += `   💰 *Descuento aplicado: -$${packageItem.meatDiscount.toFixed(2)}*\n`;
+        if (packageItem.totalDiscount) {
+          message += `   💰 *Descuento total aplicado: -$${packageItem.totalDiscount.toFixed(2)}*\n`;
         }
         
         message += `   💲 *Subtotal paquete: $${packageItem.totalPrice.toFixed(2)}*\n\n`;
@@ -280,10 +287,10 @@ const ShoppingCartComponent: React.FC = () => {
                                   Paquete
                                 </Badge>
                               </div>
-                              {packageItem.meatDiscount && (
+                              {packageItem.totalDiscount && (
                                 <div className="flex items-center gap-1 text-green-600 text-xs font-medium">
                                   <Percent size={12} />
-                                  Descuento aplicado: -${packageItem.meatDiscount.toFixed(2)}
+                                  Descuento total: -${packageItem.totalDiscount.toFixed(2)}
                                 </div>
                               )}
                             </div>
@@ -304,11 +311,29 @@ const ShoppingCartComponent: React.FC = () => {
                               <div className="space-y-1">
                                 {packageItem.items.filter(item => !item.isComplement).map((meat, meatIndex) => {
                                   const weightDisplay = meat.weight < 1000 ? `${meat.weight}g` : `${meat.weight/1000}kg`;
-                                  const price = ((meat.pricePerKg * meat.weight) / 1000).toFixed(2);
+                                  const originalPrice = (meat.pricePerKg * meat.weight) / 1000;
+                                  const finalPrice = meat.individualDiscount ? 
+                                    originalPrice - meat.individualDiscount : originalPrice;
                                   return (
                                     <div key={meatIndex} className="flex justify-between items-center text-xs bg-white/50 rounded px-2 py-1">
-                                      <span>{meat.name} - {weightDisplay}</span>
-                                      <span className="font-medium">${price}</span>
+                                      <div className="flex-1">
+                                        <div className="flex items-center gap-1">
+                                          <span>{meat.name} - {weightDisplay}</span>
+                                          {meat.individualDiscount && (
+                                            <span className="text-green-600 font-medium">(10% OFF)</span>
+                                          )}
+                                        </div>
+                                      </div>
+                                      <div className="text-right">
+                                        {meat.individualDiscount ? (
+                                          <div>
+                                            <span className="text-gray-400 line-through text-xs">${originalPrice.toFixed(2)}</span>
+                                            <span className="font-medium block">${finalPrice.toFixed(2)}</span>
+                                          </div>
+                                        ) : (
+                                          <span className="font-medium">${finalPrice.toFixed(2)}</span>
+                                        )}
+                                      </div>
                                     </div>
                                   );
                                 })}
