@@ -81,9 +81,9 @@ const GrillPackages: React.FC = () => {
 
   const getWeightOptions = (minWeight: number) => {
     const options = [];
-    const maxWeight = minWeight >= 1000 ? 5000 : Math.max(2000, minWeight * 4);
+    const maxWeight = minWeight >= 1000 ? 5000 : Math.max(5000, minWeight * 4);
     
-    for (let weight = minWeight; weight <= maxWeight; weight += minWeight >= 1000 ? 500 : 250) {
+    for (let weight = minWeight; weight <= maxWeight; weight += minWeight >= 1000 ? 500 : 500) {
       if (weight < 1000) {
         options.push({ value: weight, label: `${weight}g` });
       } else {
