@@ -1,10 +1,11 @@
 
 import { useState } from 'react';
-import { Product, CartItem } from '@/types/product';
+import { Product, CartItem, PackageCartItem } from '@/types/product';
 
 export const useCartOperations = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [packageCart, setPackageCart] = useState<PackageCartItem[]>([]);
 
   const addToCart = (product: Product, weight: number, ripeness?: 'inmadura' | 'medio-madura' | 'madura') => {
     const totalPrice = (product.pricePerKg * weight) / 1000;
@@ -54,20 +55,48 @@ export const useCartOperations = (initialProducts: Product[]) => {
     setCart([]);
   };
 
+  const addPackageToCart = (packageData: PackageCartItem) => {
+    setPackageCart(prevPackageCart => {
+      const existingPackageIndex = prevPackageCart.findIndex(
+        item => item.packageId === packageData.packageId
+      );
+      
+      if (existingPackageIndex >= 0) {
+        // Si ya existe, lo reemplazamos
+        return prevPackageCart.map((item, index) => 
+          index === existingPackageIndex ? packageData : item
+        );
+      }
+      
+      return [...prevPackageCart, packageData];
+    });
+  };
+
+  const removePackageFromCart = (packageId: string) => {
+    setPackageCart(prevPackageCart => 
+      prevPackageCart.filter(item => item.packageId !== packageId)
+    );
+  };
+
   const getTotalPrice = () => {
-    return Math.round(cart.reduce((total, item) => total + item.totalPrice, 0) * 100) / 100;
+    const cartTotal = cart.reduce((total, item) => total + item.totalPrice, 0);
+    const packageTotal = packageCart.reduce((total, item) => total + item.totalPrice, 0);
+    return Math.round((cartTotal + packageTotal) * 100) / 100;
   };
 
   const getTotalItems = () => {
-    return cart.length;
+    return cart.length + packageCart.length;
   };
 
   return {
     products,
     cart,
+    packageCart,
     addToCart,
     removeFromCart,
     updateWeight,
+    addPackageToCart,
+    removePackageFromCart,
     clearCart,
     getTotalPrice,
     getTotalItems,

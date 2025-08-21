@@ -6,17 +6,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Package, Flame, Percent } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const ShoppingCartComponent: React.FC = () => {
-  const { cart, updateWeight, removeFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
+  const { cart, packageCart, updateWeight, removeFromCart, removePackageFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
 
   const sendToWhatsApp = () => {
-    if (cart.length === 0) {
+    if (cart.length === 0 && packageCart.length === 0) {
       toast({
         title: "Carrito vacío",
         description: "Agrega productos antes de realizar el pedido",
@@ -50,13 +51,55 @@ const ShoppingCartComponent: React.FC = () => {
     
     let message = "¡Hola! Me gustaría hacer el siguiente pedido:\n\n";
     
-    cart.forEach((item) => {
-      const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
-      const ripenessText = item.ripeness ? ` (${item.ripeness})` : '';
-      message += `• ${item.product.name}${ripenessText} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
-    });
+    // Productos individuales
+    if (cart.length > 0) {
+      message += "🛒 *PRODUCTOS INDIVIDUALES:*\n";
+      cart.forEach((item) => {
+        const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
+        const ripenessText = item.ripeness ? ` (${item.ripeness})` : '';
+        message += `• ${item.product.name}${ripenessText} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
+      });
+      message += "\n";
+    }
     
-    message += `\n*Subtotal: $${subtotal.toFixed(2)}*\n`;
+    // Paquetes parrilleros
+    if (packageCart.length > 0) {
+      message += "🔥 *PAQUETES PARRILLEROS:*\n";
+      packageCart.forEach((packageItem) => {
+        message += `📦 *${packageItem.packageName}*\n`;
+        
+        // Carnes
+        const meats = packageItem.items.filter(item => !item.isComplement);
+        if (meats.length > 0) {
+          message += "   🥩 Carnes:\n";
+          meats.forEach(meat => {
+            const weightDisplay = meat.weight < 1000 ? `${meat.weight}g` : `${meat.weight/1000}kg`;
+            const price = ((meat.pricePerKg * meat.weight) / 1000).toFixed(2);
+            message += `     • ${meat.name} - ${weightDisplay} - $${price}\n`;
+          });
+        }
+        
+        // Complementos
+        const complements = packageItem.items.filter(item => item.isComplement);
+        if (complements.length > 0) {
+          message += "   🥬 Complementos:\n";
+          complements.forEach(complement => {
+            const weightDisplay = complement.weight < 1000 ? `${complement.weight}g` : `${complement.weight/1000}kg`;
+            const ripenessText = complement.ripeness ? ` (${complement.ripeness})` : '';
+            const price = ((complement.pricePerKg * complement.weight) / 1000).toFixed(2);
+            message += `     • ${complement.name}${ripenessText} - ${weightDisplay} - $${price}\n`;
+          });
+        }
+        
+        if (packageItem.meatDiscount) {
+          message += `   💰 *Descuento aplicado: -$${packageItem.meatDiscount.toFixed(2)}*\n`;
+        }
+        
+        message += `   💲 *Subtotal paquete: $${packageItem.totalPrice.toFixed(2)}*\n\n`;
+      });
+    }
+    
+    message += `*Subtotal: $${subtotal.toFixed(2)}*\n`;
     
     if (shippingCost > 0) {
       message += `*Envío: $${shippingCost.toFixed(2)}*\n`;
@@ -65,7 +108,8 @@ const ShoppingCartComponent: React.FC = () => {
     message += `*Total: $${finalTotal.toFixed(2)}*\n\n`;
     message += `👤 *Nombre:* ${customerName}\n`;
     message += `📍 *Dirección de entrega:*\n${address}\n\n`;
-    message += `🕐 *Horario de entrega:* 4:00 PM - 7:00 PM\n\n`;
+    message += `🕐 *Horario de entrega:* 4:00 PM - 7:00 PM\n`;
+    message += `⏰ *Recordatorio:* Último horario para pedidos hasta las 10:00 PM\n\n`;
     
     if (subtotal < 1500) {
       message += `*Nota:* Pedidos menores a $1,500 tienen un costo de envío de $50.\n\n`;
@@ -99,7 +143,7 @@ const ShoppingCartComponent: React.FC = () => {
     updateWeight(productId, oldWeight, parseInt(newWeight));
   };
 
-  if (cart.length === 0 && !isOpen) {
+  if (cart.length === 0 && packageCart.length === 0 && !isOpen) {
     return (
       <div className="fixed bottom-6 right-6">
         <Button
@@ -148,13 +192,14 @@ const ShoppingCartComponent: React.FC = () => {
                 </Button>
               </div>
 
-              {cart.length === 0 ? (
+              {cart.length === 0 && packageCart.length === 0 ? (
                 <div className="flex-1 flex items-center justify-center">
                   <p className="text-gray-500 text-center">Tu carrito está vacío</p>
                 </div>
               ) : (
                 <>
                   <div className="flex-1 overflow-y-auto space-y-4">
+                    {/* Productos individuales */}
                     {cart.map((item, index) => {
                       const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
                       
@@ -163,7 +208,10 @@ const ShoppingCartComponent: React.FC = () => {
                           <CardContent className="p-4">
                             <div className="flex justify-between items-start mb-3">
                               <div className="flex-1">
-                                <h3 className="font-medium text-gray-800">{item.product.name}</h3>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <h3 className="font-medium text-gray-800">{item.product.name}</h3>
+                                  <Badge variant="outline" className="text-xs">Individual</Badge>
+                                </div>
                                 <p className="text-sm text-gray-500">${item.product.pricePerKg}/kg</p>
                                 {item.ripeness && (
                                   <p className="text-xs text-gray-600 mt-1 flex items-center gap-1">
@@ -218,6 +266,82 @@ const ShoppingCartComponent: React.FC = () => {
                         </Card>
                       );
                     })}
+
+                    {/* Paquetes parrilleros */}
+                    {packageCart.map((packageItem, index) => (
+                      <Card key={`package-${packageItem.packageId}-${index}`} className="border-red-200 bg-gradient-to-r from-orange-50 to-red-50">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start mb-3">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <Flame size={16} className="text-red-500" />
+                                <h3 className="font-bold text-gray-800">{packageItem.packageName}</h3>
+                                <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs">
+                                  Paquete
+                                </Badge>
+                              </div>
+                              {packageItem.meatDiscount && (
+                                <div className="flex items-center gap-1 text-green-600 text-xs font-medium">
+                                  <Percent size={12} />
+                                  Descuento aplicado: -${packageItem.meatDiscount.toFixed(2)}
+                                </div>
+                              )}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removePackageFromCart(packageItem.packageId)}
+                              className="text-red-500 hover:text-red-700 p-1"
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </div>
+                          
+                          <div className="space-y-3">
+                            {/* Carnes */}
+                            <div>
+                              <h4 className="text-xs font-semibold text-red-700 mb-2">🥩 Carnes:</h4>
+                              <div className="space-y-1">
+                                {packageItem.items.filter(item => !item.isComplement).map((meat, meatIndex) => {
+                                  const weightDisplay = meat.weight < 1000 ? `${meat.weight}g` : `${meat.weight/1000}kg`;
+                                  const price = ((meat.pricePerKg * meat.weight) / 1000).toFixed(2);
+                                  return (
+                                    <div key={meatIndex} className="flex justify-between items-center text-xs bg-white/50 rounded px-2 py-1">
+                                      <span>{meat.name} - {weightDisplay}</span>
+                                      <span className="font-medium">${price}</span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                            
+                            {/* Complementos */}
+                            <div>
+                              <h4 className="text-xs font-semibold text-green-700 mb-2">🥬 Complementos:</h4>
+                              <div className="space-y-1">
+                                {packageItem.items.filter(item => item.isComplement).map((complement, compIndex) => {
+                                  const weightDisplay = complement.weight < 1000 ? `${complement.weight}g` : `${complement.weight/1000}kg`;
+                                  const price = ((complement.pricePerKg * complement.weight) / 1000).toFixed(2);
+                                  const ripenessText = complement.ripeness ? ` (${complement.ripeness})` : '';
+                                  return (
+                                    <div key={compIndex} className="flex justify-between items-center text-xs bg-white/50 rounded px-2 py-1">
+                                      <span>{complement.name}{ripenessText} - {weightDisplay}</span>
+                                      <span className="font-medium">${price}</span>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                            
+                            <div className="text-right border-t pt-2">
+                              <span className="text-lg font-bold text-red-600">
+                                ${packageItem.totalPrice.toFixed(2)}
+                              </span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
 
                   <div className="border-t pt-4 mt-4">

@@ -2,6 +2,7 @@
 import React from 'react';
 import { CartProvider } from '@/contexts/CartContext';
 import ProductMenu from '@/components/ProductMenu';
+import GrillPackages from '@/components/GrillPackages';
 import ShoppingCartComponent from '@/components/ShoppingCart';
 import AdminPanel from '@/components/AdminPanel';
 import { Utensils, Clock, MapPin, Phone } from 'lucide-react';
@@ -74,6 +75,11 @@ const Index = () => {
         <main className="py-6 md:py-12">
           <ProductMenu />
         </main>
+
+        {/* Grill Packages Section */}
+        <section className="py-6 md:py-12 bg-gradient-to-br from-orange-25 to-red-25">
+          <GrillPackages />
+        </section>
 
         {/* Footer */}
         <footer className="bg-gray-800 text-white py-6 md:py-8">
