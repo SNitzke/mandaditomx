@@ -10,7 +10,7 @@ export const initialProducts: Product[] = [
   { id: '5', name: 'Chile Poblano', pricePerKg: 45, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '6', name: 'Papaya Pieza', pricePerKg: 50, category: 'Frutas y Verduras', minWeight: 1500 },
   { id: '7', name: 'Plátano', pricePerKg: 27, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '8', name: 'Melón Pieza', pricePerKg: 50, category: 'Frutas y Verduras', minWeight: 2000 },
+  { id: '8', name: 'Melón Pieza', pricePerKg: 30, category: 'Frutas y Verduras', minWeight: 2000 },
   { id: '9', name: 'Limón', pricePerKg: 32, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '10', name: 'Limón Amarillo', pricePerKg: 30, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '11', name: 'Sandía Grande', pricePerKg: 16, category: 'Frutas y Verduras', minWeight: 7000 },
