@@ -3,6 +3,7 @@ import React from 'react';
 import { CartProvider } from '@/contexts/CartContext';
 import ProductMenu from '@/components/ProductMenu';
 import GrillPackages from '@/components/GrillPackages';
+import SeasonCalendar from '@/components/SeasonCalendar';
 import ShoppingCartComponent from '@/components/ShoppingCart';
 import AdminPanel from '@/components/AdminPanel';
 import { Utensils, Clock, MapPin, Phone } from 'lucide-react';
@@ -73,7 +74,15 @@ const Index = () => {
 
         {/* Main Content */}
         <main className="py-6 md:py-12">
-          <ProductMenu />
+          {/* Season Calendar */}
+          <section className="mb-8">
+            <SeasonCalendar />
+          </section>
+
+          {/* Product Menu */}
+          <section>
+            <ProductMenu />
+          </section>
         </main>
 
         {/* Grill Packages Section */}

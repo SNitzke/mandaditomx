@@ -5,14 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ShoppingCart, Plus, ChevronDown, ChevronUp, Check, Clock } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { ShoppingCart, Plus, ChevronDown, ChevronUp, Check, Clock, Search, AlertTriangle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { isInSeason, getSeasonMessage } from '@/data/seasonalProducts';
 
 const ProductMenu: React.FC = () => {
   const { products, addToCart, cart } = useCart();
   const [selectedWeights, setSelectedWeights] = useState<Record<string, number>>({});
   const [selectedRipeness, setSelectedRipeness] = useState<Record<string, 'inmadura' | 'medio-madura' | 'madura'>>({});
   const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
+  const [searchTerms, setSearchTerms] = useState<Record<string, string>>({});
+  
+  const currentMonth = new Date().getMonth();
 
   const handleAddToCart = (product: any) => {
     const selectedWeight = selectedWeights[product.id] || product.minWeight;
@@ -71,6 +77,22 @@ const ProductMenu: React.FC = () => {
     return ((product.pricePerKg * weight) / 1000).toFixed(2);
   };
 
+  const handleSearchChange = (category: string, term: string) => {
+    setSearchTerms(prev => ({
+      ...prev,
+      [category]: term
+    }));
+  };
+
+  const filterProductsBySearch = (categoryProducts: typeof products, category: string) => {
+    const searchTerm = searchTerms[category]?.toLowerCase() || '';
+    if (!searchTerm) return categoryProducts;
+    
+    return categoryProducts.filter(product =>
+      product.name.toLowerCase().includes(searchTerm)
+    );
+  };
+
   const groupedProducts = products.reduce((acc, product) => {
     if (!acc[product.category]) {
       acc[product.category] = [];
@@ -103,7 +125,7 @@ const ProductMenu: React.FC = () => {
                   </h3>
                   <div className="flex items-center gap-2">
                     <span className="text-sm opacity-80">
-                      {categoryProducts.length} productos
+                      {filterProductsBySearch(categoryProducts, category).length} de {categoryProducts.length} productos
                     </span>
                     {openCategories[category] ? (
                       <ChevronUp size={20} />
@@ -116,13 +138,29 @@ const ProductMenu: React.FC = () => {
               
               <CollapsibleContent>
                 <div className="p-4 md:p-6 bg-gray-50">
+                  {/* Buscador por categoría */}
+                  <div className="mb-4">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <Input
+                        type="text"
+                        placeholder={`Buscar en ${category}...`}
+                        value={searchTerms[category] || ''}
+                        onChange={(e) => handleSearchChange(category, e.target.value)}
+                        className="pl-10 bg-white border-gray-200 focus:border-orange-400 focus:ring-orange-400"
+                      />
+                    </div>
+                  </div>
+                  
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {categoryProducts.map((product) => {
+                    {filterProductsBySearch(categoryProducts, category).map((product) => {
                       const selectedWeight = selectedWeights[product.id] || product.minWeight;
                       const selectedRipenessValue = selectedRipeness[product.id] || 'medio-madura';
                       const price = calculatePrice(product, selectedWeight);
                       const inCart = isProductInCart(product.id);
                       const isFruitOrVegetable = product.category === 'Frutas y Verduras';
+                      const productInSeason = isFruitOrVegetable ? isInSeason(product.name, currentMonth) : true;
+                      const seasonMessage = isFruitOrVegetable ? getSeasonMessage(product.name, currentMonth) : '';
                       
                       return (
                         <Card 
@@ -140,6 +178,22 @@ const ProductMenu: React.FC = () => {
                                   {product.name}
                                 </CardTitle>
                                 <p className="text-sm text-gray-500">${product.pricePerKg}/kg</p>
+                                
+                                {/* Indicador de temporada para frutas y verduras */}
+                                {isFruitOrVegetable && (
+                                  <div className="mt-1">
+                                    {productInSeason ? (
+                                      <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                                        🌱 {seasonMessage}
+                                      </Badge>
+                                    ) : (
+                                      <Badge variant="outline" className="text-xs bg-orange-50 text-orange-700 border-orange-200 flex items-center gap-1">
+                                        <AlertTriangle className="w-3 h-3" />
+                                        {seasonMessage}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                )}
                               </div>
                               {inCart && (
                                 <div className="bg-green-500 text-white rounded-full p-1 ml-2">
@@ -249,6 +303,20 @@ const ProductMenu: React.FC = () => {
                       );
                     })}
                   </div>
+                  
+                  {/* Mensaje cuando no hay resultados de búsqueda */}
+                  {filterProductsBySearch(categoryProducts, category).length === 0 && searchTerms[category] && (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500 mb-2">No se encontraron productos que coincidan con "{searchTerms[category]}"</p>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => handleSearchChange(category, '')}
+                        className="text-sm"
+                      >
+                        Limpiar búsqueda
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </CollapsibleContent>
             </Collapsible>
