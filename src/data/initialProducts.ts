@@ -147,20 +147,6 @@ export const initialProducts: Product[] = [
   { id: '126', name: 'Cartón Huevo San Juan 30pz', pricePerKg: 65, category: 'Huevo', minWeight: 1500 },
 
   // Productos Costco
-  { id: '127', name: 'Salmón Noruego Fresco', pricePerKg: 450, category: 'Productos Costco', minWeight: 500 },
-  { id: '128', name: 'Queso Manchego Importado', pricePerKg: 380, category: 'Productos Costco', minWeight: 300 },
-  { id: '129', name: 'Aceite de Oliva Extra Virgen', pricePerKg: 320, category: 'Productos Costco', minWeight: 500 },
-  { id: '130', name: 'Jamón Serrano Ibérico', pricePerKg: 650, category: 'Productos Costco', minWeight: 200 },
-  { id: '131', name: 'Nueces de California', pricePerKg: 280, category: 'Productos Costco', minWeight: 500 },
-  { id: '132', name: 'Arándanos Orgánicos', pricePerKg: 180, category: 'Productos Costco', minWeight: 300 },
-  { id: '133', name: 'Quinoa Orgánica', pricePerKg: 150, category: 'Productos Costco', minWeight: 500 },
-  { id: '134', name: 'Miel de Abeja Pura', pricePerKg: 220, category: 'Productos Costco', minWeight: 500 },
-  { id: '135', name: 'Café Orgánico de Guatemala', pricePerKg: 320, category: 'Productos Costco', minWeight: 500 },
-  { id: '136', name: 'Chocolate Belga 70% Cacao', pricePerKg: 420, category: 'Productos Costco', minWeight: 200 },
-  { id: '137', name: 'Almendras Tostadas Premium', pricePerKg: 350, category: 'Productos Costco', minWeight: 500 },
-  { id: '138', name: 'Aceitunas Kalamata', pricePerKg: 180, category: 'Productos Costco', minWeight: 300 },
-  { id: '139', name: 'Vinagre Balsámico de Módena', pricePerKg: 280, category: 'Productos Costco', minWeight: 250 },
-  { id: '140', name: 'Pasta Italiana Artesanal', pricePerKg: 95, category: 'Productos Costco', minWeight: 500 },
-  { id: '141', name: 'Té Verde Orgánico', pricePerKg: 480, category: 'Productos Costco', minWeight: 100 },
+
   
 ];
