@@ -131,20 +131,16 @@ export const initialProducts: Product[] = [
   { id: '114', name: 'Manchego Vino Tinto', pricePerKg: 370, category: 'Producto Orgánico', minWeight: 500 },
   { id: '115', name: 'Manchego Arándano', pricePerKg: 370, category: 'Producto Orgánico', minWeight: 500 },
   { id: '116', name: 'Manchego Nuez', pricePerKg: 370, category: 'Producto Orgánico', minWeight: 500 },
-  { id: '117', name: 'Ranchero', pricePerKg: 250, category: 'Producto Orgánico', minWeight: 500 },
-  { id: '118', name: 'Panela', pricePerKg: 310, category: 'Producto Orgánico', minWeight: 500 },
-  { id: '119', name: 'Requesón', pricePerKg: 210, category: 'Producto Orgánico', minWeight: 500 },
-  { id: '120', name: 'Yogurt', pricePerKg: 190, category: 'Producto Orgánico', minWeight: 500 },
 
 
 
    // Huevo
-  { id: '121', name: 'Cartón Huevo Semi Sucio 30pz', pricePerKg: 42, category: 'Huevo', minWeight: 1500 },
-  { id: '122', name: 'Cartón Huevo Tradicional 30pz', pricePerKg: 51, category: 'Huevo', minWeight: 1500 },
-  { id: '123', name: 'Cartón Huevo Alteño 30pz', pricePerKg: 55, category: 'Huevo', minWeight: 1500 },
-  { id: '124', name: 'Cartón Huevo Selecto 30pz', pricePerKg: 58, category: 'Huevo', minWeight: 1500 },
-  { id: '125', name: 'Cartón Huevo Supremo 30pz', pricePerKg: 60, category: 'Huevo', minWeight: 1500 },
-  { id: '126', name: 'Cartón Huevo San Juan 30pz', pricePerKg: 65, category: 'Huevo', minWeight: 1500 },
+  { id: '117', name: 'Cartón Huevo Semi Sucio 30pz', pricePerKg: 42, category: 'Huevo', minWeight: 1500 },
+  { id: '118', name: 'Cartón Huevo Tradicional 30pz', pricePerKg: 51, category: 'Huevo', minWeight: 1500 },
+  { id: '119', name: 'Cartón Huevo Alteño 30pz', pricePerKg: 55, category: 'Huevo', minWeight: 1500 },
+  { id: '120', name: 'Cartón Huevo Selecto 30pz', pricePerKg: 58, category: 'Huevo', minWeight: 1500 },
+  { id: '121', name: 'Cartón Huevo Supremo 30pz', pricePerKg: 60, category: 'Huevo', minWeight: 1500 },
+  { id: '122', name: 'Cartón Huevo San Juan 30pz', pricePerKg: 65, category: 'Huevo', minWeight: 1500 },
 
   // Productos Costco
 
