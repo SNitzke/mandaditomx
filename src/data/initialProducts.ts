@@ -3,9 +3,9 @@ import { Product } from '@/types/product';
 
 export const initialProducts: Product[] = [
   // Frutas y Verduras
-  { id: '1', name: 'Mango Manila', pricePerKg: 42, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '2', name: 'Mango Petacón', pricePerKg: 25, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '3', name: 'Mango Ataulfo', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '1', name: 'Mango Manila', pricePerKg: 50, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '2', name: 'Mango Petacón', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '3', name: 'Mango Ataulfo Selecto', pricePerKg: 80, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '4', name: 'Guayaba', pricePerKg: 43, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '5', name: 'Chile Poblano', pricePerKg: 45, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '6', name: 'Papaya Pieza', pricePerKg: 50, category: 'Frutas y Verduras', minWeight: 1500 },
@@ -71,43 +71,43 @@ export const initialProducts: Product[] = [
 
 
   // Carnes y Proteínas
-  { id: '65', name: 'Bistec Picado', pricePerKg: 150, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '66', name: 'Bistec de Cerdo', pricePerKg: 130, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '67', name: 'Bistec Taquero', pricePerKg: 265, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '68', name: 'Bistec Ternera', pricePerKg: 130, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '69', name: 'Pastor Abierto', pricePerKg: 140, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '70', name: 'Pastor Preparado', pricePerKg: 120, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '71', name: 'Maciza de Cerdo', pricePerKg: 120, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '72', name: 'Costilla de Cerdo', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '73', name: 'Costilla Curly', pricePerKg: 120, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '74', name: 'Codillo Fresco', pricePerKg: 90, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '75', name: 'Longaniza Taquera', pricePerKg: 90, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '76', name: 'Longaniza Especial', pricePerKg: 120, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '77', name: 'Cecina Adobada', pricePerKg: 130, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '78', name: 'Chuleta Ahumada', pricePerKg: 135, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '79', name: 'Milanesa de Res', pricePerKg: 170, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '80', name: 'Milanesa de Cerdo', pricePerKg: 130, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '81', name: 'Molida de Res', pricePerKg: 215, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '82', name: 'Molida Mixta', pricePerKg: 155, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '83', name: 'Suadero Molido', pricePerKg: 150, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '84', name: 'Suadero de Primera', pricePerKg: 175, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '65', name: 'Bistec Picado', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '66', name: 'Bistec de Cerdo', pricePerKg: 135, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '67', name: 'Bistec Taquero', pricePerKg: 270, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '68', name: 'Bistec Ternera', pricePerKg: 140, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '69', name: 'Pastor Abierto', pricePerKg: 150, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '70', name: 'Pastor Preparado', pricePerKg: 130, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '71', name: 'Maciza de Cerdo', pricePerKg: 130, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '72', name: 'Costilla de Cerdo', pricePerKg: 170, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '73', name: 'Costilla Curly', pricePerKg: 130, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '74', name: 'Codillo Fresco', pricePerKg: 110, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '75', name: 'Longaniza Taquera', pricePerKg: 110, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '76', name: 'Longaniza Especial', pricePerKg: 130, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '77', name: 'Cecina Adobada', pricePerKg: 140, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '78', name: 'Chuleta Ahumada', pricePerKg: 145, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '79', name: 'Milanesa de Res', pricePerKg: 180, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '80', name: 'Milanesa de Cerdo', pricePerKg: 140, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '81', name: 'Molida de Res', pricePerKg: 225, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '82', name: 'Molida Mixta', pricePerKg: 165, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '83', name: 'Suadero Molido', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '84', name: 'Suadero de Primera', pricePerKg: 185, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '85', name: 'New York (Centro de Cara)', pricePerKg: 280, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '86', name: 'Falda de Res', pricePerKg: 225, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '87', name: 'Retazo de Res', pricePerKg: 170, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '88', name: 'Cecina Selecta', pricePerKg: 275, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '89', name: 'Cecina de Yecapixtla', pricePerKg: 220, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '90', name: 'Chistorra', pricePerKg: 170, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '86', name: 'Falda de Res', pricePerKg: 235, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '87', name: 'Retazo de Res', pricePerKg: 180, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '88', name: 'Cecina Selecta', pricePerKg: 280, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '89', name: 'Cecina de Yecapixtla', pricePerKg: 230, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '90', name: 'Chistorra', pricePerKg: 175, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '91', name: 'Arrachera de Res', pricePerKg: 270, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '92', name: 'Arrachera Nacional', pricePerKg: 180, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '93', name: 'Arrachera de Cerdo', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '94', name: 'Chorizo Argentino', pricePerKg: 150, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '92', name: 'Arrachera Nacional', pricePerKg: 190, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '93', name: 'Arrachera de Cerdo', pricePerKg: 165, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '94', name: 'Chorizo Argentino', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '95', name: 'Rib Eye', pricePerKg: 500, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '96', name: 'T-Bone', pricePerKg: 270, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '97', name: 'Sirloin', pricePerKg: 320, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '98', name: 'Top Sirloin', pricePerKg: 290, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '98', name: 'Top Sirloin', pricePerKg: 300, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '99', name: 'Picaña', pricePerKg: 280, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '100', name: 'Filete Cabrería Nacional', pricePerKg: 360, category: 'Carnes y Proteínas', minWeight: 500 },
-  { id: '101', name: 'Birria', pricePerKg: 160, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '101', name: 'Birria', pricePerKg: 170, category: 'Carnes y Proteínas', minWeight: 500 },
 
 
   
@@ -115,8 +115,8 @@ export const initialProducts: Product[] = [
   { id: '102', name: 'Milanesa de Pollo', pricePerKg: 130, category: 'Pollo', minWeight: 1000 },
   { id: '103', name: 'Pechuga Fría', pricePerKg: 130, category: 'Pollo', minWeight: 1000 },
   { id: '104', name: 'Pechuga Caliente', pricePerKg: 140, category: 'Pollo', minWeight: 1000 },
-  { id: '105', name: 'Muslo y Pierna', pricePerKg: 80, category: 'Pollo', minWeight: 1000 },
-  { id: '106', name: 'Pollo Completo', pricePerKg: 90, category: 'Pollo', minWeight: 2500 },
+  { id: '105', name: 'Muslo y Pierna', pricePerKg: 100, category: 'Pollo', minWeight: 1000 },
+  { id: '106', name: 'Pollo Completo', pricePerKg: 100, category: 'Pollo', minWeight: 2500 },
 
 
 
@@ -138,11 +138,11 @@ export const initialProducts: Product[] = [
   { id: '117', name: 'Cartón Huevo Semi Sucio 30pz', pricePerKg: 42, category: 'Huevo', minWeight: 1500 },
   { id: '118', name: 'Cartón Huevo Tradicional 30pz', pricePerKg: 51, category: 'Huevo', minWeight: 1500 },
   { id: '119', name: 'Cartón Huevo Alteño 30pz', pricePerKg: 55, category: 'Huevo', minWeight: 1500 },
-  { id: '120', name: 'Cartón Huevo Selecto 30pz', pricePerKg: 58, category: 'Huevo', minWeight: 1500 },
-  { id: '121', name: 'Cartón Huevo Supremo 30pz', pricePerKg: 60, category: 'Huevo', minWeight: 1500 },
-  { id: '122', name: 'Cartón Huevo San Juan 30pz', pricePerKg: 65, category: 'Huevo', minWeight: 1500 },
+  { id: '120', name: 'Cartón Huevo Selecto 30pz', pricePerKg: 60, category: 'Huevo', minWeight: 1500 },
+  { id: '121', name: 'Cartón Huevo Supremo 30pz', pricePerKg: 70, category: 'Huevo', minWeight: 1500 },
+  { id: '122', name: 'Cartón Huevo San Juan 30pz', pricePerKg: 75, category: 'Huevo', minWeight: 1500 },
 
-  // Productos Costco
+  // Producto Importado
 
   
 ];
