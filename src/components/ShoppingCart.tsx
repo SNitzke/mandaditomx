@@ -115,7 +115,7 @@ const ShoppingCartComponent: React.FC = () => {
     message += `*Total: $${finalTotal.toFixed(2)}*\n\n`;
     message += `👤 *Nombre:* ${customerName}\n`;
     message += `📍 *Dirección de entrega:*\n${address}\n\n`;
-    message += `🕐 *Horario de entrega:* 4:00 PM - 7:00 PM\n`;
+    message += `🕐 *Horario de entrega:* 1:00 PM - 5:00 PM\n`;
     message += `⏰ *Recordatorio:* Último horario para pedidos hasta las 10:00 PM\n\n`;
     
     if (subtotal < 1500) {

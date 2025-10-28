@@ -74,11 +74,6 @@ const Index = () => {
 
         {/* Main Content */}
         <main className="py-6 md:py-12">
-          {/* Season Calendar */}
-          <section className="mb-8">
-            <SeasonCalendar />
-          </section>
-
           {/* Product Menu */}
           <section>
             <ProductMenu />
