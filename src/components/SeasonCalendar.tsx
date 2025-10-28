@@ -33,25 +33,7 @@ const SeasonCalendar: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Calendario */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CalendarDays className="w-5 h-5" />
-              Selecciona un mes
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex justify-center">
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={(date) => date && setSelectedDate(date)}
-              className="pointer-events-auto border rounded-md"
-            />
-          </CardContent>
-        </Card>
-
+      <div className="max-w-2xl mx-auto">
         {/* Productos de temporada */}
         <Card>
           <CardHeader>
