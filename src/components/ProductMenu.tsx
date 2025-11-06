@@ -10,6 +10,21 @@ import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Plus, ChevronDown, ChevronUp, Check, Clock, Search, AlertTriangle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { isInSeason, getSeasonMessage } from '@/data/seasonalProducts';
+import frutasVerdurasImg from '@/assets/category-frutas-verduras.jpg';
+import carnesImg from '@/assets/category-carnes.jpg';
+import polloImg from '@/assets/category-pollo.jpg';
+import organicoImg from '@/assets/category-organico.jpg';
+import huevoImg from '@/assets/category-huevo.jpg';
+import costcoImg from '@/assets/category-costco.jpg';
+
+const categoryImages: Record<string, string> = {
+  'Frutas y Verduras': frutasVerdurasImg,
+  'Carnes y Proteínas': carnesImg,
+  'Pollo': polloImg,
+  'Producto Orgánico': organicoImg,
+  'Huevo': huevoImg,
+  'Producto Importado': costcoImg,
+};
 
 const ProductMenu: React.FC = () => {
   const { products, addToCart, cart } = useCart();
@@ -111,212 +126,242 @@ const ProductMenu: React.FC = () => {
         <p className="text-xs md:text-sm text-orange-600 mt-2">Horario límite para realizar pedidos: hasta las 10:00 PM cada día</p>
       </div>
 
-      <div className="space-y-4 md:space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {Object.entries(groupedProducts).map(([category, categoryProducts]) => (
-          <div key={category} className="border border-gray-200 rounded-lg overflow-hidden">
+          <div key={category} className="group">
             <Collapsible 
               open={openCategories[category] ?? false} 
               onOpenChange={() => toggleCategory(category)}
             >
               <CollapsibleTrigger className="w-full">
-                <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-3 md:p-4 flex justify-between items-center hover:from-orange-600 hover:to-red-600 transition-colors">
-                  <h3 className="text-lg md:text-xl font-semibold text-left">
-                    {category}
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm opacity-80">
-                      {filterProductsBySearch(categoryProducts, category).length} de {categoryProducts.length} productos
-                    </span>
-                    {openCategories[category] ? (
-                      <ChevronUp size={20} />
-                    ) : (
-                      <ChevronDown size={20} />
-                    )}
+                <div 
+                  className="relative h-48 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-105"
+                  style={{
+                    backgroundImage: `url(${categoryImages[category]})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+                    <div className="bg-white/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-md">
+                      <h3 className="text-lg md:text-xl font-bold text-gray-800 text-center">
+                        {category}
+                      </h3>
+                      <p className="text-xs text-gray-600 text-center mt-1">
+                        {categoryProducts.length} productos disponibles
+                      </p>
+                    </div>
                   </div>
                 </div>
               </CollapsibleTrigger>
               
               <CollapsibleContent>
-                <div className="p-4 md:p-6 bg-gray-50">
-                  {/* Buscador por categoría */}
-                  <div className="mb-4">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                      <Input
-                        type="text"
-                        placeholder={`Buscar en ${category}...`}
-                        value={searchTerms[category] || ''}
-                        onChange={(e) => handleSearchChange(category, e.target.value)}
-                        className="pl-10 bg-white border-gray-200 focus:border-orange-400 focus:ring-orange-400"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filterProductsBySearch(categoryProducts, category).map((product) => {
+                <div className="fixed inset-0 bg-black/50 z-40 overflow-y-auto" onClick={() => toggleCategory(category)}>
+                  <div className="min-h-screen p-4 flex items-start justify-center pt-20">
+                    <div 
+                      className="bg-white rounded-2xl shadow-2xl max-w-6xl w-full max-h-[85vh] overflow-hidden flex flex-col"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {/* Header */}
+                      <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6 flex justify-between items-center">
+                        <div>
+                          <h3 className="text-2xl md:text-3xl font-bold">{category}</h3>
+                          <p className="text-sm opacity-90 mt-1">{categoryProducts.length} productos disponibles</p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          onClick={() => toggleCategory(category)}
+                          className="text-white hover:bg-white/20 rounded-full w-10 h-10 p-0"
+                        >
+                          ✕
+                        </Button>
+                      </div>
+
+                      {/* Search */}
+                      <div className="p-6 border-b bg-gray-50">
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                          <Input
+                            type="text"
+                            placeholder={`Buscar en ${category}...`}
+                            value={searchTerms[category] || ''}
+                            onChange={(e) => handleSearchChange(category, e.target.value)}
+                            className="pl-12 h-12 text-base bg-white border-gray-200 focus:border-orange-400 focus:ring-orange-400"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Products */}
+                      <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {filterProductsBySearch(categoryProducts, category).map((product) => {
                       const selectedWeight = selectedWeights[product.id] || product.minWeight;
                       const selectedRipenessValue = selectedRipeness[product.id] || 'medio-madura';
                       const price = calculatePrice(product, selectedWeight);
                       const inCart = isProductInCart(product.id);
                       const isFruitOrVegetable = product.category === 'Frutas y Verduras';
-                      const productInSeason = isFruitOrVegetable ? isInSeason(product.name, currentMonth) : true;
-                      const seasonMessage = isFruitOrVegetable ? getSeasonMessage(product.name, currentMonth) : '';
-                      
-                      return (
-                        <Card 
-                          key={product.id} 
-                          className={`hover:shadow-lg transition-all duration-300 ${
-                            inCart 
-                              ? 'border-green-500 bg-green-50 shadow-md' 
-                              : 'border-orange-100 hover:border-orange-200'
-                          }`}
-                        >
-                          <CardHeader className="pb-3">
-                            <div className="flex justify-between items-start">
-                              <div className="flex-1">
-                                <CardTitle className="text-base md:text-lg font-medium text-gray-800">
-                                  {product.name}
-                                </CardTitle>
-                                <p className="text-sm text-gray-500">${product.pricePerKg}/kg</p>
-                                
-                                {/* Indicador de temporada para frutas y verduras */}
-                                {isFruitOrVegetable && (
-                                  <div className="mt-1">
-                                    {productInSeason ? (
-                                      <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                                        🌱 {seasonMessage}
-                                      </Badge>
-                                    ) : (
-                                      <Badge variant="outline" className="text-xs bg-orange-50 text-orange-700 border-orange-200 flex items-center gap-1">
-                                        <AlertTriangle className="w-3 h-3" />
-                                        {seasonMessage}
-                                      </Badge>
+                            const productInSeason = isFruitOrVegetable ? isInSeason(product.name, currentMonth) : true;
+                            const seasonMessage = isFruitOrVegetable ? getSeasonMessage(product.name, currentMonth) : '';
+                            
+                            return (
+                              <Card 
+                                key={product.id}
+                                className={`hover:shadow-lg transition-all duration-300 ${
+                                  inCart 
+                                    ? 'border-green-500 bg-green-50 shadow-md' 
+                                    : 'border-orange-100 hover:border-orange-200'
+                                }`}
+                              >
+                                <CardHeader className="pb-3">
+                                  <div className="flex justify-between items-start">
+                                    <div className="flex-1">
+                                      <CardTitle className="text-base md:text-lg font-medium text-gray-800">
+                                        {product.name}
+                                      </CardTitle>
+                                      <p className="text-sm text-gray-500">${product.pricePerKg}/kg</p>
+                                      
+                                      {/* Indicador de temporada para frutas y verduras */}
+                                      {isFruitOrVegetable && (
+                                        <div className="mt-1">
+                                          {productInSeason ? (
+                                            <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                                              🌱 {seasonMessage}
+                                            </Badge>
+                                          ) : (
+                                            <Badge variant="outline" className="text-xs bg-orange-50 text-orange-700 border-orange-200 flex items-center gap-1">
+                                              <AlertTriangle className="w-3 h-3" />
+                                              {seasonMessage}
+                                            </Badge>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                    {inCart && (
+                                      <div className="bg-green-500 text-white rounded-full p-1 ml-2">
+                                        <Check size={16} />
+                                      </div>
                                     )}
                                   </div>
-                                )}
-                              </div>
-                              {inCart && (
-                                <div className="bg-green-500 text-white rounded-full p-1 ml-2">
-                                  <Check size={16} />
-                                </div>
-                              )}
-                            </div>
-                          </CardHeader>
-                          <CardContent className="space-y-3">
-                            {/* Selector de peso */}
-                            <div>
-                              <label className="text-sm font-medium text-gray-700 mb-2 block">
-                                Seleccionar peso:
-                              </label>
-                              <Select
-                                value={selectedWeight.toString()}
-                                onValueChange={(value) => handleWeightChange(product.id, value)}
-                              >
-                                <SelectTrigger className="w-full">
-                                  <SelectValue placeholder="Selecciona el peso" />
-                                </SelectTrigger>
-                                <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
-                                  {getWeightOptions(product.minWeight).map((option) => (
-                                    <SelectItem 
-                                      key={option.value} 
-                                      value={option.value.toString()}
-                                      className="hover:bg-orange-50 cursor-pointer"
+                                </CardHeader>
+                                <CardContent className="space-y-3">
+                                  {/* Selector de peso */}
+                                  <div>
+                                    <label className="text-sm font-medium text-gray-700 mb-2 block">
+                                      Seleccionar peso:
+                                    </label>
+                                    <Select
+                                      value={selectedWeight.toString()}
+                                      onValueChange={(value) => handleWeightChange(product.id, value)}
                                     >
-                                      {option.label}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            
-                            {/* Selector de madurez - Solo para frutas y verduras */}
-                            {isFruitOrVegetable && (
-                              <div>
-                                <label className="text-sm font-medium text-gray-700 mb-3 block flex items-center gap-2">
-                                  <Clock size={16} />
-                                  Nivel de madurez:
-                                </label>
-                                <div className="relative">
-                                  {/* Timeline visual */}
-                                  <div className="flex items-center justify-between mb-3">
-                                    <div className="flex-1 h-1 bg-gray-200 rounded-full relative">
-                                      <div 
-                                        className={`absolute h-1 bg-gradient-to-r from-green-400 to-yellow-500 rounded-full transition-all duration-300 ${
-                                          selectedRipenessValue === 'inmadura' ? 'w-1/3' : 
-                                          selectedRipenessValue === 'medio-madura' ? 'w-2/3' : 'w-full'
-                                        }`}
-                                      />
-                                      <div 
-                                        className={`absolute w-3 h-3 rounded-full border-2 border-white shadow-md transition-all duration-300 -top-1 ${
-                                          selectedRipenessValue === 'inmadura' ? 'left-0 bg-green-500' :
-                                          selectedRipenessValue === 'medio-madura' ? 'left-1/2 -translate-x-1/2 bg-yellow-500' :
-                                          'right-0 bg-orange-500'
-                                        }`}
-                                      />
-                                    </div>
+                                      <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Selecciona el peso" />
+                                      </SelectTrigger>
+                                      <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
+                                        {getWeightOptions(product.minWeight).map((option) => (
+                                          <SelectItem 
+                                            key={option.value} 
+                                            value={option.value.toString()}
+                                            className="hover:bg-orange-50 cursor-pointer"
+                                          >
+                                            {option.label}
+                                          </SelectItem>
+                                        ))}
+                                      </SelectContent>
+                                    </Select>
                                   </div>
                                   
-                                  {/* Opciones de madurez */}
-                                  <div className="grid grid-cols-3 gap-2">
-                                    {[
-                                      { value: 'inmadura', label: 'Verde', emoji: '🟢', color: 'border-green-500 bg-green-50 text-green-700' },
-                                      { value: 'medio-madura', label: 'Medio', emoji: '🟡', color: 'border-yellow-500 bg-yellow-50 text-yellow-700' },
-                                      { value: 'madura', label: 'Maduro', emoji: '🟠', color: 'border-orange-500 bg-orange-50 text-orange-700' }
-                                    ].map((option) => (
-                                      <button
-                                        key={option.value}
-                                        type="button"
-                                        onClick={() => handleRipenessChange(product.id, option.value as any)}
-                                        className={`p-2 rounded-lg border-2 transition-all text-xs font-medium flex flex-col items-center gap-1 ${
-                                          selectedRipenessValue === option.value
-                                            ? option.color + ' shadow-md scale-105'
-                                            : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
-                                        }`}
-                                      >
-                                        <span className="text-lg">{option.emoji}</span>
-                                        <span>{option.label}</span>
-                                      </button>
-                                    ))}
+                                  {/* Selector de madurez - Solo para frutas y verduras */}
+                                  {isFruitOrVegetable && (
+                                    <div>
+                                      <label className="text-sm font-medium text-gray-700 mb-3 block flex items-center gap-2">
+                                        <Clock size={16} />
+                                        Nivel de madurez:
+                                      </label>
+                                      <div className="relative">
+                                        {/* Timeline visual */}
+                                        <div className="flex items-center justify-between mb-3">
+                                          <div className="flex-1 h-1 bg-gray-200 rounded-full relative">
+                                            <div 
+                                              className={`absolute h-1 bg-gradient-to-r from-green-400 to-yellow-500 rounded-full transition-all duration-300 ${
+                                                selectedRipenessValue === 'inmadura' ? 'w-1/3' : 
+                                                selectedRipenessValue === 'medio-madura' ? 'w-2/3' : 'w-full'
+                                              }`}
+                                            />
+                                            <div 
+                                              className={`absolute w-3 h-3 rounded-full border-2 border-white shadow-md transition-all duration-300 -top-1 ${
+                                                selectedRipenessValue === 'inmadura' ? 'left-0 bg-green-500' :
+                                                selectedRipenessValue === 'medio-madura' ? 'left-1/2 -translate-x-1/2 bg-yellow-500' :
+                                                'right-0 bg-orange-500'
+                                              }`}
+                                            />
+                                          </div>
+                                        </div>
+                                        
+                                        {/* Opciones de madurez */}
+                                        <div className="grid grid-cols-3 gap-2">
+                                          {[
+                                            { value: 'inmadura', label: 'Verde', emoji: '🟢', color: 'border-green-500 bg-green-50 text-green-700' },
+                                            { value: 'medio-madura', label: 'Medio', emoji: '🟡', color: 'border-yellow-500 bg-yellow-50 text-yellow-700' },
+                                            { value: 'madura', label: 'Maduro', emoji: '🟠', color: 'border-orange-500 bg-orange-50 text-orange-700' }
+                                          ].map((option) => (
+                                            <button
+                                              key={option.value}
+                                              type="button"
+                                              onClick={() => handleRipenessChange(product.id, option.value as any)}
+                                              className={`p-2 rounded-lg border-2 transition-all text-xs font-medium flex flex-col items-center gap-1 ${
+                                                selectedRipenessValue === option.value
+                                                  ? option.color + ' shadow-md scale-105'
+                                                  : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                                              }`}
+                                            >
+                                              <span className="text-lg">{option.emoji}</span>
+                                              <span>{option.label}</span>
+                                            </button>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                  
+                                  <div className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2">
+                                    <span className="text-xl md:text-2xl font-bold text-orange-600">
+                                      ${price}
+                                    </span>
+                                    <Button 
+                                      onClick={() => handleAddToCart(product)}
+                                      className={`w-full sm:w-auto flex items-center gap-2 transition-colors ${
+                                        inCart 
+                                          ? 'bg-green-500 hover:bg-green-600' 
+                                          : 'bg-orange-500 hover:bg-orange-600'
+                                      } text-white`}
+                                    >
+                                      <Plus size={16} />
+                                      {inCart ? 'Agregar más' : 'Agregar'}
+                                    </Button>
                                   </div>
-                                </div>
-                              </div>
-                            )}
-                            
-                            <div className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2">
-                              <span className="text-xl md:text-2xl font-bold text-orange-600">
-                                ${price}
-                              </span>
-                              <Button 
-                                onClick={() => handleAddToCart(product)}
-                                className={`w-full sm:w-auto flex items-center gap-2 transition-colors ${
-                                  inCart 
-                                    ? 'bg-green-500 hover:bg-green-600' 
-                                    : 'bg-orange-500 hover:bg-orange-600'
-                                } text-white`}
-                              >
-                                <Plus size={16} />
-                                {inCart ? 'Agregar más' : 'Agregar'}
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                  
-                  {/* Mensaje cuando no hay resultados de búsqueda */}
-                  {filterProductsBySearch(categoryProducts, category).length === 0 && searchTerms[category] && (
-                    <div className="text-center py-8">
-                      <p className="text-gray-500 mb-2">No se encontraron productos que coincidan con "{searchTerms[category]}"</p>
-                      <Button 
-                        variant="outline" 
-                        onClick={() => handleSearchChange(category, '')}
-                        className="text-sm"
-                      >
-                        Limpiar búsqueda
-                      </Button>
+                                </CardContent>
+                              </Card>
+                            );
+                          })}
+                        </div>
+                        
+                        {/* Mensaje cuando no hay resultados de búsqueda */}
+                        {filterProductsBySearch(categoryProducts, category).length === 0 && searchTerms[category] && (
+                          <div className="text-center py-8">
+                            <p className="text-gray-500 mb-2">No se encontraron productos que coincidan con "{searchTerms[category]}"</p>
+                            <Button 
+                              variant="outline" 
+                              onClick={() => handleSearchChange(category, '')}
+                              className="text-sm"
+                            >
+                              Limpiar búsqueda
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </CollapsibleContent>
             </Collapsible>
