@@ -134,14 +134,14 @@ const Index = () => {
                 <h3 className="text-lg font-semibold mb-3">Horarios</h3>
                 <div className="text-gray-300">
                   <p>Envíos Miércoles y Jueves</p>
-                  <p>12:00 AM - 10:00 PM</p>
+                  <p>12:00 AM - 18:00 PM</p>
                 </div>
               </div>
               
               <div>
                 <h3 className="text-lg font-semibold mb-3">Sobre Nosotros</h3>
                 <p className="text-gray-300">
-                  Alimento 100% natural y los mejores ingredientes frescos.
+                  Alimento de excelente calidad y los mejores ingredientes frescos.
                 </p>
               </div>
             </div>
