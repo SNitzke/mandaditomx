@@ -128,7 +128,7 @@ const ProductMenu: React.FC = () => {
             🛒 Compra mínima: 500g por producto
           </div>
           <div className="bg-green-100 border-2 border-green-300 text-green-700 px-4 py-2 rounded-full font-medium shadow-sm">
-            ⏰ Pedidos hasta las 10:00 PM
+            ⏰ Pedidos hasta las 18:00 PM
           </div>
           <div className="bg-blue-100 border-2 border-blue-300 text-blue-700 px-4 py-2 rounded-full font-medium shadow-sm">
             📅 Orgánicos: 1 semana anticipación
