@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Flame, Beef, Package, Plus, Percent, AlertTriangle } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Flame, Beef, Package, Plus, Percent, AlertTriangle, X } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { GrillPackage, PackageCartItem } from '@/types/product';
 
@@ -28,6 +29,7 @@ const GrillPackages: React.FC = () => {
   const { addPackageToCart } = useCart();
   const [selectedWeights, setSelectedWeights] = useState<Record<string, Record<string, number>>>({});
   const [selectedRipeness, setSelectedRipeness] = useState<Record<string, Record<string, 'inmadura' | 'medio-madura' | 'madura'>>>({});
+  const [selectedPackage, setSelectedPackage] = useState<GrillPackage | null>(null);
 
   const handleWeightChange = (packageId: string, productId: string, weight: string) => {
     setSelectedWeights(prev => ({
@@ -59,7 +61,6 @@ const GrillPackages: React.FC = () => {
       const weight = selectedWeights[packageId]?.[item.productId] || item.minWeight;
       let itemPrice = (item.pricePerKg * weight) / 1000;
       
-      // Aplicar descuento individual por carne si cumple el threshold
       if (!item.isComplement && weight >= grillPackage.discount.threshold) {
         const individualDiscount = (itemPrice * grillPackage.discount.percentage) / 100;
         meatDiscounts[item.productId] = individualDiscount;
@@ -123,6 +124,7 @@ const GrillPackages: React.FC = () => {
     };
 
     addPackageToCart(packageCartItem);
+    setSelectedPackage(null);
     
     toast({
       title: "¡Paquete agregado!",
@@ -133,211 +135,245 @@ const GrillPackages: React.FC = () => {
 
   return (
     <section className="max-w-6xl mx-auto p-4 md:p-6">
-      <div className="text-center mb-8 md:mb-12">
+      <div className="text-center mb-8 md:mb-12 animate-fade-in-up">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-3 rounded-full">
-            <Flame size={28} />
+          <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-3 rounded-full animate-pulse-glow">
+            <Flame size={32} />
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">Paquetes Parrilleros</h2>
+          <h2 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            🔥 Paquetes Parrilleros
+          </h2>
         </div>
-        <p className="text-lg text-gray-600 mb-4">
-          Experiencias gastronómicas completas para tu asado perfecto
+        <p className="text-xl md:text-2xl text-gray-700 mb-4 font-semibold">
+          La experiencia completa para tu asado perfecto
         </p>
-        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-          <Percent size={20} />
+        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-full font-bold text-lg shadow-2xl animate-bounce-subtle">
+          <Percent size={24} />
           <span>¡Ahorra 10% por cada carne de 3kg o más!</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
-        {grillPackages.map((grillPackage) => {
-          const packageId = grillPackage.id;
-          const pricing = calculatePackagePrice(grillPackage, packageId);
-          const meats = grillPackage.items.filter(item => !item.isComplement);
-          const complements = grillPackage.items.filter(item => item.isComplement);
-
-          return (
-            <Card 
-              key={grillPackage.id} 
-              className="overflow-hidden hover:shadow-2xl transition-all duration-300 border-orange-200 hover:border-orange-300"
-            >
-              <div className="relative">
-                <img 
-                  src={imageMap[grillPackage.image]} 
-                  alt={grillPackage.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-2xl font-bold text-white mb-1">{grillPackage.name}</h3>
-                  <p className="text-white/90 text-sm">{grillPackage.description}</p>
-                </div>
-                {pricing.hasDiscount && (
-                  <Badge className="absolute top-4 right-4 bg-green-500 hover:bg-green-600 text-white font-bold">
-                    -10% ¡DESCUENTO!
-                  </Badge>
-                )}
+      {/* Grid de paquetes - Solo imágenes */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+        {grillPackages.map((grillPackage, index) => (
+          <div 
+            key={grillPackage.id}
+            className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer animate-scale-in hover:scale-105"
+            style={{ animationDelay: `${index * 0.1}s` }}
+            onClick={() => setSelectedPackage(grillPackage)}
+          >
+            <div className="aspect-[4/3] relative">
+              <img 
+                src={imageMap[grillPackage.image]} 
+                alt={grillPackage.name}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-orange-500/0 group-hover:bg-orange-500/20 transition-all duration-300" />
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform transition-transform duration-300 group-hover:translate-y-[-8px]">
+              <h3 className="text-2xl md:text-3xl font-bold mb-2 drop-shadow-lg">{grillPackage.name}</h3>
+              <p className="text-white/90 text-sm md:text-base mb-3 drop-shadow-md">{grillPackage.description}</p>
+              <div className="flex items-center justify-between">
+                <span className="text-yellow-300 font-bold text-xl">👆 Click para armar</span>
+                <Badge className="bg-green-500 hover:bg-green-600 text-white font-bold text-sm px-3 py-1">
+                  -10% OFF
+                </Badge>
               </div>
-
-              <CardContent className="p-6 space-y-6">
-                {/* Carnes Section */}
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Beef className="text-red-500" size={20} />
-                    <h4 className="font-semibold text-gray-800">Carnes Premium</h4>
-                  </div>
-                  <div className="space-y-3">
-                    {meats.map((item) => {
-                      const selectedWeight = selectedWeights[packageId]?.[item.productId] || item.minWeight;
-                      const originalPrice = (item.pricePerKg * selectedWeight) / 1000;
-                      const hasIndividualDiscount = selectedWeight >= grillPackage.discount.threshold;
-                      const discountAmount = hasIndividualDiscount ? (originalPrice * grillPackage.discount.percentage) / 100 : 0;
-                      const finalPrice = originalPrice - discountAmount;
-
-                      return (
-                        <div key={item.productId} className="bg-red-50 border border-red-100 rounded-lg p-3">
-                          <div className="flex justify-between items-start mb-2">
-                            <div className="flex-1">
-                              <span className="font-medium text-sm text-gray-800">{item.name}</span>
-                              {hasIndividualDiscount && (
-                                <div className="flex items-center gap-1 mt-1">
-                                  <Percent size={12} className="text-green-600" />
-                                  <span className="text-xs text-green-600 font-medium">10% OFF</span>
-                                </div>
-                              )}
-                            </div>
-                            <div className="text-right">
-                              {hasIndividualDiscount ? (
-                                <div>
-                                  <span className="text-red-400 line-through text-xs">${originalPrice.toFixed(2)}</span>
-                                  <span className="text-red-600 font-semibold block">${finalPrice.toFixed(2)}</span>
-                                </div>
-                              ) : (
-                                <span className="text-red-600 font-semibold">${finalPrice.toFixed(2)}</span>
-                              )}
-                            </div>
-                          </div>
-                          <Select
-                            value={selectedWeight.toString()}
-                            onValueChange={(value) => handleWeightChange(packageId, item.productId, value)}
-                          >
-                            <SelectTrigger className="w-full h-8 text-sm">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
-                              {getWeightOptions(item.minWeight).map((option) => (
-                                <SelectItem 
-                                  key={option.value} 
-                                  value={option.value.toString()}
-                                  className="hover:bg-red-50 cursor-pointer text-sm"
-                                >
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-2 flex items-center gap-1">
-                    <AlertTriangle size={12} />
-                    Descuento individual por carne al llegar a 3kg
-                  </div>
-                </div>
-
-                {/* Complementos Section */}
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <Package className="text-green-500" size={20} />
-                    <h4 className="font-semibold text-gray-800">Complementos Frescos</h4>
-                  </div>
-                  <div className="space-y-2">
-                    {complements.map((item) => {
-                      const selectedWeight = selectedWeights[packageId]?.[item.productId] || item.minWeight;
-                      const itemPrice = ((item.pricePerKg * selectedWeight) / 1000).toFixed(2);
-
-                      return (
-                        <div key={item.productId} className="bg-green-50 border border-green-100 rounded-lg p-2">
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm text-gray-700">{item.name}</span>
-                            <span className="text-green-600 font-medium text-sm">${itemPrice}</span>
-                          </div>
-                          <Select
-                            value={selectedWeight.toString()}
-                            onValueChange={(value) => handleWeightChange(packageId, item.productId, value)}
-                          >
-                            <SelectTrigger className="w-full h-7 text-xs">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
-                              {getWeightOptions(item.minWeight).map((option) => (
-                                <SelectItem 
-                                  key={option.value} 
-                                  value={option.value.toString()}
-                                  className="hover:bg-green-50 cursor-pointer text-xs"
-                                >
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Price and Add Button */}
-                <div className="border-t pt-4">
-                  <div className="text-center mb-4">
-                    {pricing.hasDiscount && (
-                      <div className="text-sm text-green-600 font-medium mb-1">
-                        ¡Descuento aplicado: -${pricing.discount.toFixed(2)}!
-                      </div>
-                    )}
-                    <div className="text-3xl font-bold text-orange-600">
-                      ${pricing.totalPrice.toFixed(2)}
-                    </div>
-                    {!pricing.hasDiscount && (
-                      <div className="text-xs text-orange-500 mt-1">
-                        Selecciona 3kg o más de cualquier carne para obtener 10% de descuento en esa carne
-                      </div>
-                    )}
-                  </div>
-                  <Button 
-                    onClick={() => handleAddPackageToCart(grillPackage)}
-                    className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
-                  >
-                    <Plus size={20} className="mr-2" />
-                    Armar mi Paquete
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+            </div>
+          </div>
+        ))}
       </div>
 
+      {/* Modal de detalle del paquete */}
+      <Dialog open={!!selectedPackage} onOpenChange={() => setSelectedPackage(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
+          {selectedPackage && (
+            <div>
+              <DialogHeader>
+                <div className="relative">
+                  <img 
+                    src={imageMap[selectedPackage.image]} 
+                    alt={selectedPackage.name}
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-lg" />
+                  <DialogTitle className="absolute bottom-4 left-4 text-white text-3xl font-bold drop-shadow-lg">
+                    {selectedPackage.name}
+                  </DialogTitle>
+                </div>
+              </DialogHeader>
+              
+              <div className="space-y-6 mt-4">
+                {(() => {
+                  const packageId = selectedPackage.id;
+                  const pricing = calculatePackagePrice(selectedPackage, packageId);
+                  const meats = selectedPackage.items.filter(item => !item.isComplement);
+                  const complements = selectedPackage.items.filter(item => item.isComplement);
+
+                  return (
+                    <>
+                      {/* Carnes */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-4">
+                          <Beef className="text-red-500" size={24} />
+                          <h4 className="font-bold text-xl text-gray-800">Carnes Premium</h4>
+                        </div>
+                        <div className="space-y-3">
+                          {meats.map((item) => {
+                            const selectedWeight = selectedWeights[packageId]?.[item.productId] || item.minWeight;
+                            const originalPrice = (item.pricePerKg * selectedWeight) / 1000;
+                            const hasIndividualDiscount = selectedWeight >= selectedPackage.discount.threshold;
+                            const discountAmount = hasIndividualDiscount ? (originalPrice * selectedPackage.discount.percentage) / 100 : 0;
+                            const finalPrice = originalPrice - discountAmount;
+
+                            return (
+                              <div key={item.productId} className="bg-red-50 border-2 border-red-200 rounded-xl p-4 hover:border-red-300 transition-all">
+                                <div className="flex justify-between items-start mb-3">
+                                  <div className="flex-1">
+                                    <span className="font-semibold text-base text-gray-800">{item.name}</span>
+                                    {hasIndividualDiscount && (
+                                      <div className="flex items-center gap-1 mt-1">
+                                        <Percent size={14} className="text-green-600" />
+                                        <span className="text-sm text-green-600 font-bold">10% OFF aplicado!</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div className="text-right">
+                                    {hasIndividualDiscount ? (
+                                      <div>
+                                        <span className="text-red-400 line-through text-sm">${originalPrice.toFixed(2)}</span>
+                                        <span className="text-red-600 font-bold text-lg block">${finalPrice.toFixed(2)}</span>
+                                      </div>
+                                    ) : (
+                                      <span className="text-red-600 font-bold text-lg">${finalPrice.toFixed(2)}</span>
+                                    )}
+                                  </div>
+                                </div>
+                                <Select
+                                  value={selectedWeight.toString()}
+                                  onValueChange={(value) => handleWeightChange(packageId, item.productId, value)}
+                                >
+                                  <SelectTrigger className="w-full h-10 text-sm font-medium">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
+                                    {getWeightOptions(item.minWeight).map((option) => (
+                                      <SelectItem 
+                                        key={option.value} 
+                                        value={option.value.toString()}
+                                        className="hover:bg-red-50 cursor-pointer text-sm"
+                                      >
+                                        {option.label}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className="text-sm text-gray-600 mt-3 flex items-center gap-2 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                          <AlertTriangle size={16} className="text-yellow-600" />
+                          <span className="font-medium">Descuento del 10% se aplica individualmente a cada carne de 3kg o más</span>
+                        </div>
+                      </div>
+
+                      {/* Complementos */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-4">
+                          <Package className="text-green-500" size={24} />
+                          <h4 className="font-bold text-xl text-gray-800">Complementos Frescos</h4>
+                        </div>
+                        <div className="space-y-3">
+                          {complements.map((item) => {
+                            const selectedWeight = selectedWeights[packageId]?.[item.productId] || item.minWeight;
+                            const itemPrice = ((item.pricePerKg * selectedWeight) / 1000).toFixed(2);
+
+                            return (
+                              <div key={item.productId} className="bg-green-50 border-2 border-green-200 rounded-xl p-4 hover:border-green-300 transition-all">
+                                <div className="flex justify-between items-center mb-3">
+                                  <span className="text-base font-medium text-gray-800">{item.name}</span>
+                                  <span className="text-green-600 font-bold text-lg">${itemPrice}</span>
+                                </div>
+                                <Select
+                                  value={selectedWeight.toString()}
+                                  onValueChange={(value) => handleWeightChange(packageId, item.productId, value)}
+                                >
+                                  <SelectTrigger className="w-full h-9 text-sm">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
+                                    {getWeightOptions(item.minWeight).map((option) => (
+                                      <SelectItem 
+                                        key={option.value} 
+                                        value={option.value.toString()}
+                                        className="hover:bg-green-50 cursor-pointer text-sm"
+                                      >
+                                        {option.label}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Total y botón */}
+                      <div className="border-t-2 pt-6">
+                        <div className="text-center mb-6">
+                          {pricing.hasDiscount && (
+                            <div className="text-lg text-green-600 font-bold mb-2 bg-green-50 py-2 px-4 rounded-lg inline-block">
+                              ✨ Descuento aplicado: -${pricing.discount.toFixed(2)}
+                            </div>
+                          )}
+                          <div className="text-4xl font-extrabold text-orange-600 mb-2">
+                            ${pricing.totalPrice.toFixed(2)}
+                          </div>
+                          {!pricing.hasDiscount && (
+                            <div className="text-sm text-orange-600 bg-orange-50 py-2 px-4 rounded-lg inline-block">
+                              💡 Selecciona 3kg o más de cualquier carne para obtener 10% OFF
+                            </div>
+                          )}
+                        </div>
+                        <Button 
+                          onClick={() => handleAddPackageToCart(selectedPackage)}
+                          className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold text-lg py-6 rounded-xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+                        >
+                          <Plus size={24} className="mr-2" />
+                          Agregar al Carrito
+                        </Button>
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Info Section */}
-      <div className="mt-12 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl p-6 md:p-8 shadow-2xl">
+      <div className="mt-12 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-3xl p-8 md:p-12 shadow-2xl animate-fade-in">
         <div className="text-center">
-          <h3 className="text-2xl font-bold mb-4">¿Por qué elegir nuestros Paquetes Parrilleros?</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-            <div className="flex flex-col items-center">
-              <Flame className="mb-2" size={32} />
-              <h4 className="font-semibold mb-1">Carnes Premium</h4>
-              <p className="opacity-90">Cortes seleccionados de la más alta calidad</p>
+          <h3 className="text-3xl md:text-4xl font-extrabold mb-6">¿Por qué nuestros Paquetes Parrilleros?</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-base">
+            <div className="flex flex-col items-center transform hover:scale-110 transition-all duration-300">
+              <Flame className="mb-3" size={48} />
+              <h4 className="font-bold text-xl mb-2">Carnes Premium</h4>
+              <p className="opacity-90">Los mejores cortes, la máxima calidad</p>
             </div>
-            <div className="flex flex-col items-center">
-              <Percent className="mb-2" size={32} />
-              <h4 className="font-semibold mb-1">Descuento Individual</h4>
-              <p className="opacity-90">10% off por cada carne de 3kg o más</p>
+            <div className="flex flex-col items-center transform hover:scale-110 transition-all duration-300">
+              <Percent className="mb-3" size={48} />
+              <h4 className="font-bold text-xl mb-2">Descuento Individual</h4>
+              <p className="opacity-90">10% OFF en cada carne de 3kg o más</p>
             </div>
-            <div className="flex flex-col items-center">
-              <Package className="mb-2" size={32} />
-              <h4 className="font-semibold mb-1">Todo Incluido</h4>
-              <p className="opacity-90">Carnes y complementos listos para tu parrilla</p>
+            <div className="flex flex-col items-center transform hover:scale-110 transition-all duration-300">
+              <Package className="mb-3" size={48} />
+              <h4 className="font-bold text-xl mb-2">Todo Incluido</h4>
+              <p className="opacity-90">Carnes + complementos = Parrilla perfecta</p>
             </div>
           </div>
         </div>

@@ -118,12 +118,22 @@ const ProductMenu: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-6">
-      <div className="text-center mb-6 md:mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Productos Frescos</h2>
-        <p className="text-sm md:text-base text-gray-600">Productos de la más alta calidad directo del productor</p>
-        <p className="text-xs md:text-sm text-orange-600 mt-2">Compra mínima: 500 gramos por producto</p>
-        <p className="text-xs md:text-sm text-orange-600 mt-2">Solicitar con 1 semana de anticipación cualquier producto en la categoría de "Producto Orgánico"</p>
-        <p className="text-xs md:text-sm text-orange-600 mt-2">Horario límite para realizar pedidos: hasta las 10:00 PM cada día</p>
+      <div className="text-center mb-8 md:mb-12 animate-fade-in-up">
+        <h2 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-4">
+          🌿 Productos Frescos Premium
+        </h2>
+        <p className="text-lg md:text-xl text-gray-700 mb-6 font-medium">La más alta calidad directo del productor a tu mesa</p>
+        <div className="flex flex-wrap justify-center gap-3 text-sm md:text-base">
+          <div className="bg-orange-100 border-2 border-orange-300 text-orange-700 px-4 py-2 rounded-full font-medium shadow-sm">
+            🛒 Compra mínima: 500g por producto
+          </div>
+          <div className="bg-green-100 border-2 border-green-300 text-green-700 px-4 py-2 rounded-full font-medium shadow-sm">
+            ⏰ Pedidos hasta las 10:00 PM
+          </div>
+          <div className="bg-blue-100 border-2 border-blue-300 text-blue-700 px-4 py-2 rounded-full font-medium shadow-sm">
+            📅 Orgánicos: 1 semana anticipación
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -135,22 +145,26 @@ const ProductMenu: React.FC = () => {
             >
               <CollapsibleTrigger className="w-full">
                 <div 
-                  className="relative h-48 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-105"
+                  className="relative h-56 md:h-64 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:scale-[1.03] group animate-scale-in"
                   style={{
                     backgroundImage: `url(${categoryImages[category]})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                    <div className="bg-white/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-md">
-                      <h3 className="text-lg md:text-xl font-bold text-gray-800 text-center">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 transition-all duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-500/0 group-hover:from-orange-500/20 group-hover:to-red-500/20 transition-all duration-500" />
+                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7 transform group-hover:translate-y-[-8px] transition-all duration-300">
+                    <div className="bg-white/95 backdrop-blur-md rounded-2xl px-5 py-4 shadow-2xl border-2 border-white/50 group-hover:border-orange-300 transition-all duration-300">
+                      <h3 className="text-xl md:text-2xl font-extrabold text-gray-800 text-center mb-2">
                         {category}
                       </h3>
-                      <p className="text-xs text-gray-600 text-center mt-1">
-                        {categoryProducts.length} productos disponibles
+                      <p className="text-sm text-gray-600 text-center font-medium">
+                        ✨ {categoryProducts.length} productos premium
                       </p>
+                      <div className="mt-2 text-center">
+                        <span className="text-orange-600 font-bold text-sm">👆 Click para explorar</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -207,19 +221,19 @@ const ProductMenu: React.FC = () => {
                             return (
                               <Card 
                                 key={product.id}
-                                className={`hover:shadow-lg transition-all duration-300 ${
+                                className={`hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] animate-fade-in rounded-2xl ${
                                   inCart 
-                                    ? 'border-green-500 bg-green-50 shadow-md' 
-                                    : 'border-orange-100 hover:border-orange-200'
+                                    ? 'border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 shadow-lg shadow-green-200/50' 
+                                    : 'border-2 border-orange-100 hover:border-orange-300 bg-gradient-to-br from-white to-orange-50/30'
                                 }`}
                               >
-                                <CardHeader className="pb-3">
+                                <CardHeader className="pb-4">
                                   <div className="flex justify-between items-start">
                                     <div className="flex-1">
-                                      <CardTitle className="text-base md:text-lg font-medium text-gray-800">
+                                      <CardTitle className="text-lg md:text-xl font-bold text-gray-800 mb-1">
                                         {product.name}
                                       </CardTitle>
-                                      <p className="text-sm text-gray-500">${product.pricePerKg}/kg</p>
+                                      <p className="text-base font-semibold text-orange-600">${product.pricePerKg}/kg</p>
                                       
                                       {/* Indicador de temporada para frutas y verduras */}
                                       {isFruitOrVegetable && (
@@ -238,8 +252,8 @@ const ProductMenu: React.FC = () => {
                                       )}
                                     </div>
                                     {inCart && (
-                                      <div className="bg-green-500 text-white rounded-full p-1 ml-2">
-                                        <Check size={16} />
+                                      <div className="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full p-2 ml-2 shadow-lg animate-bounce-subtle">
+                                        <Check size={20} strokeWidth={3} />
                                       </div>
                                     )}
                                   </div>
@@ -324,26 +338,25 @@ const ProductMenu: React.FC = () => {
                                     </div>
                                   )}
                                   
-                                  <div className="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2">
-                                    <span className="text-xl md:text-2xl font-bold text-orange-600">
-                                      ${price}
-                                    </span>
+                                   <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-3 border-t-2 border-gray-100 mt-2">
+                                    <div className="text-center sm:text-left">
+                                      <p className="text-xs text-gray-500 font-medium">Precio Total</p>
+                                      <span className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                                        ${price}
+                                      </span>
+                                    </div>
                                     <Button 
                                       onClick={() => handleAddToCart(product)}
-                                      className={`w-full sm:w-auto flex items-center gap-2 transition-colors ${
-                                        inCart 
-                                          ? 'bg-green-500 hover:bg-green-600' 
-                                          : 'bg-orange-500 hover:bg-orange-600'
-                                      } text-white`}
+                                      className="w-full sm:w-auto bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 px-6 py-6 text-base"
                                     >
-                                      <Plus size={16} />
-                                      {inCart ? 'Agregar más' : 'Agregar'}
+                                      <Plus size={20} className="mr-2" strokeWidth={3} />
+                                      {inCart ? '¡Agregar más!' : '¡Agregar!'}
                                     </Button>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            );
-                          })}
+                                   </div>
+                                 </CardContent>
+                               </Card>
+                             );
+                           })}
                         </div>
                         
                         {/* Mensaje cuando no hay resultados de búsqueda */}
