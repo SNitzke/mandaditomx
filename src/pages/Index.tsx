@@ -1,14 +1,27 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { CartProvider } from '@/contexts/CartContext';
 import ProductMenu from '@/components/ProductMenu';
 import GrillPackages from '@/components/GrillPackages';
 import SeasonCalendar from '@/components/SeasonCalendar';
 import ShoppingCartComponent from '@/components/ShoppingCart';
 import AdminPanel from '@/components/AdminPanel';
-import { Utensils, Clock, MapPin, Phone } from 'lucide-react';
+import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const Index = () => {
+  const [isOrderDialogOpen, setIsOrderDialogOpen] = useState(false);
+
+  const scrollToSection = (sectionId: string) => {
+    setIsOrderDialogOpen(false);
+    setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  };
+
   return (
     <CartProvider>
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
@@ -74,9 +87,12 @@ const Index = () => {
               </div>
             </div>
             <div className="animate-bounce-subtle inline-block">
-              <div className="bg-yellow-400 text-orange-600 px-8 py-4 rounded-full font-bold text-lg md:text-xl shadow-2xl hover:shadow-[0_0_40px_rgba(255,255,0,0.5)] transition-all duration-300 cursor-pointer">
+              <button 
+                onClick={() => setIsOrderDialogOpen(true)}
+                className="bg-yellow-400 text-orange-600 px-8 py-4 rounded-full font-bold text-lg md:text-xl shadow-2xl hover:shadow-[0_0_40px_rgba(255,255,0,0.5)] transition-all duration-300 hover:scale-105"
+              >
                 ⚡ ¡Ordena Ahora y Ahorra!
-              </div>
+              </button>
             </div>
           </div>
         </section>
@@ -89,13 +105,13 @@ const Index = () => {
           </section>
 
           {/* Product Menu */}
-          <section>
+          <section id="productos-frescos">
             <ProductMenu />
           </section>
         </main>
 
         {/* Grill Packages Section */}
-        <section className="py-6 md:py-12 bg-gradient-to-br from-orange-25 to-red-25">
+        <section id="paquetes-parrilleros" className="py-6 md:py-12 bg-gradient-to-br from-orange-25 to-red-25">
           <GrillPackages />
         </section>
 
@@ -139,6 +155,73 @@ const Index = () => {
         {/* Components */}
         <ShoppingCartComponent />
         <AdminPanel />
+
+        {/* Order Dialog */}
+        <Dialog open={isOrderDialogOpen} onOpenChange={setIsOrderDialogOpen}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-2xl md:text-3xl font-bold text-center mb-6">
+                ¿Qué deseas ordenar?
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="grid gap-4 md:gap-6">
+              {/* Productos Frescos */}
+              <button
+                onClick={() => scrollToSection('productos-frescos')}
+                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] border-2 border-green-200 hover:border-green-400"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="bg-green-500 text-white p-3 rounded-full group-hover:scale-110 transition-transform">
+                    <Apple size={28} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-800 mb-1">Productos Frescos</h3>
+                    <p className="text-sm text-gray-600">Frutas, verduras, carnes, pollo, huevo y más</p>
+                  </div>
+                  <div className="text-green-500 group-hover:translate-x-2 transition-transform">→</div>
+                </div>
+              </button>
+
+              {/* Paquetes Parrilleros */}
+              <button
+                onClick={() => scrollToSection('paquetes-parrilleros')}
+                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-orange-50 to-red-50 p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] border-2 border-orange-200 hover:border-orange-400"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="bg-orange-500 text-white p-3 rounded-full group-hover:scale-110 transition-transform">
+                    <Package size={28} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-800 mb-1">Paquetes Parrilleros</h3>
+                    <p className="text-sm text-gray-600">Paquetes especiales para carne asada con descuento</p>
+                  </div>
+                  <div className="text-orange-500 group-hover:translate-x-2 transition-transform">→</div>
+                </div>
+              </button>
+
+              {/* Ver Todo */}
+              <button
+                onClick={() => {
+                  setIsOrderDialogOpen(false);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-yellow-50 to-amber-50 p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] border-2 border-yellow-200 hover:border-yellow-400"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="bg-yellow-500 text-white p-3 rounded-full group-hover:scale-110 transition-transform">
+                    <ShoppingBag size={28} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-800 mb-1">Ver Todo el Menú</h3>
+                    <p className="text-sm text-gray-600">Explora todos nuestros productos disponibles</p>
+                  </div>
+                  <div className="text-yellow-500 group-hover:translate-x-2 transition-transform">→</div>
+                </div>
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </CartProvider>
   );
