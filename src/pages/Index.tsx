@@ -22,7 +22,7 @@ const Index = () => {
                 </div>
                 <div>
                   <h1 className="text-xl md:text-2xl font-bold text-gray-800">Mi Super</h1>
-                  <p className="text-xs md:text-sm text-gray-600">Productos 100% Orgánicos</p>
+                  <p className="text-xs md:text-sm text-gray-600">Del proveedor a tu mesa</p>
                 </div>
               </div>
               
@@ -56,7 +56,7 @@ const Index = () => {
                 <span className="text-yellow-300">¡Directo a Tu Mesa!</span>
               </h2>
               <p className="text-xl md:text-2xl lg:text-3xl mb-8 md:mb-10 font-semibold opacity-95">
-                Productos 100% orgánicos seleccionados con amor 💚
+                Productos de excelente calidad
               </p>
             </div>
             <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 text-base md:text-lg mb-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
@@ -66,7 +66,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-105">
                 <Utensils size={20} className="md:w-6 md:h-6" />
-                <span className="font-semibold">100% Orgánico</span>
+                <span className="font-semibold">Excelente calidad</span>
               </div>
               <div className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-105">
                 <Clock size={20} className="md:w-6 md:h-6" />
