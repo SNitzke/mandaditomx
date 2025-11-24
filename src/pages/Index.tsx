@@ -47,26 +47,35 @@ const Index = () => {
         </header>
 
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-8 md:py-16">
-          <div className="max-w-6xl mx-auto px-4 md:px-6 text-center">
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
-              ¡Bienvenido a Mi Super!
-            </h2>
-            <p className="text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 opacity-90">
-              Los mejores productos orgánicos, directo a tu domicilio
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 text-sm md:text-lg">
-              <div className="flex items-center justify-center gap-2">
-                <MapPin size={16} className="md:w-5 md:h-5" />
-                <span>Entrega rápida</span>
+        <section className="relative bg-gradient-to-r from-orange-500 to-red-500 text-white py-12 md:py-20 overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yIDItNCAzLTRzMyAyIDMgNGMwIDItMiA0LTMgNHMtMy0yLTMtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20"></div>
+          <div className="max-w-6xl mx-auto px-4 md:px-6 text-center relative z-10">
+            <div className="animate-fade-in-up">
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4 md:mb-6 leading-tight">
+                🥬 Frescura Premium<br />
+                <span className="text-yellow-300">¡Directo a Tu Mesa!</span>
+              </h2>
+              <p className="text-xl md:text-2xl lg:text-3xl mb-8 md:mb-10 font-semibold opacity-95">
+                Productos 100% orgánicos seleccionados con amor 💚
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 text-base md:text-lg mb-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              <div className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-105">
+                <MapPin size={20} className="md:w-6 md:h-6" />
+                <span className="font-semibold">Entrega Express</span>
               </div>
-              <div className="flex items-center justify-center gap-2">
-                <Utensils size={16} className="md:w-5 md:h-5" />
-                <span>Producto 100% natural</span>
+              <div className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-105">
+                <Utensils size={20} className="md:w-6 md:h-6" />
+                <span className="font-semibold">100% Orgánico</span>
               </div>
-              <div className="flex items-center justify-center gap-2">
-                <Clock size={16} className="md:w-5 md:h-5" />
-                <span>Servicio 7 días</span>
+              <div className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-105">
+                <Clock size={20} className="md:w-6 md:h-6" />
+                <span className="font-semibold">Siempre Fresco</span>
+              </div>
+            </div>
+            <div className="animate-bounce-subtle inline-block">
+              <div className="bg-yellow-400 text-orange-600 px-8 py-4 rounded-full font-bold text-lg md:text-xl shadow-2xl hover:shadow-[0_0_40px_rgba(255,255,0,0.5)] transition-all duration-300 cursor-pointer">
+                ⚡ ¡Ordena Ahora y Ahorra!
               </div>
             </div>
           </div>
