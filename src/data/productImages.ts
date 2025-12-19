@@ -90,19 +90,6 @@ export const productImageMap: Record<string, string> = {
   'Muslo y Pierna': polloEnteroImg,
   'Pollo Completo': polloEnteroImg,
   
-  // Frutas
-  'Mango Manila': mangoImg,
-  'Mango Petacón': mangoImg,
-  'Mango Ataulfo Selecto': mangoImg,
-  'Fresa Domo (450 gr)': fresaImg,
-  'Zarzamora Domo (170 gr)': fresaImg,
-  'Zarzamora': fresaImg,
-  'Frambuesa Domo (170 gr)': fresaImg,
-  
-  // Verduras
-  'Aguacate': aguacateImg,
-  'Jitomate': jitomateImg,
-  'Tomate': jitomateImg,
   
   // Quesos
   'Queso Oaxaca': quesoOaxacaImg,
@@ -128,7 +115,7 @@ export const productImageMap: Record<string, string> = {
 
 // Category fallback images
 export const categoryFallbackImages: Record<string, string> = {
-  'Frutas y Verduras': mangoImg,
+  
   'Carnes y Proteínas': arracheraImg,
   'Pollo': pechugaPolloImg,
   'Producto Orgánico': quesoOaxacaImg,
