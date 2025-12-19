@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Plus, ChevronDown, ChevronUp, Check, Clock, Search, AlertTriangle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { isInSeason, getSeasonMessage } from '@/data/seasonalProducts';
+import { getProductImage } from '@/data/productImages';
 import frutasVerdurasImg from '@/assets/category-frutas-verduras.jpg';
 import carnesImg from '@/assets/category-carnes.jpg';
 import polloImg from '@/assets/category-pollo.jpg';
@@ -221,19 +222,39 @@ const ProductMenu: React.FC = () => {
                             return (
                               <Card 
                                 key={product.id}
-                                className={`hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] animate-fade-in rounded-2xl ${
+                                className={`hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] animate-fade-in rounded-2xl overflow-hidden ${
                                   inCart 
                                     ? 'border-2 border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 shadow-lg shadow-green-200/50' 
                                     : 'border-2 border-orange-100 hover:border-orange-300 bg-gradient-to-br from-white to-orange-50/30'
                                 }`}
                               >
-                                <CardHeader className="pb-4">
+                                {/* Product Image */}
+                                {getProductImage(product.name, product.category) && (
+                                  <div className="relative h-36 md:h-44 overflow-hidden">
+                                    <img 
+                                      src={getProductImage(product.name, product.category)} 
+                                      alt={product.name}
+                                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                                    <div className="absolute bottom-2 right-2">
+                                      <Badge className="bg-orange-500 text-white font-bold text-sm px-2 py-1 shadow-lg">
+                                        ${product.pricePerKg}/kg
+                                      </Badge>
+                                    </div>
+                                    {inCart && (
+                                      <div className="absolute top-2 right-2 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full p-2 shadow-lg animate-bounce-subtle">
+                                        <Check size={18} strokeWidth={3} />
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                                <CardHeader className="pb-2 pt-3">
                                   <div className="flex justify-between items-start">
                                     <div className="flex-1">
-                                      <CardTitle className="text-lg md:text-xl font-bold text-gray-800 mb-1">
+                                      <CardTitle className="text-base md:text-lg font-bold text-gray-800 mb-1 leading-tight">
                                         {product.name}
                                       </CardTitle>
-                                      <p className="text-base font-semibold text-orange-600">${product.pricePerKg}/kg</p>
                                       
                                       {/* Indicador de temporada para frutas y verduras */}
                                       {isFruitOrVegetable && (
@@ -251,7 +272,7 @@ const ProductMenu: React.FC = () => {
                                         </div>
                                       )}
                                     </div>
-                                    {inCart && (
+                                    {!getProductImage(product.name, product.category) && inCart && (
                                       <div className="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full p-2 ml-2 shadow-lg animate-bounce-subtle">
                                         <Check size={20} strokeWidth={3} />
                                       </div>
