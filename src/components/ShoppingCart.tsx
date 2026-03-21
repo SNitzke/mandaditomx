@@ -50,7 +50,8 @@ const ShoppingCartComponent: React.FC = () => {
     const phoneNumber = "525564259421";
     const subtotal = getTotalPrice();
     const shippingCost = subtotal < 1500 ? 50 : 0;
-    const finalTotal = subtotal + shippingCost;
+    const cardSurcharge = paymentMethod === 'card' ? Math.round((subtotal + shippingCost) * CARD_SURCHARGE * 100) / 100 : 0;
+    const finalTotal = subtotal + shippingCost + cardSurcharge;
     
     let message = "¡Hola! Me gustaría hacer el siguiente pedido:\n\n";
     
