@@ -206,6 +206,23 @@ const Index = () => {
                 </div>
               </button>
 
+              {/* Alimento para Mascotas */}
+              <button
+                onClick={() => scrollToSection('alimento-mascotas')}
+                className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 p-6 text-left transition-all hover:shadow-xl hover:scale-[1.02] border-2 border-amber-200 hover:border-amber-400"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="bg-amber-500 text-white p-3 rounded-full group-hover:scale-110 transition-transform">
+                    <PawPrint size={28} />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-800 mb-1">Alimento para Mascotas</h3>
+                    <p className="text-sm text-gray-600">Las mejores marcas para perros y gatos</p>
+                  </div>
+                  <div className="text-amber-500 group-hover:translate-x-2 transition-transform">→</div>
+                </div>
+              </button>
+
               {/* Ver Todo */}
               <button
                 onClick={() => {
