@@ -381,6 +381,35 @@ const ShoppingCartComponent: React.FC = () => {
 
                   <div className="border-t pt-4 mt-4">
                     <div className="space-y-2 mb-4">
+                      {/* Payment Method Selection */}
+                      <div className="mb-3">
+                        <p className="text-sm font-medium text-gray-700 mb-2">Método de pago:</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            onClick={() => setPaymentMethod('cash')}
+                            className={`flex items-center justify-center gap-2 p-2.5 rounded-lg border-2 text-sm font-medium transition-all ${
+                              paymentMethod === 'cash'
+                                ? 'border-green-500 bg-green-50 text-green-700'
+                                : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                            }`}
+                          >
+                            <Banknote size={18} />
+                            Efectivo
+                          </button>
+                          <button
+                            onClick={() => setPaymentMethod('card')}
+                            className={`flex items-center justify-center gap-2 p-2.5 rounded-lg border-2 text-sm font-medium transition-all ${
+                              paymentMethod === 'card'
+                                ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                            }`}
+                          >
+                            <CreditCard size={18} />
+                            Tarjeta
+                          </button>
+                        </div>
+                      </div>
+
                       <div className="flex justify-between items-center">
                         <span className="text-lg text-gray-700">Subtotal:</span>
                         <span className="text-lg text-gray-800">${getTotalPrice().toFixed(2)}</span>
@@ -391,17 +420,38 @@ const ShoppingCartComponent: React.FC = () => {
                           <span className="text-lg text-gray-800">$50.00</span>
                         </div>
                       )}
+                      {paymentMethod === 'card' && (
+                        <div className="flex justify-between items-center text-blue-600">
+                          <span className="text-sm flex items-center gap-1">
+                            <CreditCard size={14} />
+                            Comisión tarjeta (4.3%):
+                          </span>
+                          <span className="text-sm font-medium">
+                            +${((getTotalPrice() + (getTotalPrice() < 1500 ? 50 : 0)) * CARD_SURCHARGE).toFixed(2)}
+                          </span>
+                        </div>
+                      )}
                       <div className="border-t pt-2">
                         <div className="flex justify-between items-center">
                           <span className="text-xl font-bold text-gray-800">Total:</span>
                           <span className="text-2xl font-bold text-orange-600">
-                            ${(getTotalPrice() + (getTotalPrice() < 1500 ? 50 : 0)).toFixed(2)}
+                            ${(() => {
+                              const sub = getTotalPrice();
+                              const ship = sub < 1500 ? 50 : 0;
+                              const card = paymentMethod === 'card' ? Math.round((sub + ship) * CARD_SURCHARGE * 100) / 100 : 0;
+                              return (sub + ship + card).toFixed(2);
+                            })()}
                           </span>
                         </div>
                       </div>
                       {getTotalPrice() < 1500 && (
                         <p className="text-xs text-gray-500 text-center">
                           *Pedidos menores a $1,500 tienen un costo de envío de $50
+                        </p>
+                      )}
+                      {paymentMethod === 'card' && (
+                        <p className="text-xs text-blue-500 text-center">
+                          *Pagos con tarjeta de crédito/débito incluyen un 4.3% adicional
                         </p>
                       )}
                     </div>
