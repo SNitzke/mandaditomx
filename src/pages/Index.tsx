@@ -139,8 +139,9 @@ const Index = () => {
               <div>
                 <h3 className="text-lg font-semibold mb-3">Horarios</h3>
                 <div className="text-gray-300">
-                  <p>Envíos Miércoles y Jueves</p>
+                  <p>Envíos Lunes a Viernes</p>
                   <p>12:00 AM - 18:00 PM</p>
+                  <p>Solicitar con 1 día de anticipación</p>
                 </div>
               </div>
               
