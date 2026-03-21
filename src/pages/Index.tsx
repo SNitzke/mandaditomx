@@ -116,6 +116,11 @@ const Index = () => {
           <GrillPackages />
         </section>
 
+        {/* Pet Food Section */}
+        <section id="alimento-mascotas" className="py-6 md:py-12">
+          <PetFood />
+        </section>
+
         {/* Footer */}
         <footer className="bg-gray-800 text-white py-6 md:py-8">
           <div className="max-w-6xl mx-auto px-4 md:px-6">
