@@ -115,6 +115,12 @@ const ShoppingCartComponent: React.FC = () => {
     if (shippingCost > 0) {
       message += `*Envío: $${shippingCost.toFixed(2)}*\n`;
     }
+
+    if (paymentMethod === 'card') {
+      message += `💳 *Pago con tarjeta (+4.3%): +$${cardSurcharge.toFixed(2)}*\n`;
+    } else {
+      message += `💵 *Pago en efectivo*\n`;
+    }
     
     message += `*Total: $${finalTotal.toFixed(2)}*\n\n`;
     message += `👤 *Nombre:* ${customerName}\n`;
