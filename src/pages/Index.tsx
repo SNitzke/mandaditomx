@@ -6,7 +6,8 @@ import GrillPackages from '@/components/GrillPackages';
 import SeasonCalendar from '@/components/SeasonCalendar';
 import ShoppingCartComponent from '@/components/ShoppingCart';
 import AdminPanel from '@/components/AdminPanel';
-import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple } from 'lucide-react';
+import PetFood from '@/components/PetFood';
+import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple, PawPrint } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const Index = () => {
