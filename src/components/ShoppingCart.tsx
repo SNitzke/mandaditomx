@@ -7,14 +7,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Package, Flame, Percent } from 'lucide-react';
+import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Package, Flame, Percent, CreditCard, Banknote } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+
+const CARD_SURCHARGE = 0.043; // 4.3%
 
 const ShoppingCartComponent: React.FC = () => {
   const { cart, packageCart, updateWeight, removeFromCart, removePackageFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>('cash');
 
   const sendToWhatsApp = () => {
     if (cart.length === 0 && packageCart.length === 0) {
