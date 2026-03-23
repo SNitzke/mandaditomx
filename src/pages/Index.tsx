@@ -10,7 +10,7 @@ import PetFood from '@/components/PetFood';
 import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple, PawPrint } from 'lucide-react';
 
 const Index = () => {
-  const [isOrderDialogOpen, setIsOrderDialogOpen] = useState(false);
+  
 
   const scrollToSection = (sectionId: string) => {
     setIsOrderDialogOpen(false);
