@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { CartProvider } from '@/contexts/CartContext';
 import ProductMenu from '@/components/ProductMenu';
 import GrillPackages from '@/components/GrillPackages';
