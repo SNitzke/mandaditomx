@@ -87,12 +87,27 @@ const Index = () => {
                 <span className="font-semibold">Siempre Fresco</span>
               </div>
             </div>
-            <div className="animate-bounce-subtle inline-block">
-              <button 
-                onClick={() => setIsOrderDialogOpen(true)}
-                className="bg-yellow-400 text-orange-600 px-8 py-4 rounded-full font-bold text-lg md:text-xl shadow-2xl hover:shadow-[0_0_40px_rgba(255,255,0,0.5)] transition-all duration-300 hover:scale-105"
+            <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+              <button
+                onClick={() => scrollToSection('productos-frescos')}
+                className="flex items-center justify-center gap-2 bg-yellow-400 text-orange-700 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(255,255,0,0.4)] transition-all duration-300 hover:scale-105"
               >
-                ⚡ ¡Ordena Ahora y Ahorra!
+                <Apple size={20} className="md:w-6 md:h-6" />
+                Productos Frescos
+              </button>
+              <button
+                onClick={() => scrollToSection('paquetes-parrilleros')}
+                className="flex items-center justify-center gap-2 bg-white/90 text-orange-600 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all duration-300 hover:scale-105"
+              >
+                <Package size={20} className="md:w-6 md:h-6" />
+                Paquetes Parrilleros
+              </button>
+              <button
+                onClick={() => scrollToSection('alimento-mascotas')}
+                className="flex items-center justify-center gap-2 bg-amber-400 text-amber-800 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] transition-all duration-300 hover:scale-105"
+              >
+                <PawPrint size={20} className="md:w-6 md:h-6" />
+                Alimento Mascotas
               </button>
             </div>
           </div>
