@@ -43,7 +43,16 @@ const petFoodProducts: PetFoodItem[] = [
 
 const PetFood: React.FC = () => {
   const [selectedType, setSelectedType] = useState<'dog' | 'cat'>('dog');
-  const [petCart, setPetCart] = useState<Record<string, number>>({});
+  const [petCart, setPetCart] = useState<Record<string, number>>(() => {
+    try {
+      const saved = localStorage.getItem('mi-super-pet-cart');
+      return saved ? JSON.parse(saved) : {};
+    } catch { return {}; }
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem('mi-super-pet-cart', JSON.stringify(petCart));
+  }, [petCart]);
   const { cart } = useCart();
 
   const filteredProducts = petFoodProducts.filter(p => p.type === selectedType);

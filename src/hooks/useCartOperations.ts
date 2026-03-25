@@ -1,11 +1,23 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Product, CartItem, PackageCartItem } from '@/types/product';
+
+const loadFromStorage = <T,>(key: string, fallback: T): T => {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : fallback;
+  } catch {
+    return fallback;
+  }
+};
 
 export const useCartOperations = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [packageCart, setPackageCart] = useState<PackageCartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => loadFromStorage('mi-super-cart', []));
+  const [packageCart, setPackageCart] = useState<PackageCartItem[]>(() => loadFromStorage('mi-super-package-cart', []));
+
+  useEffect(() => { localStorage.setItem('mi-super-cart', JSON.stringify(cart)); }, [cart]);
+  useEffect(() => { localStorage.setItem('mi-super-package-cart', JSON.stringify(packageCart)); }, [packageCart]);
 
   const addToCart = (product: Product, weight: number, ripeness?: 'inmadura' | 'medio-madura' | 'madura') => {
     const totalPrice = (product.pricePerKg * weight) / 1000;
