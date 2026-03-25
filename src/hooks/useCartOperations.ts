@@ -6,7 +6,7 @@ const loadFromStorage = <T,>(key: string, fallback: T): T => {
   try {
     const saved = localStorage.getItem(key);
     return saved ? JSON.parse(saved) : fallback;
-  } catch {
+  } catch (e) {
     return fallback;
   }
 };

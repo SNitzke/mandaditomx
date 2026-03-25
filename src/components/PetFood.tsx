@@ -47,7 +47,7 @@ const PetFood: React.FC = () => {
     try {
       const saved = localStorage.getItem('mi-super-pet-cart');
       return saved ? JSON.parse(saved) : {};
-    } catch { return {}; }
+    } catch (e) { return {}; }
   });
 
   React.useEffect(() => {
