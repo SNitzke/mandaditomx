@@ -67,6 +67,7 @@ export const initialProducts: Product[] = [
   { id: '62', name: 'Calabaza', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '63', name: 'Lichi', pricePerKg: 65, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '64', name: 'Toronja', pricePerKg: 45, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '125', name: 'Nectarina', pricePerKg: 60, category: 'Frutas y Verduras', minWeight: 500 },
 
 
 
@@ -108,6 +109,8 @@ export const initialProducts: Product[] = [
   { id: '99', name: 'Picaña', pricePerKg: 300, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '100', name: 'Filete Cabrería Nacional', pricePerKg: 360, category: 'Carnes y Proteínas', minWeight: 500 },
   { id: '101', name: 'Birria', pricePerKg: 185, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '126', name: 'Chambarete con Hueso', pricePerKg: 200, category: 'Carnes y Proteínas', minWeight: 500 },
+  { id: '127', name: 'Chambarete sin Hueso', pricePerKg: 230, category: 'Carnes y Proteínas', minWeight: 500 },
 
 
   
