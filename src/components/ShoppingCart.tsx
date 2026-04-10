@@ -377,6 +377,39 @@ const ShoppingCartComponent: React.FC = () => {
                         </CardContent>
                       </Card>
                     ))}
+
+                    {/* Alimento para mascotas */}
+                    {petFoodCart.map((item, index) => (
+                      <Card key={`pet-${item.id}-${index}`} className="border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span>{item.type === 'dog' ? '🐕' : '🐈'}</span>
+                                <h3 className="font-medium text-gray-800">{item.name}</h3>
+                                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs">
+                                  Mascota
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-500">{item.weight} · x{item.quantity}</p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removePetFoodFromCart(item.id)}
+                              className="text-red-500 hover:text-red-700 p-1"
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </div>
+                          <div className="text-right mt-2">
+                            <span className="text-lg font-bold text-orange-600">
+                              ${(item.price * item.quantity).toLocaleString()}
+                            </span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
 
                   <div className="border-t pt-4 mt-4">
