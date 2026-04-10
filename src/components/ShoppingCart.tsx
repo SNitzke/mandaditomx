@@ -55,15 +55,47 @@ const ShoppingCartComponent: React.FC = () => {
     
     let message = "¡Hola! Me gustaría hacer el siguiente pedido:\n\n";
     
-    // Productos individuales
+    // Productos individuales agrupados por categoría
     if (cart.length > 0) {
-      message += "🛒 *PRODUCTOS INDIVIDUALES:*\n";
-      cart.forEach((item) => {
-        const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
-        const ripenessText = item.ripeness ? ` (${item.ripeness})` : '';
-        message += `• ${item.product.name}${ripenessText} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
+      const categoryEmojis: Record<string, string> = {
+        'Frutas y Verduras': '🥬',
+        'Carnes y Proteínas': '🥩',
+        'Pollo': '🍗',
+        'Producto Orgánico': '🧀',
+        'Huevo': '🥚',
+      };
+      const categoryOrder = ['Frutas y Verduras', 'Carnes y Proteínas', 'Pollo', 'Producto Orgánico', 'Huevo'];
+      const grouped: Record<string, typeof cart> = {};
+      cart.forEach(item => {
+        const cat = item.product.category;
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(item);
       });
-      message += "\n";
+      
+      categoryOrder.forEach(cat => {
+        if (grouped[cat] && grouped[cat].length > 0) {
+          const emoji = categoryEmojis[cat] || '📦';
+          message += `${emoji} *${cat.toUpperCase()}:*\n`;
+          grouped[cat].forEach(item => {
+            const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
+            const ripenessText = item.ripeness ? ` (${item.ripeness})` : '';
+            message += `• ${item.product.name}${ripenessText} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
+          });
+          message += "\n";
+        }
+      });
+      // Cualquier categoría no listada
+      Object.keys(grouped).forEach(cat => {
+        if (!categoryOrder.includes(cat) && grouped[cat].length > 0) {
+          message += `📦 *${cat.toUpperCase()}:*\n`;
+          grouped[cat].forEach(item => {
+            const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
+            const ripenessText = item.ripeness ? ` (${item.ripeness})` : '';
+            message += `• ${item.product.name}${ripenessText} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
+          });
+          message += "\n";
+        }
+      });
     }
     
     // Paquetes parrilleros
