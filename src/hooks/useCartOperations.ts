@@ -15,7 +15,10 @@ export const useCartOperations = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [cart, setCart] = useState<CartItem[]>(() => loadFromStorage('mi-super-cart', []));
   const [packageCart, setPackageCart] = useState<PackageCartItem[]>(() => loadFromStorage('mi-super-package-cart', []));
-  const [petFoodCart, setPetFoodCart] = useState<PetFoodCartItem[]>(() => loadFromStorage('mi-super-pet-cart', []));
+  const [petFoodCart, setPetFoodCart] = useState<PetFoodCartItem[]>(() => {
+    const data = loadFromStorage<PetFoodCartItem[] | Record<string, number>>('mi-super-pet-cart', []);
+    return Array.isArray(data) ? data : [];
+  });
 
   useEffect(() => { localStorage.setItem('mi-super-cart', JSON.stringify(cart)); }, [cart]);
   useEffect(() => { localStorage.setItem('mi-super-package-cart', JSON.stringify(packageCart)); }, [packageCart]);
