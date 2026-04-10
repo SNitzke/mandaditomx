@@ -110,6 +110,15 @@ const ShoppingCartComponent: React.FC = () => {
       });
     }
     
+    // Alimento para mascotas
+    if (petFoodCart.length > 0) {
+      message += "🐾 *ALIMENTO PARA MASCOTAS:*\n";
+      petFoodCart.forEach((item) => {
+        message += `• ${item.type === 'dog' ? '🐕' : '🐈'} ${item.name} (${item.weight}) x${item.quantity} - $${(item.price * item.quantity).toLocaleString()}\n`;
+      });
+      message += "\n";
+    }
+    
     message += `*Subtotal: $${subtotal.toFixed(2)}*\n`;
     
     if (shippingCost > 0) {
