@@ -13,14 +13,14 @@ import { toast } from '@/hooks/use-toast';
 const CARD_SURCHARGE = 0.043; // 4.3%
 
 const ShoppingCartComponent: React.FC = () => {
-  const { cart, packageCart, updateWeight, removeFromCart, removePackageFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
+  const { cart, packageCart, petFoodCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>('cash');
 
   const sendToWhatsApp = () => {
-    if (cart.length === 0 && packageCart.length === 0) {
+    if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0) {
       toast({
         title: "Carrito vacío",
         description: "Agrega productos antes de realizar el pedido",
@@ -160,7 +160,7 @@ const ShoppingCartComponent: React.FC = () => {
     updateWeight(productId, oldWeight, parseInt(newWeight));
   };
 
-  if (cart.length === 0 && packageCart.length === 0 && !isOpen) {
+  if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 && !isOpen) {
     return (
       <div className="fixed bottom-6 right-6">
         <Button
@@ -209,7 +209,7 @@ const ShoppingCartComponent: React.FC = () => {
                 </Button>
               </div>
 
-              {cart.length === 0 && packageCart.length === 0 ? (
+              {cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 ? (
                 <div className="flex-1 flex items-center justify-center">
                   <p className="text-gray-500 text-center">Tu carrito está vacío</p>
                 </div>
