@@ -13,14 +13,14 @@ import { toast } from '@/hooks/use-toast';
 const CARD_SURCHARGE = 0.043; // 4.3%
 
 const ShoppingCartComponent: React.FC = () => {
-  const { cart, packageCart, updateWeight, removeFromCart, removePackageFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
+  const { cart, packageCart, petFoodCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>('cash');
 
   const sendToWhatsApp = () => {
-    if (cart.length === 0 && packageCart.length === 0) {
+    if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0) {
       toast({
         title: "Carrito vacío",
         description: "Agrega productos antes de realizar el pedido",
@@ -110,6 +110,15 @@ const ShoppingCartComponent: React.FC = () => {
       });
     }
     
+    // Alimento para mascotas
+    if (petFoodCart.length > 0) {
+      message += "🐾 *ALIMENTO PARA MASCOTAS:*\n";
+      petFoodCart.forEach((item) => {
+        message += `• ${item.type === 'dog' ? '🐕' : '🐈'} ${item.name} (${item.weight}) x${item.quantity} - $${(item.price * item.quantity).toLocaleString()}\n`;
+      });
+      message += "\n";
+    }
+    
     message += `*Subtotal: $${subtotal.toFixed(2)}*\n`;
     
     if (shippingCost > 0) {
@@ -160,7 +169,7 @@ const ShoppingCartComponent: React.FC = () => {
     updateWeight(productId, oldWeight, parseInt(newWeight));
   };
 
-  if (cart.length === 0 && packageCart.length === 0 && !isOpen) {
+  if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 && !isOpen) {
     return (
       <div className="fixed bottom-6 right-6">
         <Button
@@ -209,7 +218,7 @@ const ShoppingCartComponent: React.FC = () => {
                 </Button>
               </div>
 
-              {cart.length === 0 && packageCart.length === 0 ? (
+              {cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 ? (
                 <div className="flex-1 flex items-center justify-center">
                   <p className="text-gray-500 text-center">Tu carrito está vacío</p>
                 </div>
@@ -373,6 +382,39 @@ const ShoppingCartComponent: React.FC = () => {
                                 ${packageItem.totalPrice.toFixed(2)}
                               </span>
                             </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+
+                    {/* Alimento para mascotas */}
+                    {petFoodCart.map((item, index) => (
+                      <Card key={`pet-${item.id}-${index}`} className="border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span>{item.type === 'dog' ? '🐕' : '🐈'}</span>
+                                <h3 className="font-medium text-gray-800">{item.name}</h3>
+                                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs">
+                                  Mascota
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-500">{item.weight} · x{item.quantity}</p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removePetFoodFromCart(item.id)}
+                              className="text-red-500 hover:text-red-700 p-1"
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </div>
+                          <div className="text-right mt-2">
+                            <span className="text-lg font-bold text-orange-600">
+                              ${(item.price * item.quantity).toLocaleString()}
+                            </span>
                           </div>
                         </CardContent>
                       </Card>

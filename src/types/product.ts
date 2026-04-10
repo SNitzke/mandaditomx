@@ -50,15 +50,27 @@ export interface PackageCartItem {
   totalDiscount?: number; // suma de todos los descuentos individuales
 }
 
+export interface PetFoodCartItem {
+  id: string;
+  name: string;
+  price: number;
+  weight: string;
+  type: 'dog' | 'cat';
+  quantity: number;
+}
+
 export interface CartContextType {
   products: Product[];
   cart: CartItem[];
   packageCart: PackageCartItem[];
+  petFoodCart: PetFoodCartItem[];
   addToCart: (product: Product, weight: number, ripeness?: 'inmadura' | 'medio-madura' | 'madura') => void;
   removeFromCart: (productId: string, weight: number) => void;
   updateWeight: (productId: string, oldWeight: number, newWeight: number) => void;
   addPackageToCart: (packageData: PackageCartItem) => void;
   removePackageFromCart: (packageId: string) => void;
+  addPetFoodToCart: (item: PetFoodCartItem) => void;
+  removePetFoodFromCart: (id: string) => void;
   clearCart: () => void;
   updateProductPrice: (productId: string, newPricePerKg: number) => void;
   updateProductName: (productId: string, newName: string) => void;

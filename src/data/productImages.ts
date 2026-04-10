@@ -21,6 +21,8 @@ import fresaImg from '@/assets/products/fresa.jpg';
 import chorizoImg from '@/assets/products/chorizo.jpg';
 import polloEnteroImg from '@/assets/products/pollo-entero.jpg';
 import manchegoImg from '@/assets/products/manchego.jpg';
+import nectarinaImg from '@/assets/products/nectarina.jpg';
+import chambareteImg from '@/assets/products/chambarete.jpg';
 
 // Map product names (or partial names) to their images
 export const productImageMap: Record<string, string> = {
@@ -83,6 +85,9 @@ export const productImageMap: Record<string, string> = {
   'Falda de Res': arracheraImg,
   'Retazo de Res': molidaImg,
   'Birria': pastorImg,
+  'Chambarete con Hueso': chambareteImg,
+  'Chambarete sin Hueso': chambareteImg,
+  'Nectarina': nectarinaImg,
   
   // Pollo
   'Pechuga Entera': pechugaPolloImg,
