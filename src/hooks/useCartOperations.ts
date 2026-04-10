@@ -136,4 +136,3 @@ export const useCartOperations = (initialProducts: Product[]) => {
     setCart
   };
 };
-};
