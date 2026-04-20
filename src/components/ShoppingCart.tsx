@@ -2,18 +2,19 @@
 import React, { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Package, Flame, Percent, CreditCard, Banknote } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Flame, Percent, CreditCard, Banknote } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const CARD_SURCHARGE = 0.043; // 4.3%
 
 const ShoppingCartComponent: React.FC = () => {
-  const { cart, packageCart, petFoodCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
+  const { cart, packageCart, petFoodCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems, saveLastOrder } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
