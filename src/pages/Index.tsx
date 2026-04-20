@@ -7,6 +7,7 @@ import SeasonCalendar from '@/components/SeasonCalendar';
 import ShoppingCartComponent from '@/components/ShoppingCart';
 import AdminPanel from '@/components/AdminPanel';
 import PetFood from '@/components/PetFood';
+import RepeatOrderPrompt from '@/components/RepeatOrderPrompt';
 import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple, PawPrint } from 'lucide-react';
 
 const Index = () => {
@@ -173,6 +174,7 @@ const Index = () => {
         {/* Components */}
         <ShoppingCartComponent />
         <AdminPanel />
+        <RepeatOrderPrompt />
 
       </div>
     </CartProvider>
