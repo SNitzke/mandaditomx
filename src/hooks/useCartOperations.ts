@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Product, CartItem, PackageCartItem, PetFoodCartItem } from '@/types/product';
+import { Product, CartItem, PackageCartItem, PetFoodCartItem, LastOrder } from '@/types/product';
 
 const loadFromStorage = <T,>(key: string, fallback: T): T => {
   try {
@@ -19,10 +19,30 @@ export const useCartOperations = (initialProducts: Product[]) => {
     const data = loadFromStorage<PetFoodCartItem[] | Record<string, number>>('mi-super-pet-cart', []);
     return Array.isArray(data) ? data : [];
   });
+  const [lastOrder, setLastOrder] = useState<LastOrder | null>(() =>
+    loadFromStorage<LastOrder | null>('mi-super-last-order', null)
+  );
 
   useEffect(() => { localStorage.setItem('mi-super-cart', JSON.stringify(cart)); }, [cart]);
   useEffect(() => { localStorage.setItem('mi-super-package-cart', JSON.stringify(packageCart)); }, [packageCart]);
   useEffect(() => { localStorage.setItem('mi-super-pet-cart', JSON.stringify(petFoodCart)); }, [petFoodCart]);
+  useEffect(() => {
+    if (lastOrder) localStorage.setItem('mi-super-last-order', JSON.stringify(lastOrder));
+    else localStorage.removeItem('mi-super-last-order');
+  }, [lastOrder]);
+
+  const saveLastOrder = (data: Omit<LastOrder, 'date'>) => {
+    setLastOrder({ ...data, date: new Date().toISOString() });
+  };
+
+  const repeatLastOrder = () => {
+    if (!lastOrder) return;
+    setCart(lastOrder.cart || []);
+    setPackageCart(lastOrder.packageCart || []);
+    setPetFoodCart(lastOrder.petFoodCart || []);
+  };
+
+  const clearLastOrder = () => setLastOrder(null);
 
   const addToCart = (product: Product, weight: number, ripeness?: 'inmadura' | 'medio-madura' | 'madura') => {
     const totalPrice = (product.pricePerKg * weight) / 1000;
@@ -125,6 +145,7 @@ export const useCartOperations = (initialProducts: Product[]) => {
     cart,
     packageCart,
     petFoodCart,
+    lastOrder,
     addToCart,
     removeFromCart,
     updateWeight,
@@ -133,6 +154,9 @@ export const useCartOperations = (initialProducts: Product[]) => {
     addPetFoodToCart,
     removePetFoodFromCart,
     clearCart,
+    saveLastOrder,
+    repeatLastOrder,
+    clearLastOrder,
     getTotalPrice,
     getTotalItems,
     setProducts,

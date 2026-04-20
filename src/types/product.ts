@@ -59,11 +59,22 @@ export interface PetFoodCartItem {
   quantity: number;
 }
 
+export interface LastOrder {
+  cart: CartItem[];
+  packageCart: PackageCartItem[];
+  petFoodCart: PetFoodCartItem[];
+  customerName?: string;
+  address?: string;
+  paymentMethod?: 'cash' | 'card';
+  date: string; // ISO
+}
+
 export interface CartContextType {
   products: Product[];
   cart: CartItem[];
   packageCart: PackageCartItem[];
   petFoodCart: PetFoodCartItem[];
+  lastOrder: LastOrder | null;
   addToCart: (product: Product, weight: number, ripeness?: 'inmadura' | 'medio-madura' | 'madura') => void;
   removeFromCart: (productId: string, weight: number) => void;
   updateWeight: (productId: string, oldWeight: number, newWeight: number) => void;
@@ -72,6 +83,9 @@ export interface CartContextType {
   addPetFoodToCart: (item: PetFoodCartItem) => void;
   removePetFoodFromCart: (id: string) => void;
   clearCart: () => void;
+  saveLastOrder: (data: Omit<LastOrder, 'date'>) => void;
+  repeatLastOrder: () => void;
+  clearLastOrder: () => void;
   updateProductPrice: (productId: string, newPricePerKg: number) => void;
   updateProductName: (productId: string, newName: string) => void;
   addProduct: (newProduct: Omit<Product, 'id'>) => void;
