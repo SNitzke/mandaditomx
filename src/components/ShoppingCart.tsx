@@ -177,6 +177,7 @@ const ShoppingCartComponent: React.FC = () => {
     message += `¡Gracias!`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    saveLastOrder({ cart, packageCart, petFoodCart, customerName, address, paymentMethod });
     window.open(whatsappUrl, '_blank');
     
     toast({
