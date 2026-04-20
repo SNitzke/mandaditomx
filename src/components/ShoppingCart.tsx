@@ -2,18 +2,19 @@
 import React, { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Package, Flame, Percent, CreditCard, Banknote } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Flame, Percent, CreditCard, Banknote } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const CARD_SURCHARGE = 0.043; // 4.3%
 
 const ShoppingCartComponent: React.FC = () => {
-  const { cart, packageCart, petFoodCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems } = useCart();
+  const { cart, packageCart, petFoodCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems, saveLastOrder } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
@@ -176,6 +177,7 @@ const ShoppingCartComponent: React.FC = () => {
     message += `¡Gracias!`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    saveLastOrder({ cart, packageCart, petFoodCart, customerName, address, paymentMethod });
     window.open(whatsappUrl, '_blank');
     
     toast({
@@ -231,24 +233,15 @@ const ShoppingCartComponent: React.FC = () => {
         </Button>
       </div>
 
-      {/* Cart Panel */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setIsOpen(false)}>
-          <div 
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-xl transform transition-transform duration-300"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-6 h-full flex flex-col">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Mi Pedido</h2>
-                <Button 
-                  variant="ghost" 
-                  onClick={() => setIsOpen(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  ✕
-                </Button>
-              </div>
+      {/* Cart Dialog - pantalla grande para mejor visualización */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="max-w-3xl w-[95vw] h-[90vh] sm:h-[85vh] p-0 flex flex-col gap-0">
+          <DialogHeader className="px-6 pt-6 pb-3 border-b">
+            <DialogTitle className="text-2xl font-bold text-gray-800 text-left">
+              🛒 Mi Pedido {getTotalItems() > 0 && <span className="text-base font-normal text-gray-500">({getTotalItems()} {getTotalItems() === 1 ? 'producto' : 'productos'})</span>}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="px-4 sm:px-6 py-4 flex-1 flex flex-col overflow-hidden">
 
               {cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 ? (
                 <div className="flex-1 flex items-center justify-center">
@@ -582,10 +575,9 @@ const ShoppingCartComponent: React.FC = () => {
                   </div>
                 </>
               )}
-            </div>
           </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
