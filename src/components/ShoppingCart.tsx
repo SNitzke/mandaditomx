@@ -577,8 +577,8 @@ const ShoppingCartComponent: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
