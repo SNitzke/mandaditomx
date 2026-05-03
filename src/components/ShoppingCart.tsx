@@ -20,6 +20,7 @@ const ShoppingCartComponent: React.FC = () => {
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>('cash');
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const sendToWhatsApp = () => {
     if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0) {
