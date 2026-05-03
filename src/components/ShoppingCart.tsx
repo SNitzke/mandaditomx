@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Flame, Percent, CreditCard, Banknote } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Flame, Percent, CreditCard, Banknote, ChevronUp, ChevronDown } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const CARD_SURCHARGE = 0.043; // 4.3%
@@ -19,6 +20,7 @@ const ShoppingCartComponent: React.FC = () => {
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>('cash');
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const sendToWhatsApp = () => {
     if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0) {
@@ -235,7 +237,7 @@ const ShoppingCartComponent: React.FC = () => {
 
       {/* Cart Dialog - pantalla grande para mejor visualización */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-3xl w-[95vw] h-[90vh] sm:h-[85vh] p-0 flex flex-col gap-0">
+        <DialogContent className="max-w-3xl w-screen sm:w-[95vw] h-[100dvh] sm:h-[85vh] max-h-[100dvh] sm:max-h-[85vh] p-0 flex flex-col gap-0 sm:rounded-lg rounded-none">
           <DialogHeader className="px-6 pt-6 pb-3 border-b">
             <DialogTitle className="text-2xl font-bold text-gray-800 text-left">
               🛒 Mi Pedido {getTotalItems() > 0 && <span className="text-base font-normal text-gray-500">({getTotalItems()} {getTotalItems() === 1 ? 'producto' : 'productos'})</span>}
@@ -446,7 +448,27 @@ const ShoppingCartComponent: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="border-t pt-4 mt-4">
+                  <Collapsible open={checkoutOpen} onOpenChange={setCheckoutOpen} className="border-t mt-2 bg-white">
+                    <CollapsibleTrigger asChild>
+                      <button className="w-full flex items-center justify-between px-2 py-3 hover:bg-gray-50 transition-colors">
+                        <div className="flex flex-col items-start">
+                          <span className="text-xs text-gray-500">Total {checkoutOpen ? '(toca para ocultar)' : '(toca para finalizar)'}</span>
+                          <span className="text-2xl font-bold text-orange-600">
+                            ${(() => {
+                              const sub = getTotalPrice();
+                              const ship = sub < 1500 ? 50 : 0;
+                              const card = paymentMethod === 'card' ? Math.round((sub + ship) * CARD_SURCHARGE * 100) / 100 : 0;
+                              return (sub + ship + card).toFixed(2);
+                            })()}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-orange-600 font-medium text-sm">
+                          {checkoutOpen ? <>Ocultar <ChevronDown size={20} /></> : <>Finalizar pedido <ChevronUp size={20} /></>}
+                        </div>
+                      </button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden">
+                      <div className="px-2 pb-4 pt-2">
                     <div className="space-y-2 mb-4">
                       {/* Payment Method Selection */}
                       <div className="mb-3">
@@ -498,19 +520,6 @@ const ShoppingCartComponent: React.FC = () => {
                           </span>
                         </div>
                       )}
-                      <div className="border-t pt-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xl font-bold text-gray-800">Total:</span>
-                          <span className="text-2xl font-bold text-orange-600">
-                            ${(() => {
-                              const sub = getTotalPrice();
-                              const ship = sub < 1500 ? 50 : 0;
-                              const card = paymentMethod === 'card' ? Math.round((sub + ship) * CARD_SURCHARGE * 100) / 100 : 0;
-                              return (sub + ship + card).toFixed(2);
-                            })()}
-                          </span>
-                        </div>
-                      </div>
                       {getTotalPrice() < 1500 && (
                         <p className="text-xs text-gray-500 text-center">
                           *Pedidos menores a $1,500 tienen un costo de envío de $50
@@ -572,7 +581,9 @@ const ShoppingCartComponent: React.FC = () => {
                         </Button>
                       </div>
                     </div>
-                  </div>
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
                 </>
               )}
           </div>
