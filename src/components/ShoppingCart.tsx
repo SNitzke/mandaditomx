@@ -520,19 +520,6 @@ const ShoppingCartComponent: React.FC = () => {
                           </span>
                         </div>
                       )}
-                      <div className="border-t pt-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xl font-bold text-gray-800">Total:</span>
-                          <span className="text-2xl font-bold text-orange-600">
-                            ${(() => {
-                              const sub = getTotalPrice();
-                              const ship = sub < 1500 ? 50 : 0;
-                              const card = paymentMethod === 'card' ? Math.round((sub + ship) * CARD_SURCHARGE * 100) / 100 : 0;
-                              return (sub + ship + card).toFixed(2);
-                            })()}
-                          </span>
-                        </div>
-                      </div>
                       {getTotalPrice() < 1500 && (
                         <p className="text-xs text-gray-500 text-center">
                           *Pedidos menores a $1,500 tienen un costo de envío de $50
