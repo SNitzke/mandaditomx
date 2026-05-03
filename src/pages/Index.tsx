@@ -40,7 +40,7 @@ const Index = () => {
               <div className="hidden lg:flex items-center gap-6 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <Clock size={16} />
-                  <span>Entregas Miércoles, Jueves y Fines de Semana de 12:00 a 18:00</span>
+                  <span>Entregas de Lunes a Viernes y Fines de Semana Parrilladas de 12:00 a 18:00</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone size={16} />
