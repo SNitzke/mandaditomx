@@ -8,7 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Flame, Percent, CreditCard, Banknote } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Flame, Percent, CreditCard, Banknote, ChevronUp, ChevronDown } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const CARD_SURCHARGE = 0.043; // 4.3%
