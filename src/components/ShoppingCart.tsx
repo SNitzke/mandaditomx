@@ -448,7 +448,27 @@ const ShoppingCartComponent: React.FC = () => {
                     ))}
                   </div>
 
-                  <div className="border-t pt-4 mt-4">
+                  <Collapsible open={checkoutOpen} onOpenChange={setCheckoutOpen} className="border-t mt-2 bg-white">
+                    <CollapsibleTrigger asChild>
+                      <button className="w-full flex items-center justify-between px-2 py-3 hover:bg-gray-50 transition-colors">
+                        <div className="flex flex-col items-start">
+                          <span className="text-xs text-gray-500">Total {checkoutOpen ? '(toca para ocultar)' : '(toca para finalizar)'}</span>
+                          <span className="text-2xl font-bold text-orange-600">
+                            ${(() => {
+                              const sub = getTotalPrice();
+                              const ship = sub < 1500 ? 50 : 0;
+                              const card = paymentMethod === 'card' ? Math.round((sub + ship) * CARD_SURCHARGE * 100) / 100 : 0;
+                              return (sub + ship + card).toFixed(2);
+                            })()}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-orange-600 font-medium text-sm">
+                          {checkoutOpen ? <>Ocultar <ChevronDown size={20} /></> : <>Finalizar pedido <ChevronUp size={20} /></>}
+                        </div>
+                      </button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden">
+                      <div className="px-2 pb-4 pt-2">
                     <div className="space-y-2 mb-4">
                       {/* Payment Method Selection */}
                       <div className="mb-3">
