@@ -581,7 +581,9 @@ const ShoppingCartComponent: React.FC = () => {
                         </Button>
                       </div>
                     </div>
-                  </div>
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
                 </>
               )}
           </div>
