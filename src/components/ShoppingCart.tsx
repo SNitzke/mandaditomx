@@ -237,7 +237,7 @@ const ShoppingCartComponent: React.FC = () => {
 
       {/* Cart Dialog - pantalla grande para mejor visualización */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-3xl w-[95vw] h-[90vh] sm:h-[85vh] p-0 flex flex-col gap-0">
+        <DialogContent className="max-w-3xl w-screen sm:w-[95vw] h-[100dvh] sm:h-[85vh] max-h-[100dvh] sm:max-h-[85vh] p-0 flex flex-col gap-0 sm:rounded-lg rounded-none">
           <DialogHeader className="px-6 pt-6 pb-3 border-b">
             <DialogTitle className="text-2xl font-bold text-gray-800 text-left">
               🛒 Mi Pedido {getTotalItems() > 0 && <span className="text-base font-normal text-gray-500">({getTotalItems()} {getTotalItems() === 1 ? 'producto' : 'productos'})</span>}
