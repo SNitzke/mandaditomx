@@ -80,7 +80,10 @@ const ShoppingCartComponent: React.FC = () => {
           const emoji = categoryEmojis[cat] || '📦';
           message += `${emoji} *${cat.toUpperCase()}:*\n`;
           grouped[cat].forEach(item => {
-            const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
+            const isPiece = item.product.unit === 'piece' && item.product.gramsPerPiece;
+            const weightDisplay = isPiece
+              ? `${Math.max(1, Math.round(item.weight / (item.product.gramsPerPiece || 1)))} ${Math.max(1, Math.round(item.weight / (item.product.gramsPerPiece || 1))) === 1 ? 'pieza' : 'piezas'}`
+              : (item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`);
             const ripenessText = item.ripeness ? ` (${item.ripeness})` : '';
             message += `• ${item.product.name}${ripenessText} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
           });
@@ -92,7 +95,10 @@ const ShoppingCartComponent: React.FC = () => {
         if (!categoryOrder.includes(cat) && grouped[cat].length > 0) {
           message += `📦 *${cat.toUpperCase()}:*\n`;
           grouped[cat].forEach(item => {
-            const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
+            const isPiece = item.product.unit === 'piece' && item.product.gramsPerPiece;
+            const weightDisplay = isPiece
+              ? `${Math.max(1, Math.round(item.weight / (item.product.gramsPerPiece || 1)))} ${Math.max(1, Math.round(item.weight / (item.product.gramsPerPiece || 1))) === 1 ? 'pieza' : 'piezas'}`
+              : (item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`);
             const ripenessText = item.ripeness ? ` (${item.ripeness})` : '';
             message += `• ${item.product.name}${ripenessText} - ${weightDisplay} - $${item.totalPrice.toFixed(2)}\n`;
           });
@@ -188,9 +194,16 @@ const ShoppingCartComponent: React.FC = () => {
     });
   };
 
-  const getWeightOptions = (minWeight: number) => {
+  const getWeightOptions = (product: any) => {
     const options = [];
-    for (let weight = minWeight; weight <= 5000; weight += 250) {
+    if (product.unit === 'piece' && product.gramsPerPiece) {
+      const g = product.gramsPerPiece;
+      for (let n = 1; n <= 10; n++) {
+        options.push({ value: g * n, label: `${n} ${n === 1 ? 'pieza' : 'piezas'}` });
+      }
+      return options;
+    }
+    for (let weight = product.minWeight; weight <= 5000; weight += 250) {
       if (weight < 1000) {
         options.push({ value: weight, label: `${weight}g` });
       } else {
@@ -199,6 +212,14 @@ const ShoppingCartComponent: React.FC = () => {
       }
     }
     return options;
+  };
+
+  const formatItemQuantity = (product: any, weight: number) => {
+    if (product.unit === 'piece' && product.gramsPerPiece) {
+      const n = Math.max(1, Math.round(weight / product.gramsPerPiece));
+      return `${n} ${n === 1 ? 'pieza' : 'piezas'}`;
+    }
+    return weight < 1000 ? `${weight}g` : `${weight / 1000}kg`;
   };
 
   const handleWeightChange = (productId: string, oldWeight: number, newWeight: string) => {
@@ -287,7 +308,9 @@ const ShoppingCartComponent: React.FC = () => {
                             
                             <div className="space-y-2">
                               <div>
-                                <label className="text-xs text-gray-500 mb-1 block">Peso:</label>
+                                <label className="text-xs text-gray-500 mb-1 block">
+                                  {item.product.unit === 'piece' ? 'Piezas:' : 'Peso:'}
+                                </label>
                                 <Select
                                   value={item.weight.toString()}
                                   onValueChange={(value) => handleWeightChange(item.product.id, item.weight, value)}
@@ -296,7 +319,7 @@ const ShoppingCartComponent: React.FC = () => {
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
-                                    {getWeightOptions(item.product.minWeight).map((option) => (
+                                    {getWeightOptions(item.product).map((option) => (
                                       <SelectItem 
                                         key={option.value} 
                                         value={option.value.toString()}
