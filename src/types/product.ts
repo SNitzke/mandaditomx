@@ -5,6 +5,8 @@ export interface Product {
   pricePerKg: number;
   category: string;
   minWeight: number; // en gramos
+  unit?: 'piece'; // si se vende por pieza
+  gramsPerPiece?: number; // peso aproximado de una pieza en gramos
 }
 
 export interface CartItem {
