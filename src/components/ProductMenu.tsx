@@ -76,9 +76,16 @@ const ProductMenu: React.FC = () => {
     return cart.some(item => item.product.id === productId);
   };
 
-  const getWeightOptions = (minWeight: number) => {
+  const getWeightOptions = (product: any) => {
     const options = [];
-    for (let weight = minWeight; weight <= 5000; weight += 500) {
+    if (product.unit === 'piece' && product.gramsPerPiece) {
+      const g = product.gramsPerPiece;
+      for (let n = 1; n <= 10; n++) {
+        options.push({ value: g * n, label: `${n} ${n === 1 ? 'pieza' : 'piezas'}` });
+      }
+      return options;
+    }
+    for (let weight = product.minWeight; weight <= 5000; weight += 500) {
       if (weight < 1000) {
         options.push({ value: weight, label: `${weight}g` });
       } else {
@@ -116,6 +123,15 @@ const ProductMenu: React.FC = () => {
     acc[product.category].push(product);
     return acc;
   }, {} as Record<string, typeof products>);
+
+  // Frutas y Verduras: ordenar primero los productos en temporada
+  if (groupedProducts['Frutas y Verduras']) {
+    groupedProducts['Frutas y Verduras'] = [...groupedProducts['Frutas y Verduras']].sort((a, b) => {
+      const aIn = isInSeason(a.name, currentMonth) ? 0 : 1;
+      const bIn = isInSeason(b.name, currentMonth) ? 0 : 1;
+      return aIn - bIn;
+    });
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-6">
@@ -283,7 +299,7 @@ const ProductMenu: React.FC = () => {
                                   {/* Selector de peso */}
                                   <div>
                                     <label className="text-sm font-medium text-gray-700 mb-2 block">
-                                      Seleccionar peso:
+                                      {product.unit === 'piece' ? 'Cantidad de piezas:' : 'Seleccionar peso:'}
                                     </label>
                                     <Select
                                       value={selectedWeight.toString()}
@@ -293,7 +309,7 @@ const ProductMenu: React.FC = () => {
                                         <SelectValue placeholder="Selecciona el peso" />
                                       </SelectTrigger>
                                       <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
-                                        {getWeightOptions(product.minWeight).map((option) => (
+                                        {getWeightOptions(product).map((option) => (
                                           <SelectItem 
                                             key={option.value} 
                                             value={option.value.toString()}
