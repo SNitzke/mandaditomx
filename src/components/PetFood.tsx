@@ -18,7 +18,7 @@ interface PetFoodItem {
 
 const petFoodProducts: PetFoodItem[] = [
   { id: 'pet-1', name: 'Nupec Adulto R. Grande', price: 1850, weight: '20 kg', type: 'dog' },
-  { id: 'pet-2', name: 'Beneful Adulto', price: 1200, weight: '20 kg', type: 'dog' },
+  { id: 'pet-2', name: 'Beneful Adulto', price: 1320, weight: '20 kg', type: 'dog' },
   { id: 'pet-3', name: 'Dog Chow Cachorro', price: 1015, weight: '20 kg', type: 'dog' },
   { id: 'pet-4', name: 'Dog Chow Adulto', price: 1100, weight: '25 kg', type: 'dog' },
   { id: 'pet-5', name: 'Ganador Adulto', price: 1100, weight: '25 kg', type: 'dog' },
