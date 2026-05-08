@@ -308,7 +308,9 @@ const ShoppingCartComponent: React.FC = () => {
                             
                             <div className="space-y-2">
                               <div>
-                                <label className="text-xs text-gray-500 mb-1 block">Peso:</label>
+                                <label className="text-xs text-gray-500 mb-1 block">
+                                  {item.product.unit === 'piece' ? 'Piezas:' : 'Peso:'}
+                                </label>
                                 <Select
                                   value={item.weight.toString()}
                                   onValueChange={(value) => handleWeightChange(item.product.id, item.weight, value)}
@@ -317,7 +319,7 @@ const ShoppingCartComponent: React.FC = () => {
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
-                                    {getWeightOptions(item.product.minWeight).map((option) => (
+                                    {getWeightOptions(item.product).map((option) => (
                                       <SelectItem 
                                         key={option.value} 
                                         value={option.value.toString()}
