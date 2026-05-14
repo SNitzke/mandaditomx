@@ -391,6 +391,7 @@ const AdminPanel: React.FC = () => {
                             </div>
                             <Button
                               size="sm"
+                              aria-label="Guardar precio"
                               className="bg-amber-500 hover:bg-amber-600"
                               onClick={() => {
                                 updatePetFoodPrice(item.id, petPrices[item.id] ?? item.price);
