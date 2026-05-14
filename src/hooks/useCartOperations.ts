@@ -135,6 +135,11 @@ export const useCartOperations = (initialProducts: Product[]) => {
     setPetFoodCart(prev => prev.filter(p => p.id !== id));
   };
 
+  const updatePetFoodPrice = (id: string, newPrice: number) => {
+    setPetFoodProducts(prev => prev.map(p => p.id === id ? { ...p, price: newPrice } : p));
+    setPetFoodCart(prev => prev.map(p => p.id === id ? { ...p, price: newPrice } : p));
+  };
+
   const getTotalPrice = () => {
     const cartTotal = cart.reduce((total, item) => total + item.totalPrice, 0);
     const packageTotal = packageCart.reduce((total, item) => total + item.totalPrice, 0);
@@ -148,6 +153,8 @@ export const useCartOperations = (initialProducts: Product[]) => {
 
   return {
     products,
+    petFoodProducts,
+    updatePetFoodPrice,
     cart,
     packageCart,
     petFoodCart,
