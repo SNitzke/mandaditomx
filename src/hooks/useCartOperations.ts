@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Product, CartItem, PackageCartItem, PetFoodCartItem, LastOrder } from '@/types/product';
+import { initialPetFoodProducts, PetFoodItem } from '@/data/petFoodProducts';
 
 const loadFromStorage = <T,>(key: string, fallback: T): T => {
   try {
