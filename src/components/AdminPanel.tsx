@@ -149,6 +149,7 @@ const AdminPanel: React.FC = () => {
           onClick={() => setIsVisible(true)}
           variant="outline"
           size="sm"
+          aria-label="Abrir panel de administración"
           className="opacity-50 hover:opacity-100"
         >
           <Settings size={16} />
@@ -167,6 +168,7 @@ const AdminPanel: React.FC = () => {
           </CardTitle>
           <Button
             variant="ghost"
+            aria-label="Cerrar panel de administración"
             onClick={() => {
               setIsVisible(false);
               setIsAuthenticated(false);
