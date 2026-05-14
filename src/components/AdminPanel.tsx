@@ -47,6 +47,9 @@ const AdminPanel: React.FC = () => {
       });
       setPrices(currentPrices);
       setNames(currentNames);
+      const currentPetPrices: Record<string, number> = {};
+      petFoodProducts.forEach(p => { currentPetPrices[p.id] = p.price; });
+      setPetPrices(currentPetPrices);
       toast({
         title: "Acceso concedido",
         description: "Bienvenido al panel de administración",
