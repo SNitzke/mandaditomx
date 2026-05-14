@@ -289,6 +289,7 @@ const AdminPanel: React.FC = () => {
                                     />
                                     <Button
                                       size="sm"
+                                      aria-label="Guardar nombre"
                                       onClick={() => saveName(product.id)}
                                       className="bg-green-500 hover:bg-green-600"
                                     >
@@ -301,6 +302,7 @@ const AdminPanel: React.FC = () => {
                                     <Button
                                       size="sm"
                                       variant="ghost"
+                                      aria-label={`Editar nombre de ${product.name}`}
                                       onClick={() => toggleEditName(product.id)}
                                       className="h-6 w-6 p-0"
                                     >
@@ -312,6 +314,7 @@ const AdminPanel: React.FC = () => {
                               <Button
                                 size="sm"
                                 variant="ghost"
+                                aria-label={`Eliminar ${product.name}`}
                                 onClick={() => handleRemoveProduct(product.id, product.name)}
                                 className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
                               >
@@ -342,6 +345,7 @@ const AdminPanel: React.FC = () => {
                               <Button
                                 onClick={() => updatePrice(product.id, prices[product.id] || product.pricePerKg)}
                                 size="sm"
+                                aria-label={`Guardar precio de ${product.name}`}
                                 className="bg-orange-500 hover:bg-orange-600"
                               >
                                 <Save size={14} />
