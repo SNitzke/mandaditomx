@@ -14,6 +14,9 @@ const loadFromStorage = <T,>(key: string, fallback: T): T => {
 
 export const useCartOperations = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [petFoodProducts, setPetFoodProducts] = useState<PetFoodItem[]>(() =>
+    loadFromStorage<PetFoodItem[]>('mi-super-pet-products', initialPetFoodProducts)
+  );
   const [cart, setCart] = useState<CartItem[]>(() => loadFromStorage('mi-super-cart', []));
   const [packageCart, setPackageCart] = useState<PackageCartItem[]>(() => loadFromStorage('mi-super-package-cart', []));
   const [petFoodCart, setPetFoodCart] = useState<PetFoodCartItem[]>(() => {
@@ -23,6 +26,8 @@ export const useCartOperations = (initialProducts: Product[]) => {
   const [lastOrder, setLastOrder] = useState<LastOrder | null>(() =>
     loadFromStorage<LastOrder | null>('mi-super-last-order', null)
   );
+
+  useEffect(() => { localStorage.setItem('mi-super-pet-products', JSON.stringify(petFoodProducts)); }, [petFoodProducts]);
 
   useEffect(() => { localStorage.setItem('mi-super-cart', JSON.stringify(cart)); }, [cart]);
   useEffect(() => { localStorage.setItem('mi-super-package-cart', JSON.stringify(packageCart)); }, [packageCart]);
