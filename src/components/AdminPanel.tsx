@@ -149,6 +149,7 @@ const AdminPanel: React.FC = () => {
           onClick={() => setIsVisible(true)}
           variant="outline"
           size="sm"
+          aria-label="Abrir panel de administración"
           className="opacity-50 hover:opacity-100"
         >
           <Settings size={16} />
@@ -167,6 +168,7 @@ const AdminPanel: React.FC = () => {
           </CardTitle>
           <Button
             variant="ghost"
+            aria-label="Cerrar panel de administración"
             onClick={() => {
               setIsVisible(false);
               setIsAuthenticated(false);
@@ -287,6 +289,7 @@ const AdminPanel: React.FC = () => {
                                     />
                                     <Button
                                       size="sm"
+                                      aria-label="Guardar nombre"
                                       onClick={() => saveName(product.id)}
                                       className="bg-green-500 hover:bg-green-600"
                                     >
@@ -299,6 +302,7 @@ const AdminPanel: React.FC = () => {
                                     <Button
                                       size="sm"
                                       variant="ghost"
+                                      aria-label={`Editar nombre de ${product.name}`}
                                       onClick={() => toggleEditName(product.id)}
                                       className="h-6 w-6 p-0"
                                     >
@@ -310,6 +314,7 @@ const AdminPanel: React.FC = () => {
                               <Button
                                 size="sm"
                                 variant="ghost"
+                                aria-label={`Eliminar ${product.name}`}
                                 onClick={() => handleRemoveProduct(product.id, product.name)}
                                 className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
                               >
@@ -340,6 +345,7 @@ const AdminPanel: React.FC = () => {
                               <Button
                                 onClick={() => updatePrice(product.id, prices[product.id] || product.pricePerKg)}
                                 size="sm"
+                                aria-label={`Guardar precio de ${product.name}`}
                                 className="bg-orange-500 hover:bg-orange-600"
                               >
                                 <Save size={14} />
@@ -385,6 +391,7 @@ const AdminPanel: React.FC = () => {
                             </div>
                             <Button
                               size="sm"
+                              aria-label="Guardar precio"
                               className="bg-amber-500 hover:bg-amber-600"
                               onClick={() => {
                                 updatePetFoodPrice(item.id, petPrices[item.id] ?? item.price);

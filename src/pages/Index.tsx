@@ -32,7 +32,7 @@ const Index = () => {
                   <Utensils size={20} className="md:w-6 md:h-6" />
                 </div>
                 <div>
-                  <h1 className="text-xl md:text-2xl font-bold text-gray-800">Mi Super</h1>
+                  <h1 className="text-xl md:text-2xl font-bold text-gray-800">Mi Super — Frutas, Verduras y Carnes a Domicilio</h1>
                   <p className="text-xs md:text-sm text-gray-600">Del proveedor a tu mesa</p>
                 </div>
               </div>
