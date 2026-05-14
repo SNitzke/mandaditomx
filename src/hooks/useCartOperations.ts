@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Product, CartItem, PackageCartItem, PetFoodCartItem, LastOrder } from '@/types/product';
+import { initialPetFoodProducts, PetFoodItem } from '@/data/petFoodProducts';
 
 const loadFromStorage = <T,>(key: string, fallback: T): T => {
   try {
@@ -13,6 +14,9 @@ const loadFromStorage = <T,>(key: string, fallback: T): T => {
 
 export const useCartOperations = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [petFoodProducts, setPetFoodProducts] = useState<PetFoodItem[]>(() =>
+    loadFromStorage<PetFoodItem[]>('mi-super-pet-products', initialPetFoodProducts)
+  );
   const [cart, setCart] = useState<CartItem[]>(() => loadFromStorage('mi-super-cart', []));
   const [packageCart, setPackageCart] = useState<PackageCartItem[]>(() => loadFromStorage('mi-super-package-cart', []));
   const [petFoodCart, setPetFoodCart] = useState<PetFoodCartItem[]>(() => {
@@ -22,6 +26,8 @@ export const useCartOperations = (initialProducts: Product[]) => {
   const [lastOrder, setLastOrder] = useState<LastOrder | null>(() =>
     loadFromStorage<LastOrder | null>('mi-super-last-order', null)
   );
+
+  useEffect(() => { localStorage.setItem('mi-super-pet-products', JSON.stringify(petFoodProducts)); }, [petFoodProducts]);
 
   useEffect(() => { localStorage.setItem('mi-super-cart', JSON.stringify(cart)); }, [cart]);
   useEffect(() => { localStorage.setItem('mi-super-package-cart', JSON.stringify(packageCart)); }, [packageCart]);
@@ -129,6 +135,11 @@ export const useCartOperations = (initialProducts: Product[]) => {
     setPetFoodCart(prev => prev.filter(p => p.id !== id));
   };
 
+  const updatePetFoodPrice = (id: string, newPrice: number) => {
+    setPetFoodProducts(prev => prev.map(p => p.id === id ? { ...p, price: newPrice } : p));
+    setPetFoodCart(prev => prev.map(p => p.id === id ? { ...p, price: newPrice } : p));
+  };
+
   const getTotalPrice = () => {
     const cartTotal = cart.reduce((total, item) => total + item.totalPrice, 0);
     const packageTotal = packageCart.reduce((total, item) => total + item.totalPrice, 0);
@@ -142,6 +153,8 @@ export const useCartOperations = (initialProducts: Product[]) => {
 
   return {
     products,
+    petFoodProducts,
+    updatePetFoodPrice,
     cart,
     packageCart,
     petFoodCart,

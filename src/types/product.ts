@@ -73,6 +73,8 @@ export interface LastOrder {
 
 export interface CartContextType {
   products: Product[];
+  petFoodProducts: import('@/data/petFoodProducts').PetFoodItem[];
+  updatePetFoodPrice: (id: string, newPrice: number) => void;
   cart: CartItem[];
   packageCart: PackageCartItem[];
   petFoodCart: PetFoodCartItem[];
