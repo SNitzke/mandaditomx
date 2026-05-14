@@ -12,3 +12,5 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://sabroso-pedido-rapido.lovable.app/sitemap.xml

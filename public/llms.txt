@@ -1,0 +1,7 @@
+# Pedido Súper
+
+> Pedidos a domicilio de frutas, verduras, carnes, pollo, huevo, quesos y alimento para mascotas, directo de la central de abastos y sin conservadores. Entregas en CDMX vía WhatsApp al +52 55 6425 9421.
+
+## Pages
+
+- [Inicio](/): Catálogo completo, paquetes parrilleros, calendario de temporada y carrito que envía el pedido por WhatsApp.
