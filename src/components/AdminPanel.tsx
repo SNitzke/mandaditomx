@@ -9,7 +9,8 @@ import { Settings, Save, Plus, Trash2, Edit3 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 const AdminPanel: React.FC = () => {
-  const { products, updateProductPrice, addProduct, removeProduct, updateProductName } = useCart();
+  const { products, updateProductPrice, addProduct, removeProduct, updateProductName, petFoodProducts, updatePetFoodPrice } = useCart();
+  const [petPrices, setPetPrices] = useState<Record<string, number>>({});
   const [isVisible, setIsVisible] = useState(false);
   const [adminCode, setAdminCode] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
