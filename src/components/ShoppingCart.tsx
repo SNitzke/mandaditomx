@@ -272,7 +272,7 @@ const ShoppingCartComponent: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  <div className="flex-1 overflow-y-auto space-y-4">
+                  <div className="flex-1 min-h-0 overflow-y-auto space-y-4">
                     {/* Productos individuales */}
                     {cart.map((item, index) => {
                       const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
