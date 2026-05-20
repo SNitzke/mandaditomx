@@ -272,7 +272,7 @@ const ShoppingCartComponent: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  <div className="flex-1 overflow-y-auto space-y-4">
+                  <div className="flex-1 min-h-0 overflow-y-auto space-y-4">
                     {/* Productos individuales */}
                     {cart.map((item, index) => {
                       const weightDisplay = item.weight < 1000 ? `${item.weight}g` : `${item.weight/1000}kg`;
@@ -471,9 +471,9 @@ const ShoppingCartComponent: React.FC = () => {
                     ))}
                   </div>
 
-                  <Collapsible open={checkoutOpen} onOpenChange={setCheckoutOpen} className="border-t mt-2 bg-white">
+                  <Collapsible open={checkoutOpen} onOpenChange={setCheckoutOpen} className="border-t mt-2 bg-white flex-shrink-0 flex flex-col min-h-0">
                     <CollapsibleTrigger asChild>
-                      <button className="w-full flex items-center justify-between px-2 py-3 hover:bg-gray-50 transition-colors">
+                      <button className="w-full flex items-center justify-between px-2 py-3 hover:bg-gray-50 transition-colors flex-shrink-0">
                         <div className="flex flex-col items-start">
                           <span className="text-xs text-gray-500">Total {checkoutOpen ? '(toca para ocultar)' : '(toca para finalizar)'}</span>
                           <span className="text-2xl font-bold text-orange-600">
@@ -491,7 +491,7 @@ const ShoppingCartComponent: React.FC = () => {
                       </button>
                     </CollapsibleTrigger>
                     <CollapsibleContent className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden">
-                      <div className="px-2 pb-4 pt-2">
+                      <div className="px-2 pb-4 pt-2 max-h-[60vh] overflow-y-auto">
                     <div className="space-y-2 mb-4">
                       {/* Payment Method Selection */}
                       <div className="mb-3">
