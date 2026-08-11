@@ -8,6 +8,7 @@ import ShoppingCartComponent from '@/components/ShoppingCart';
 import AdminPanel from '@/components/AdminPanel';
 import PetFood from '@/components/PetFood';
 import RepeatOrderPrompt from '@/components/RepeatOrderPrompt';
+import SmartOrder from '@/components/SmartOrder';
 import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple, PawPrint } from 'lucide-react';
 
 const Index = () => {
