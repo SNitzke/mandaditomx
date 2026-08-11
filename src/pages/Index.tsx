@@ -8,6 +8,7 @@ import ShoppingCartComponent from '@/components/ShoppingCart';
 import AdminPanel from '@/components/AdminPanel';
 import PetFood from '@/components/PetFood';
 import RepeatOrderPrompt from '@/components/RepeatOrderPrompt';
+import SmartOrder from '@/components/SmartOrder';
 import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple, PawPrint } from 'lucide-react';
 
 const Index = () => {
@@ -112,10 +113,16 @@ const Index = () => {
 
         {/* Main Content */}
         <main className="py-6 md:py-12">
+          {/* Smart Order (voz y foto) */}
+          <section className="mb-8">
+            <SmartOrder />
+          </section>
+
           {/* Season Calendar */}
           <section className="mb-8">
             <SeasonCalendar />
           </section>
+
 
           {/* Product Menu */}
           <section id="productos-frescos">
