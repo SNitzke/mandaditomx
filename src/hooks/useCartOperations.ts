@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Product, CartItem, PackageCartItem, PetFoodCartItem, LastOrder } from '@/types/product';
+import { Product, CartItem, PackageCartItem, PetFoodCartItem, ExtraCartItem, LastOrder } from '@/types/product';
 import { initialPetFoodProducts, PetFoodItem } from '@/data/petFoodProducts';
 
 const loadFromStorage = <T,>(key: string, fallback: T): T => {
@@ -23,6 +23,10 @@ export const useCartOperations = (initialProducts: Product[]) => {
     const data = loadFromStorage<PetFoodCartItem[] | Record<string, number>>('mi-super-pet-cart', []);
     return Array.isArray(data) ? data : [];
   });
+  const [extrasCart, setExtrasCart] = useState<ExtraCartItem[]>(() => {
+    const data = loadFromStorage<ExtraCartItem[] | unknown>('mi-super-extras-cart', []);
+    return Array.isArray(data) ? (data as ExtraCartItem[]) : [];
+  });
   const [lastOrder, setLastOrder] = useState<LastOrder | null>(() =>
     loadFromStorage<LastOrder | null>('mi-super-last-order', null)
   );
@@ -32,6 +36,7 @@ export const useCartOperations = (initialProducts: Product[]) => {
   useEffect(() => { localStorage.setItem('mi-super-cart', JSON.stringify(cart)); }, [cart]);
   useEffect(() => { localStorage.setItem('mi-super-package-cart', JSON.stringify(packageCart)); }, [packageCart]);
   useEffect(() => { localStorage.setItem('mi-super-pet-cart', JSON.stringify(petFoodCart)); }, [petFoodCart]);
+  useEffect(() => { localStorage.setItem('mi-super-extras-cart', JSON.stringify(extrasCart)); }, [extrasCart]);
   useEffect(() => {
     if (lastOrder) localStorage.setItem('mi-super-last-order', JSON.stringify(lastOrder));
     else localStorage.removeItem('mi-super-last-order');
