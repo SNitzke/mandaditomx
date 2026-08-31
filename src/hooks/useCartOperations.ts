@@ -51,6 +51,7 @@ export const useCartOperations = (initialProducts: Product[]) => {
     setCart(lastOrder.cart || []);
     setPackageCart(lastOrder.packageCart || []);
     setPetFoodCart(lastOrder.petFoodCart || []);
+    setExtrasCart(lastOrder.extrasCart || []);
   };
 
   const clearLastOrder = () => setLastOrder(null);
@@ -102,6 +103,7 @@ export const useCartOperations = (initialProducts: Product[]) => {
   const clearCart = () => {
     setCart([]);
     setPetFoodCart([]);
+    setExtrasCart([]);
   };
 
   const addPackageToCart = (packageData: PackageCartItem) => {
@@ -145,15 +147,39 @@ export const useCartOperations = (initialProducts: Product[]) => {
     setPetFoodCart(prev => prev.map(p => p.id === id ? { ...p, price: newPrice } : p));
   };
 
+  const addExtraToCart = (item: Omit<ExtraCartItem, 'quantity'> & { quantity?: number }) => {
+    const qty = item.quantity ?? 1;
+    setExtrasCart(prev => {
+      const existing = prev.findIndex(p => p.id === item.id);
+      if (existing >= 0) {
+        return prev.map((p, i) => i === existing ? { ...p, quantity: p.quantity + qty } : p);
+      }
+      return [...prev, { ...item, quantity: qty }];
+    });
+  };
+
+  const removeExtraFromCart = (id: string) => {
+    setExtrasCart(prev => prev.filter(p => p.id !== id));
+  };
+
+  const updateExtraQuantity = (id: string, quantity: number) => {
+    if (quantity <= 0) {
+      removeExtraFromCart(id);
+      return;
+    }
+    setExtrasCart(prev => prev.map(p => p.id === id ? { ...p, quantity } : p));
+  };
+
   const getTotalPrice = () => {
     const cartTotal = cart.reduce((total, item) => total + item.totalPrice, 0);
     const packageTotal = packageCart.reduce((total, item) => total + item.totalPrice, 0);
     const petTotal = petFoodCart.reduce((total, item) => total + item.price * item.quantity, 0);
-    return Math.round((cartTotal + packageTotal + petTotal) * 100) / 100;
+    const extrasTotal = extrasCart.reduce((total, item) => total + item.price * item.quantity, 0);
+    return Math.round((cartTotal + packageTotal + petTotal + extrasTotal) * 100) / 100;
   };
 
   const getTotalItems = () => {
-    return cart.length + packageCart.length + petFoodCart.length;
+    return cart.length + packageCart.length + petFoodCart.length + extrasCart.length;
   };
 
   return {
@@ -163,6 +189,10 @@ export const useCartOperations = (initialProducts: Product[]) => {
     cart,
     packageCart,
     petFoodCart,
+    extrasCart,
+    addExtraToCart,
+    removeExtraFromCart,
+    updateExtraQuantity,
     lastOrder,
     addToCart,
     removeFromCart,
