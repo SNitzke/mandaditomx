@@ -61,10 +61,22 @@ export interface PetFoodCartItem {
   quantity: number;
 }
 
+/** Productos de precio fijo con variante (Tortillería, Suplementos, etc.) */
+export interface ExtraCartItem {
+  id: string; // productId-variantId
+  name: string;
+  variantLabel: string;
+  price: number;
+  quantity: number;
+  category: string;
+  emoji?: string;
+}
+
 export interface LastOrder {
   cart: CartItem[];
   packageCart: PackageCartItem[];
   petFoodCart: PetFoodCartItem[];
+  extrasCart?: ExtraCartItem[];
   customerName?: string;
   address?: string;
   paymentMethod?: 'cash' | 'card';
@@ -78,6 +90,10 @@ export interface CartContextType {
   cart: CartItem[];
   packageCart: PackageCartItem[];
   petFoodCart: PetFoodCartItem[];
+  extrasCart: ExtraCartItem[];
+  addExtraToCart: (item: Omit<ExtraCartItem, 'quantity'> & { quantity?: number }) => void;
+  removeExtraFromCart: (id: string) => void;
+  updateExtraQuantity: (id: string, quantity: number) => void;
   lastOrder: LastOrder | null;
   addToCart: (product: Product, weight: number, ripeness?: 'inmadura' | 'medio-madura' | 'madura') => void;
   removeFromCart: (productId: string, weight: number) => void;
