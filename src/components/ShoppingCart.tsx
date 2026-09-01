@@ -15,15 +15,17 @@ import { toast } from '@/hooks/use-toast';
 const CARD_SURCHARGE = 0.043; // 4.3%
 
 const ShoppingCartComponent: React.FC = () => {
-  const { cart, packageCart, petFoodCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems, saveLastOrder } = useCart();
+  const { cart, packageCart, petFoodCart, extrasCart, updateExtraQuantity, removeExtraFromCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems, saveLastOrder } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>('cash');
   const [checkoutOpen, setCheckoutOpen] = useState(false);
 
+  const isCartEmpty = cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 && extrasCart.length === 0;
+
   const sendToWhatsApp = () => {
-    if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0) {
+    if (isCartEmpty) {
       toast({
         title: "Carrito vacío",
         description: "Agrega productos antes de realizar el pedido",
@@ -159,6 +161,28 @@ const ShoppingCartComponent: React.FC = () => {
       });
       message += "\n";
     }
+
+    // Extras (Tortillería, Suplementos)
+    if (extrasCart.length > 0) {
+      const extraEmojis: Record<string, string> = {
+        'Tortillería': '🌽',
+        'Suplementos': '🌿',
+      };
+      const groupedExtras: Record<string, typeof extrasCart> = {};
+      extrasCart.forEach(item => {
+        if (!groupedExtras[item.category]) groupedExtras[item.category] = [];
+        groupedExtras[item.category].push(item);
+      });
+      Object.keys(groupedExtras).forEach(cat => {
+        message += `${extraEmojis[cat] || '📦'} *${cat.toUpperCase()}:*\n`;
+        groupedExtras[cat].forEach(item => {
+          message += `• ${item.emoji ? item.emoji + ' ' : ''}${item.name} (${item.variantLabel}) x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
+        });
+        message += "\n";
+      });
+    }
+
+
     
     message += `*Subtotal: $${subtotal.toFixed(2)}*\n`;
     
@@ -185,7 +209,7 @@ const ShoppingCartComponent: React.FC = () => {
     message += `¡Gracias!`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    saveLastOrder({ cart, packageCart, petFoodCart, customerName, address, paymentMethod });
+    saveLastOrder({ cart, packageCart, petFoodCart, extrasCart, customerName, address, paymentMethod });
     window.open(whatsappUrl, '_blank');
     
     toast({
@@ -226,7 +250,7 @@ const ShoppingCartComponent: React.FC = () => {
     updateWeight(productId, oldWeight, parseInt(newWeight));
   };
 
-  if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 && !isOpen) {
+  if (isCartEmpty && !isOpen) {
     return (
       <div className="fixed bottom-6 right-6">
         <Button
@@ -266,7 +290,7 @@ const ShoppingCartComponent: React.FC = () => {
           </DialogHeader>
           <div className="px-4 sm:px-6 py-4 flex-1 flex flex-col overflow-hidden">
 
-              {cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 ? (
+              {isCartEmpty ? (
                 <div className="flex-1 flex items-center justify-center">
                   <p className="text-gray-500 text-center">Tu carrito está vacío</p>
                 </div>
@@ -469,7 +493,46 @@ const ShoppingCartComponent: React.FC = () => {
                         </CardContent>
                       </Card>
                     ))}
+
+                    {/* Tortillería y Suplementos */}
+                    {extrasCart.map((item) => (
+                      <Card key={`extra-${item.id}`} className="border-yellow-200 bg-gradient-to-r from-yellow-50 to-orange-50">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span>{item.emoji || '📦'}</span>
+                                <h3 className="font-medium text-gray-800">{item.name}</h3>
+                                <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs">
+                                  {item.category}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-500">{item.variantLabel} · ${item.price}</p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeExtraFromCart(item.id)}
+                              className="text-red-500 hover:text-red-700 p-1"
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </div>
+                          <div className="flex justify-between items-center mt-2">
+                            <div className="flex items-center gap-2">
+                              <Button variant="outline" size="sm" className="h-7 w-7 p-0" onClick={() => updateExtraQuantity(item.id, item.quantity - 1)}>-</Button>
+                              <span className="text-sm font-medium w-6 text-center">{item.quantity}</span>
+                              <Button variant="outline" size="sm" className="h-7 w-7 p-0" onClick={() => updateExtraQuantity(item.id, item.quantity + 1)}>+</Button>
+                            </div>
+                            <span className="text-lg font-bold text-orange-600">
+                              ${(item.price * item.quantity).toFixed(2)}
+                            </span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
+
 
                   <Collapsible open={checkoutOpen} onOpenChange={setCheckoutOpen} className="border-t mt-2 bg-white flex-shrink-0 flex flex-col min-h-0">
                     <CollapsibleTrigger asChild>

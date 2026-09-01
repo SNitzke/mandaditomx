@@ -7,9 +7,11 @@ import SeasonCalendar from '@/components/SeasonCalendar';
 import ShoppingCartComponent from '@/components/ShoppingCart';
 import AdminPanel from '@/components/AdminPanel';
 import PetFood from '@/components/PetFood';
+import Tortilleria from '@/components/Tortilleria';
+import GutWell from '@/components/GutWell';
 import RepeatOrderPrompt from '@/components/RepeatOrderPrompt';
 import SmartOrder from '@/components/SmartOrder';
-import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple, PawPrint } from 'lucide-react';
+import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple, PawPrint, Wheat, Leaf } from 'lucide-react';
 
 const Index = () => {
   
@@ -107,7 +109,22 @@ const Index = () => {
                 <PawPrint size={20} className="md:w-6 md:h-6" />
                 Alimento Mascotas
               </button>
+              <button
+                onClick={() => scrollToSection('tortilleria')}
+                className="flex items-center justify-center gap-2 bg-yellow-200 text-yellow-900 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] transition-all duration-300 hover:scale-105"
+              >
+                <Wheat size={20} className="md:w-6 md:h-6" />
+                Tortillería
+              </button>
+              <button
+                onClick={() => scrollToSection('gutwell')}
+                className="flex items-center justify-center gap-2 bg-emerald-500 text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] transition-all duration-300 hover:scale-105"
+              >
+                <Leaf size={20} className="md:w-6 md:h-6" />
+                GutWell
+              </button>
             </div>
+
           </div>
         </section>
 
@@ -139,6 +156,18 @@ const Index = () => {
         <section id="alimento-mascotas" className="py-6 md:py-12">
           <PetFood />
         </section>
+
+        {/* Tortillería */}
+        <section id="tortilleria" className="py-6 md:py-12 bg-gradient-to-br from-yellow-50 to-orange-50">
+          <Tortilleria />
+        </section>
+
+        {/* GutWell */}
+        <section id="gutwell" className="py-6 md:py-12">
+          <GutWell />
+        </section>
+
+
 
         {/* Footer */}
         <footer className="bg-gray-800 text-white py-6 md:py-8">
