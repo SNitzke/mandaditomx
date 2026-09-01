@@ -157,6 +157,18 @@ const Index = () => {
           <PetFood />
         </section>
 
+        {/* Tortillería */}
+        <section id="tortilleria" className="py-6 md:py-12 bg-gradient-to-br from-yellow-50 to-orange-50">
+          <Tortilleria />
+        </section>
+
+        {/* GutWell */}
+        <section id="gutwell" className="py-6 md:py-12">
+          <GutWell />
+        </section>
+
+
+
         {/* Footer */}
         <footer className="bg-gray-800 text-white py-6 md:py-8">
           <div className="max-w-6xl mx-auto px-4 md:px-6">
