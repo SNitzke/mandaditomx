@@ -250,7 +250,7 @@ const ShoppingCartComponent: React.FC = () => {
     updateWeight(productId, oldWeight, parseInt(newWeight));
   };
 
-  if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 && !isOpen) {
+  if (isCartEmpty && !isOpen) {
     return (
       <div className="fixed bottom-6 right-6">
         <Button
