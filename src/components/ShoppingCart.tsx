@@ -161,6 +161,28 @@ const ShoppingCartComponent: React.FC = () => {
       });
       message += "\n";
     }
+
+    // Extras (Tortillería, Suplementos)
+    if (extrasCart.length > 0) {
+      const extraEmojis: Record<string, string> = {
+        'Tortillería': '🌽',
+        'Suplementos': '🌿',
+      };
+      const groupedExtras: Record<string, typeof extrasCart> = {};
+      extrasCart.forEach(item => {
+        if (!groupedExtras[item.category]) groupedExtras[item.category] = [];
+        groupedExtras[item.category].push(item);
+      });
+      Object.keys(groupedExtras).forEach(cat => {
+        message += `${extraEmojis[cat] || '📦'} *${cat.toUpperCase()}:*\n`;
+        groupedExtras[cat].forEach(item => {
+          message += `• ${item.emoji ? item.emoji + ' ' : ''}${item.name} (${item.variantLabel}) x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
+        });
+        message += "\n";
+      });
+    }
+
+
     
     message += `*Subtotal: $${subtotal.toFixed(2)}*\n`;
     
