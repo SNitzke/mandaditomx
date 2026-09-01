@@ -7,9 +7,11 @@ import SeasonCalendar from '@/components/SeasonCalendar';
 import ShoppingCartComponent from '@/components/ShoppingCart';
 import AdminPanel from '@/components/AdminPanel';
 import PetFood from '@/components/PetFood';
+import Tortilleria from '@/components/Tortilleria';
+import GutWell from '@/components/GutWell';
 import RepeatOrderPrompt from '@/components/RepeatOrderPrompt';
 import SmartOrder from '@/components/SmartOrder';
-import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple, PawPrint } from 'lucide-react';
+import { Utensils, Clock, MapPin, Phone, ShoppingBag, Package, Apple, PawPrint, Wheat, Leaf } from 'lucide-react';
 
 const Index = () => {
   
