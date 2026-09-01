@@ -8,7 +8,7 @@ import { toast } from '@/hooks/use-toast';
 import { useCart } from '@/contexts/CartContext';
 import gutwellImg from '@/assets/gutwell.jpg';
 
-const GUTWELL_PRICE = 450;
+const GUTWELL_PRICE = 350;
 
 const ingredients = [
   'Inulina de agave',
