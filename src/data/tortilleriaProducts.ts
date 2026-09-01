@@ -21,7 +21,7 @@ export const tortilleriaProducts: TortilleriaProduct[] = [
     variants: [
       { id: '100pz', label: '100 piezas', price: 120 },
       { id: '50pz', label: '50 piezas', price: 70 },
-      { id: '28pz', label: '28 piezas', price: 25 },
+      { id: '28pz', label: '28 piezas', price: 35 },
     ],
   },
   {
