@@ -493,7 +493,46 @@ const ShoppingCartComponent: React.FC = () => {
                         </CardContent>
                       </Card>
                     ))}
+
+                    {/* Tortillería y Suplementos */}
+                    {extrasCart.map((item) => (
+                      <Card key={`extra-${item.id}`} className="border-yellow-200 bg-gradient-to-r from-yellow-50 to-orange-50">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span>{item.emoji || '📦'}</span>
+                                <h3 className="font-medium text-gray-800">{item.name}</h3>
+                                <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs">
+                                  {item.category}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-500">{item.variantLabel} · ${item.price}</p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeExtraFromCart(item.id)}
+                              className="text-red-500 hover:text-red-700 p-1"
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </div>
+                          <div className="flex justify-between items-center mt-2">
+                            <div className="flex items-center gap-2">
+                              <Button variant="outline" size="sm" className="h-7 w-7 p-0" onClick={() => updateExtraQuantity(item.id, item.quantity - 1)}>-</Button>
+                              <span className="text-sm font-medium w-6 text-center">{item.quantity}</span>
+                              <Button variant="outline" size="sm" className="h-7 w-7 p-0" onClick={() => updateExtraQuantity(item.id, item.quantity + 1)}>+</Button>
+                            </div>
+                            <span className="text-lg font-bold text-orange-600">
+                              ${(item.price * item.quantity).toFixed(2)}
+                            </span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
+
 
                   <Collapsible open={checkoutOpen} onOpenChange={setCheckoutOpen} className="border-t mt-2 bg-white flex-shrink-0 flex flex-col min-h-0">
                     <CollapsibleTrigger asChild>
