@@ -61,70 +61,30 @@ const Index = () => {
         </header>
 
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-orange-500 to-red-500 text-white py-12 md:py-20 overflow-hidden">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yIDItNCAzLTRzMyAyIDMgNGMwIDItMiA0LTMgNHMtMy0yLTMtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20"></div>
-          <div className="max-w-6xl mx-auto px-4 md:px-6 text-center relative z-10">
-            <div className="animate-fade-in-up">
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold mb-4 md:mb-6 leading-tight">
-                🥬 Frescura Premium<br />
-                <span className="text-yellow-300">¡Directo a Tu Mesa!</span>
-              </h2>
-              <p className="text-xl md:text-2xl lg:text-3xl mb-8 md:mb-10 font-semibold opacity-95">
-                Productos de excelente calidad
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 text-base md:text-lg mb-8 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <div className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-105">
-                <MapPin size={20} className="md:w-6 md:h-6" />
-                <span className="font-semibold">Entrega Express</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-105">
-                <Utensils size={20} className="md:w-6 md:h-6" />
-                <span className="font-semibold">Excelente calidad</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full hover:bg-white/30 transition-all duration-300 hover:scale-105">
-                <Clock size={20} className="md:w-6 md:h-6" />
-                <span className="font-semibold">Siempre Fresco</span>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+        <section className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-10 md:py-14">
+          <div className="max-w-6xl mx-auto px-4 md:px-6 text-center">
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-3 leading-tight animate-fade-in-up">
+              🥬 Frescura Premium <span className="text-yellow-300">¡Directo a Tu Mesa!</span>
+            </h2>
+            <p className="text-base md:text-lg mb-8 opacity-90 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+              Frutas, verduras, carnes y más — pide fácil y recibe en tu puerta.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-3 animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <button
                 onClick={() => scrollToSection('productos-frescos')}
-                className="flex items-center justify-center gap-2 bg-yellow-400 text-orange-700 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(255,255,0,0.4)] transition-all duration-300 hover:scale-105"
+                className="flex items-center justify-center gap-2 bg-yellow-400 text-orange-700 px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:scale-105 transition-all duration-300"
               >
-                <Apple size={20} className="md:w-6 md:h-6" />
-                Productos Frescos
+                <Apple size={22} />
+                Ver Productos
               </button>
               <button
                 onClick={() => scrollToSection('paquetes-parrilleros')}
-                className="flex items-center justify-center gap-2 bg-white/90 text-orange-600 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all duration-300 hover:scale-105"
+                className="flex items-center justify-center gap-2 bg-white/90 text-orange-600 px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:scale-105 transition-all duration-300"
               >
-                <Package size={20} className="md:w-6 md:h-6" />
+                <Package size={22} />
                 Paquetes Parrilleros
               </button>
-              <button
-                onClick={() => scrollToSection('alimento-mascotas')}
-                className="flex items-center justify-center gap-2 bg-amber-400 text-amber-800 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] transition-all duration-300 hover:scale-105"
-              >
-                <PawPrint size={20} className="md:w-6 md:h-6" />
-                Alimento Mascotas
-              </button>
-              <button
-                onClick={() => scrollToSection('tortilleria')}
-                className="flex items-center justify-center gap-2 bg-yellow-200 text-yellow-900 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] transition-all duration-300 hover:scale-105"
-              >
-                <Wheat size={20} className="md:w-6 md:h-6" />
-                Tortillería
-              </button>
-              <button
-                onClick={() => scrollToSection('gutwell')}
-                className="flex items-center justify-center gap-2 bg-emerald-500 text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-base md:text-lg shadow-2xl hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] transition-all duration-300 hover:scale-105"
-              >
-                <Leaf size={20} className="md:w-6 md:h-6" />
-                GutWell
-              </button>
             </div>
-
           </div>
         </section>
 

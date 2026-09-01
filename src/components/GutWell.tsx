@@ -6,7 +6,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Plus, Leaf, ShieldCheck, Sparkles } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useCart } from '@/contexts/CartContext';
-import gutwellImg from '@/assets/gutwell.jpg';
+import gutwellAsset from '@/assets/gutwell.jpg.asset.json';
+const gutwellImg = gutwellAsset.url;
 
 const GUTWELL_PRICE = 350;
 
