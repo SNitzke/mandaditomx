@@ -15,15 +15,17 @@ import { toast } from '@/hooks/use-toast';
 const CARD_SURCHARGE = 0.043; // 4.3%
 
 const ShoppingCartComponent: React.FC = () => {
-  const { cart, packageCart, petFoodCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems, saveLastOrder } = useCart();
+  const { cart, packageCart, petFoodCart, extrasCart, updateExtraQuantity, removeExtraFromCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems, saveLastOrder } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>('cash');
   const [checkoutOpen, setCheckoutOpen] = useState(false);
 
+  const isCartEmpty = cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 && extrasCart.length === 0;
+
   const sendToWhatsApp = () => {
-    if (cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0) {
+    if (isCartEmpty) {
       toast({
         title: "Carrito vacío",
         description: "Agrega productos antes de realizar el pedido",
