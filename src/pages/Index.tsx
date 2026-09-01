@@ -147,16 +147,6 @@ const Index = () => {
           </section>
         </main>
 
-        {/* Grill Packages Section */}
-        <section id="paquetes-parrilleros" className="py-6 md:py-12 bg-gradient-to-br from-orange-25 to-red-25">
-          <GrillPackages />
-        </section>
-
-        {/* Pet Food Section */}
-        <section id="alimento-mascotas" className="py-6 md:py-12">
-          <PetFood />
-        </section>
-
         {/* Tortillería */}
         <section id="tortilleria" className="py-6 md:py-12 bg-gradient-to-br from-yellow-50 to-orange-50">
           <Tortilleria />
@@ -165,6 +155,16 @@ const Index = () => {
         {/* GutWell */}
         <section id="gutwell" className="py-6 md:py-12">
           <GutWell />
+        </section>
+
+        {/* Grill Packages Section */}
+        <section id="paquetes-parrilleros" className="py-6 md:py-12 bg-gradient-to-br from-orange-25 to-red-25">
+          <GrillPackages />
+        </section>
+
+        {/* Pet Food Section */}
+        <section id="alimento-mascotas" className="py-6 md:py-12">
+          <PetFood />
         </section>
 
 
