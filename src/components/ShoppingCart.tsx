@@ -290,7 +290,7 @@ const ShoppingCartComponent: React.FC = () => {
           </DialogHeader>
           <div className="px-4 sm:px-6 py-4 flex-1 flex flex-col overflow-hidden">
 
-              {cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 ? (
+              {isCartEmpty ? (
                 <div className="flex-1 flex items-center justify-center">
                   <p className="text-gray-500 text-center">Tu carrito está vacío</p>
                 </div>
