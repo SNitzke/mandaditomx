@@ -64,10 +64,10 @@ const Index = () => {
         <section className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-10 md:py-14">
           <div className="max-w-6xl mx-auto px-4 md:px-6 text-center">
             <h2 className="text-3xl md:text-5xl font-extrabold mb-3 leading-tight animate-fade-in-up">
-              🥬 Frescura Premium <span className="text-yellow-300">¡Directo a Tu Mesa!</span>
+              🥬 ¡Frescura Premium <span className="text-yellow-300">a Tu Mesa!</span>
             </h2>
             <p className="text-base md:text-lg mb-8 opacity-90 animate-fade-in" style={{ animationDelay: '0.15s' }}>
-              Frutas, verduras, carnes y más — pide fácil y recibe en tu puerta.
+              Pide en minutos, recibe en tu puerta.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-3 animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <button
