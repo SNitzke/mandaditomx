@@ -35,7 +35,7 @@ const Index = () => {
                   <Utensils size={20} className="md:w-6 md:h-6" />
                 </div>
                 <div>
-                  <h1 className="text-xl md:text-2xl font-bold text-gray-800">Mi Super — Frutas, Verduras y Carnes a Domicilio</h1>
+                  <h1 className="text-xl md:text-2xl font-bold text-gray-800">Mandadito</h1>
                   <p className="text-xs md:text-sm text-gray-600">Del proveedor a tu mesa</p>
                 </div>
               </div>
@@ -44,10 +44,6 @@ const Index = () => {
                 <div className="flex items-center gap-2">
                   <Clock size={16} />
                   <span>Entregas de Lunes a Viernes y Fines de Semana Parrilladas de 12:00 a 18:00</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone size={16} />
-                  <span>55 6425 9421</span>
                 </div>
               </div>
               
