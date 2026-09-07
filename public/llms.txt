@@ -1,6 +1,6 @@
-# Pedido Súper
+# mandadito
 
-> Pedidos a domicilio de frutas, verduras, carnes, pollo, huevo, quesos y alimento para mascotas, directo de la central de abastos y sin conservadores. Entregas en CDMX vía WhatsApp al +52 55 6425 9421.
+> Pide frutas, verduras, carnes, pollo, huevo, tortillería y más a domicilio en CDMX. Frescura premium directo a tu mesa. Entregas vía WhatsApp al +52 55 6425 9421.
 
 ## Pages
 
