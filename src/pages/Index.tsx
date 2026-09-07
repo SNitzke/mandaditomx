@@ -11,7 +11,9 @@ import Tortilleria from '@/components/Tortilleria';
 import GutWell from '@/components/GutWell';
 import RepeatOrderPrompt from '@/components/RepeatOrderPrompt';
 import SmartOrder from '@/components/SmartOrder';
-import { Utensils, Clock, Phone, Package, Apple } from 'lucide-react';
+import mandaditoLogo from '@/assets/mandadito-logo.png.asset.json';
+import mandaditoIsotipo from '@/assets/mandadito-isotipo.png.asset.json';
+import { Clock, Phone, Package, Apple } from 'lucide-react';
 
 const Index = () => {
   
@@ -30,14 +32,12 @@ const Index = () => {
         <header className="bg-white shadow-md sticky top-0 z-30">
           <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 md:py-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 md:gap-3">
-                <div className="bg-orange-500 text-white p-1.5 md:p-2 rounded-full">
-                  <Utensils size={20} className="md:w-6 md:h-6" />
-                </div>
-                <div>
-                  <h1 className="text-xl md:text-2xl font-bold text-gray-800">Mandadito</h1>
-                  <p className="text-xs md:text-sm text-gray-600">Del proveedor a tu mesa</p>
-                </div>
+              <div className="flex items-center min-w-0">
+                <img
+                  src={mandaditoLogo.url}
+                  alt="Mandadito"
+                  className="h-10 w-auto max-w-[190px] object-contain object-left md:h-14 md:max-w-[285px]"
+                />
               </div>
               
               <div className="hidden lg:flex items-center gap-6 text-sm text-gray-600">
@@ -59,6 +59,12 @@ const Index = () => {
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-10 md:py-14">
           <div className="max-w-6xl mx-auto px-4 md:px-6 text-center">
+            <img
+              src={mandaditoIsotipo.url}
+              alt=""
+              aria-hidden="true"
+              className="mx-auto mb-4 h-20 w-20 rounded-full bg-white/95 object-contain p-2 shadow-lg md:h-24 md:w-24"
+            />
             <h2 className="text-3xl md:text-5xl font-extrabold mb-3 leading-tight animate-fade-in-up">
               🥬 ¡Frescura Premium <span className="text-yellow-300">a Tu Mesa!</span>
             </h2>
