@@ -10,7 +10,7 @@ export const grillPackages: GrillPackage[] = [
     badge: '🇲🇽 Edición Limitada',
     discount: {
       threshold: 3000,
-      percentage: 10
+      percentage: 15
     },
     items: [
       // Carnes
@@ -27,6 +27,11 @@ export const grillPackages: GrillPackage[] = [
       { productId: '9', name: 'Limón', minWeight: 500, pricePerKg: 45, isComplement: true },
       { productId: '42', name: 'Aguacate', minWeight: 500, pricePerKg: 90, isComplement: true },
       { productId: '47', name: 'Tomate', minWeight: 500, pricePerKg: 40, isComplement: true },
+      // Tortillería para fiestas patrias
+      { productId: 'tostadas-28pz', name: 'Tostadas (28 piezas)', minWeight: 1000, pricePerKg: 35, isComplement: true },
+      { productId: 'tortilla-harina-1kg', name: 'Tortilla de Harina (1 kg)', minWeight: 1000, pricePerKg: 50, isComplement: true },
+      { productId: 'nachos-400g', name: 'Nachos (400 g)', minWeight: 1000, pricePerKg: 50, isComplement: true },
+      { productId: 'maiz-pozole-800g', name: 'Maíz precocido para Pozole (800 g)', minWeight: 1000, pricePerKg: 40, isComplement: true },
     ]
   },
   {
