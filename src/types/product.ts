@@ -34,6 +34,10 @@ export interface GrillPackage {
     threshold: number; // peso mínimo en gramos para aplicar descuento
     percentage: number; // porcentaje de descuento
   };
+  /** Paquete de temporada: fecha ISO límite. Después de esta fecha deja de mostrarse */
+  availableUntil?: string;
+  /** Etiqueta especial mostrada en la tarjeta */
+  badge?: string;
 }
 
 export interface PackageCartItem {
