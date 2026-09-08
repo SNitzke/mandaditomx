@@ -34,7 +34,7 @@ const Index = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center min-w-0">
                 <img
-                  src={mandaditoLogo.url}
+                  src={mandaditoLogo}
                   alt="Mandadito"
                   className="h-10 w-auto max-w-[190px] object-contain object-left md:h-14 md:max-w-[285px]"
                 />
@@ -60,7 +60,7 @@ const Index = () => {
         <section className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-10 md:py-14">
           <div className="max-w-6xl mx-auto px-4 md:px-6 text-center">
             <img
-              src={mandaditoIsotipo.url}
+              src={mandaditoIsotipo}
               alt=""
               aria-hidden="true"
               className="mx-auto mb-4 h-20 w-20 rounded-full bg-white/95 object-contain p-2 shadow-lg md:h-24 md:w-24"
