@@ -11,8 +11,8 @@ import Tortilleria from '@/components/Tortilleria';
 import GutWell from '@/components/GutWell';
 import RepeatOrderPrompt from '@/components/RepeatOrderPrompt';
 import SmartOrder from '@/components/SmartOrder';
-import mandaditoLogo from '@/assets/mandadito-logo.png.asset.json';
-import mandaditoIsotipo from '@/assets/mandadito-isotipo.png.asset.json';
+import mandaditoLogo from '@/assets/mandadito-logo.png';
+import mandaditoIsotipo from '@/assets/mandadito-isotipo.png';
 import { Clock, Phone, Package, Apple } from 'lucide-react';
 
 const Index = () => {
