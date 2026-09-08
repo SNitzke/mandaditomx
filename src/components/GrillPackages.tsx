@@ -16,6 +16,7 @@ import paqueteArgentino from '@/assets/paquete-argentino.jpg';
 import paqueteVikingo from '@/assets/paquete-vikingo.jpg';
 import paqueteMedieval from '@/assets/paquete-medieval.jpg';
 import paqueteRomano from '@/assets/paquete-romano.jpg';
+import paqueteFiestasPatrias from '@/assets/paquete-fiestas-patrias.jpg';
 
 const imageMap: Record<string, string> = {
   '/src/assets/paquete-nortena.jpg': paqueteNortena,
@@ -23,7 +24,11 @@ const imageMap: Record<string, string> = {
   '/src/assets/paquete-vikingo.jpg': paqueteVikingo,
   '/src/assets/paquete-medieval.jpg': paqueteMedieval,
   '/src/assets/paquete-romano.jpg': paqueteRomano,
+  '/src/assets/paquete-fiestas-patrias.jpg': paqueteFiestasPatrias,
 };
+
+const isPackageAvailable = (pkg: GrillPackage) =>
+  !pkg.availableUntil || new Date(pkg.availableUntil).getTime() >= Date.now();
 
 const GrillPackages: React.FC = () => {
   const { addPackageToCart } = useCart();
@@ -155,10 +160,10 @@ const GrillPackages: React.FC = () => {
 
       {/* Grid de paquetes - Solo imágenes */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
-        {grillPackages.map((grillPackage, index) => (
+        {grillPackages.filter(isPackageAvailable).map((grillPackage, index) => (
           <div 
             key={grillPackage.id}
-            className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer animate-scale-in hover:scale-105"
+            className={`group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer animate-scale-in hover:scale-105 ${grillPackage.badge ? 'ring-4 ring-green-500 sm:col-span-2 lg:col-span-1' : ''}`}
             style={{ animationDelay: `${index * 0.1}s` }}
             onClick={() => setSelectedPackage(grillPackage)}
           >
@@ -170,6 +175,11 @@ const GrillPackages: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               <div className="absolute inset-0 bg-orange-500/0 group-hover:bg-orange-500/20 transition-all duration-300" />
+              {grillPackage.badge && (
+                <span className="absolute top-3 left-3 bg-white/95 text-green-700 font-extrabold text-sm px-3 py-1 rounded-full shadow-lg">
+                  {grillPackage.badge}
+                </span>
+              )}
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform transition-transform duration-300 group-hover:translate-y-[-8px]">
               <h3 className="text-2xl md:text-3xl font-bold mb-2 drop-shadow-lg">{grillPackage.name}</h3>

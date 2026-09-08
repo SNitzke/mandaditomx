@@ -2,6 +2,34 @@ import { GrillPackage } from '@/types/product';
 
 export const grillPackages: GrillPackage[] = [
   {
+    id: 'fiestas-patrias',
+    name: '¡Viva México! 15 de Septiembre',
+    description: 'Todo para tu noche mexicana: pozole, tacos al pastor, carnitas y guacamole. Disponible solo hasta el 15 de septiembre',
+    image: '/src/assets/paquete-fiestas-patrias.jpg',
+    availableUntil: '2026-09-15T23:59:59-06:00',
+    badge: '🇲🇽 Edición Limitada',
+    discount: {
+      threshold: 3000,
+      percentage: 10
+    },
+    items: [
+      // Carnes
+      { productId: '71', name: 'Maciza de Cerdo (Pozole y Carnitas)', minWeight: 1000, pricePerKg: 140, isComplement: false },
+      { productId: '70', name: 'Pastor Preparado', minWeight: 1000, pricePerKg: 150, isComplement: false },
+      { productId: '101', name: 'Birria', minWeight: 1000, pricePerKg: 195, isComplement: false },
+      { productId: '76', name: 'Longaniza Especial', minWeight: 500, pricePerKg: 145, isComplement: false },
+      { productId: '103', name: 'Pechuga Entera (Tinga)', minWeight: 1000, pricePerKg: 140, isComplement: false },
+      // Complementos
+      { productId: '45', name: 'Lechuga (Pieza)', minWeight: 500, pricePerKg: 50, isComplement: true },
+      { productId: '53', name: 'Cebolla Blanca', minWeight: 500, pricePerKg: 25, isComplement: true },
+      { productId: '54', name: 'Chile Serrano', minWeight: 200, pricePerKg: 30, isComplement: true },
+      { productId: '49', name: 'Cilantro (Manojo 200 gr)', minWeight: 200, pricePerKg: 70, isComplement: true },
+      { productId: '9', name: 'Limón', minWeight: 500, pricePerKg: 45, isComplement: true },
+      { productId: '42', name: 'Aguacate', minWeight: 500, pricePerKg: 90, isComplement: true },
+      { productId: '47', name: 'Tomate', minWeight: 500, pricePerKg: 40, isComplement: true },
+    ]
+  },
+  {
     id: 'nortena',
     name: 'La Norteña',
     description: 'El auténtico sabor del norte mexicano con carnes premium y complementos tradicionales',
