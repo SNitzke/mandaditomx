@@ -16,6 +16,7 @@ import paqueteArgentino from '@/assets/paquete-argentino.jpg';
 import paqueteVikingo from '@/assets/paquete-vikingo.jpg';
 import paqueteMedieval from '@/assets/paquete-medieval.jpg';
 import paqueteRomano from '@/assets/paquete-romano.jpg';
+import paqueteFiestasPatrias from '@/assets/paquete-fiestas-patrias.jpg';
 
 const imageMap: Record<string, string> = {
   '/src/assets/paquete-nortena.jpg': paqueteNortena,
@@ -23,7 +24,11 @@ const imageMap: Record<string, string> = {
   '/src/assets/paquete-vikingo.jpg': paqueteVikingo,
   '/src/assets/paquete-medieval.jpg': paqueteMedieval,
   '/src/assets/paquete-romano.jpg': paqueteRomano,
+  '/src/assets/paquete-fiestas-patrias.jpg': paqueteFiestasPatrias,
 };
+
+const isPackageAvailable = (pkg: GrillPackage) =>
+  !pkg.availableUntil || new Date(pkg.availableUntil).getTime() >= Date.now();
 
 const GrillPackages: React.FC = () => {
   const { addPackageToCart } = useCart();
