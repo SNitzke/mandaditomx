@@ -33,11 +33,14 @@ const Index = () => {
           <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 md:py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center min-w-0">
-                <img
-                  src={mandaditoLogo}
-                  alt="Mandadito"
-                  className="h-10 w-auto max-w-[190px] object-contain object-left md:h-14 md:max-w-[285px]"
-                />
+                <h1 className="flex items-center min-w-0 m-0 p-0">
+                  <img
+                    src={mandaditoLogo}
+                    alt="mandadito"
+                    className="h-10 w-auto max-w-[190px] object-contain object-left md:h-14 md:max-w-[285px]"
+                  />
+                  <span className="sr-only">mandadito</span>
+                </h1>
               </div>
               
               <div className="hidden lg:flex items-center gap-6 text-sm text-gray-600">
