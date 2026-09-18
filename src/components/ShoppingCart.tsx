@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ShoppingCart, Trash2, MessageCircle, MapPin, User, Clock, Flame, Percent, CreditCard, Banknote, ChevronUp, ChevronDown } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const CARD_SURCHARGE = 0.043; // 4.3%
 
@@ -19,6 +20,7 @@ const ShoppingCartComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>('cash');
   const [checkoutOpen, setCheckoutOpen] = useState(false);
 
@@ -47,6 +49,16 @@ const ShoppingCartComponent: React.FC = () => {
       toast({
         title: "Dirección requerida",
         description: "Por favor ingresa tu dirección de entrega",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const phoneDigits = customerPhone.replace(/\D/g, '');
+    if (phoneDigits.length < 10) {
+      toast({
+        title: "WhatsApp requerido",
+        description: "Ingresa tu número de WhatsApp a 10 dígitos",
         variant: "destructive",
       });
       return;
@@ -210,6 +222,14 @@ const ShoppingCartComponent: React.FC = () => {
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     saveLastOrder({ cart, packageCart, petFoodCart, extrasCart, customerName, address, paymentMethod });
+
+    // Guarda al cliente para el recordatorio semanal por WhatsApp
+    supabase.functions
+      .invoke('whatsapp-upsert-contact', {
+        body: { phone: phoneDigits, name: customerName, address },
+      })
+      .catch((err) => console.error('No se pudo guardar el contacto', err));
+
     window.open(whatsappUrl, '_blank');
     
     toast({
@@ -648,6 +668,26 @@ const ShoppingCartComponent: React.FC = () => {
                           className="w-full"
                         />
                       </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="customerPhone" className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                          <MessageCircle size={16} />
+                          WhatsApp (10 dígitos)
+                        </Label>
+                        <Input
+                          id="customerPhone"
+                          type="tel"
+                          inputMode="numeric"
+                          placeholder="55 1234 5678"
+                          value={customerPhone}
+                          onChange={(e) => setCustomerPhone(e.target.value)}
+                          className="w-full"
+                        />
+                        <p className="text-xs text-gray-500">
+                          Lo usamos para confirmar tu pedido y enviarte el recordatorio semanal. Puedes darte de baja cuando quieras.
+                        </p>
+                      </div>
+                      
                       
                       <div className="space-y-2">
                         <Button
