@@ -14,7 +14,83 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      whatsapp_campaign_logs: {
+        Row: {
+          contact_id: string | null
+          error: string | null
+          id: string
+          message_id: string | null
+          phone: string
+          sent_at: string
+          status: string
+          template_name: string
+        }
+        Insert: {
+          contact_id?: string | null
+          error?: string | null
+          id?: string
+          message_id?: string | null
+          phone: string
+          sent_at?: string
+          status: string
+          template_name: string
+        }
+        Update: {
+          contact_id?: string | null
+          error?: string | null
+          id?: string
+          message_id?: string | null
+          phone?: string
+          sent_at?: string
+          status?: string
+          template_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_campaign_logs_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "whatsapp_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      whatsapp_contacts: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: string
+          last_order_at: string | null
+          name: string | null
+          opted_out_at: string | null
+          phone: string
+          subscribed: boolean
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          last_order_at?: string | null
+          name?: string | null
+          opted_out_at?: string | null
+          phone: string
+          subscribed?: boolean
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          last_order_at?: string | null
+          name?: string | null
+          opted_out_at?: string | null
+          phone?: string
+          subscribed?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
