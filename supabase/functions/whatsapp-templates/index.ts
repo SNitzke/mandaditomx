@@ -1,5 +1,5 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
-import { TEMPLATE_LANG, TEMPLATE_NAME, whatsappFetch } from '../_shared/whatsapp.ts';
+import { TEMPLATE_LANG, TEMPLATE_NAME, isAuthorized, whatsappFetch } from '../_shared/whatsapp.ts';
 
 const ACCEPT_URL = 'https://mandaditomx.netlify.app/';
 
@@ -12,8 +12,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const secret = Deno.env.get('CAMPAIGN_SECRET');
-    if (!secret || req.headers.get('x-campaign-secret') !== secret) {
+    if (!isAuthorized(req)) {
       return new Response(JSON.stringify({ error: 'No autorizado' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

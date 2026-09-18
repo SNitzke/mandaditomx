@@ -1,6 +1,6 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
-import { TEMPLATE_LANG, TEMPLATE_NAME, normalizePhone, whatsappFetch } from '../_shared/whatsapp.ts';
+import { TEMPLATE_LANG, TEMPLATE_NAME, normalizePhone, isAuthorized, whatsappFetch } from '../_shared/whatsapp.ts';
 
 const BATCH_SIZE = 10;
 const BATCH_PAUSE_MS = 1000;
@@ -13,9 +13,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const secret = Deno.env.get('CAMPAIGN_SECRET');
-    const provided = req.headers.get('x-campaign-secret');
-    if (!secret || provided !== secret) {
+    if (!isAuthorized(req)) {
       return new Response(JSON.stringify({ error: 'No autorizado' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
