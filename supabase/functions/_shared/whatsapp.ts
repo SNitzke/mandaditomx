@@ -47,3 +47,14 @@ export function normalizePhone(input: string): string | null {
   if (digits.length >= 11 && digits.length <= 15) return digits;
   return null;
 }
+
+/** Cron uses x-campaign-secret; the hidden admin panel uses x-admin-password. */
+export function isAuthorized(req: Request): boolean {
+  const campaignSecret = Deno.env.get('CAMPAIGN_SECRET');
+  const adminPassword = Deno.env.get('ADMIN_PASSWORD');
+  const s = req.headers.get('x-campaign-secret');
+  const p = req.headers.get('x-admin-password');
+  if (campaignSecret && s && s === campaignSecret) return true;
+  if (adminPassword && p && p === adminPassword) return true;
+  return false;
+}
