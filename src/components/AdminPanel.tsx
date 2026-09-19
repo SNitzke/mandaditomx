@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Settings, Save, Plus, Trash2, Edit3 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import WhatsAppCampaignPanel from '@/components/WhatsAppCampaignPanel';
 
 const AdminPanel: React.FC = () => {
   const { products, updateProductPrice, addProduct, removeProduct, updateProductName, petFoodProducts, updatePetFoodPrice } = useCart();
@@ -406,6 +407,8 @@ const AdminPanel: React.FC = () => {
                     ))}
                   </div>
                 </div>
+
+                <WhatsAppCampaignPanel adminPassword={adminCode} />
 
                 <div className="flex justify-center pt-4">
                   <Button
