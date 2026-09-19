@@ -187,7 +187,7 @@ const GrillPackages: React.FC = () => {
               <div className="flex items-center justify-between">
                 <span className="text-yellow-300 font-bold text-xl">👆 Click para armar</span>
                 <Badge className="bg-green-500 hover:bg-green-600 text-white font-bold text-sm px-3 py-1">
-                  -10% OFF
+                  -{grillPackage.discount.percentage}% OFF
                 </Badge>
               </div>
             </div>
@@ -245,7 +245,7 @@ const GrillPackages: React.FC = () => {
                                     {hasIndividualDiscount && (
                                       <div className="flex items-center gap-1 mt-1">
                                         <Percent size={14} className="text-green-600" />
-                                        <span className="text-sm text-green-600 font-bold">10% OFF aplicado!</span>
+                                        <span className="text-sm text-green-600 font-bold">{selectedPackage.discount.percentage}% OFF aplicado!</span>
                                       </div>
                                     )}
                                   </div>
@@ -285,7 +285,7 @@ const GrillPackages: React.FC = () => {
                         </div>
                         <div className="text-sm text-gray-600 mt-3 flex items-center gap-2 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
                           <AlertTriangle size={16} className="text-yellow-600" />
-                          <span className="font-medium">Descuento del 10% se aplica individualmente a cada carne de 3kg o más</span>
+                          <span className="font-medium">Descuento del {selectedPackage.discount.percentage}% se aplica individualmente a cada carne de 3kg o más</span>
                         </div>
                       </div>
 
@@ -344,7 +344,7 @@ const GrillPackages: React.FC = () => {
                           </div>
                           {!pricing.hasDiscount && (
                             <div className="text-sm text-orange-600 bg-orange-50 py-2 px-4 rounded-lg inline-block">
-                              💡 Selecciona 3kg o más de cualquier carne para obtener 10% OFF
+                              💡 Selecciona 3kg o más de cualquier carne para obtener {selectedPackage.discount.percentage}% OFF
                             </div>
                           )}
                         </div>
