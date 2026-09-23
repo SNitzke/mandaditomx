@@ -21,11 +21,11 @@ export const initialProducts: Product[] = [
   { id: '16', name: 'Manzana Roja', pricePerKg: 65, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '17', name: 'Pera Mantequilla', pricePerKg: 75, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '18', name: 'Betabel', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '19', name: 'Durazno', pricePerKg: 90, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '19', name: 'Durazno', pricePerKg: 120, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '20', name: 'Tuna', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '21', name: 'Ejotes', pricePerKg: 40, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '22', name: 'Espinaca (Manojo 200 gr)', pricePerKg: 90, category: 'Frutas y Verduras', minWeight: 200 },
-  { id: '23', name: 'Pepino', pricePerKg: 60, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '23', name: 'Pepino', pricePerKg: 40, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '24', name: 'Fresa Domo (450 gr)', pricePerKg: 145, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '25', name: 'Plátano Dominico (Penca 400 gr)', pricePerKg: 43, category: 'Frutas y Verduras', minWeight: 400 },
   { id: '26', name: 'Jícama', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
@@ -42,8 +42,8 @@ export const initialProducts: Product[] = [
   { id: '37', name: 'Pimiento Amarillo', pricePerKg: 70, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '38', name: 'Pimiento Naranja', pricePerKg: 70, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '39', name: 'Pimiento Calidad', pricePerKg: 85, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '40', name: 'Zanahoria', pricePerKg: 60, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '41', name: 'Jitomate', pricePerKg: 55, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '40', name: 'Zanahoria', pricePerKg: 40, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '41', name: 'Jitomate', pricePerKg: 45, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '42', name: 'Aguacate', pricePerKg: 90, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '43', name: 'Brócoli', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '44', name: 'Nopal', pricePerKg: 30, category: 'Frutas y Verduras', minWeight: 500 },
@@ -67,7 +67,7 @@ export const initialProducts: Product[] = [
   { id: '62', name: 'Calabaza', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '63', name: 'Lichi', pricePerKg: 65, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '64', name: 'Toronja', pricePerKg: 45, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '125', name: 'Nectarina', pricePerKg: 60, category: 'Frutas y Verduras', minWeight: 500 },
+  { id: '125', name: 'Nectarina', pricePerKg: 120, category: 'Frutas y Verduras', minWeight: 500 },
 
 
 
