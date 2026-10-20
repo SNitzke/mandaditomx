@@ -1,22 +1,45 @@
-User-agent: Googlebot
-Allow: /
+Sitemap: https://mandaditomx.lovable.app/sitemap.xml
+# ==========================================
+# ROBOTS.TXT PARA MANDSADITOMX (NETLIFY)
+# ==========================================
 
-User-agent: Claudebot
-Allow: /
-
-User-agent: GPTbot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# 1. Motores de búsqueda tradicionales (Google, Bing, Yahoo, etc.)
 User-agent: *
 Allow: /
+# Disallow: /admin/    # Descomenta si tienes rutas privadas o de administración
+# Disallow: /private/  # Descomenta si tienes carpetas ocultas
 
-Sitemap: https://mandaditomx.lovable.app/sitemap.xml
+# 2. Motores de Inteligencia Artificial (AI Bots y LLMs)
+# OpenAI (ChatGPT / GPTBot)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic (Claude / ClaudeBot)
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity AI (PerplexityBot)
+User-agent: PerplexityBot
+Allow: /
+
+# Google AI (Google-Extended)
+User-agent: Google-Extended
+Allow: /
+
+# Common Crawl (Base de datos usada por muchas IAs)
+User-agent: CCBot
+Allow: /
+
+# Meta AI (Facebook/Instagram AI)
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Apple Bot-Extended (Apple Intelligence)
+User-agent: AppleBot-Extended
+Allow: /
+
+# 3. Enlace al sitemap (Reemplaza con tu URL real si lo tienes)
+# Sitemap: https://mandsaditomx.netlify.app/sitemap.xml
