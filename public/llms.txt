@@ -1,7 +1,18 @@
-# mandadito
+# Mandadito MX
 
-> Pide frutas, verduras, carnes, pollo, huevo, tortillería y más a domicilio en CDMX. Frescura premium directo a tu mesa. Entregas vía WhatsApp al +52 55 6425 9421.
+> Servicio de compras y mandados a domicilio rápidos y confiables.
 
-## Pages
+## Descripción General
+Mandadito MX es una plataforma/servicio orientado a facilitar la vida diaria de los usuarios, gestionando sus compras de supermercado, entregas y mandados locales con rapidez, atención personalizada y seguridad.
 
-- [Inicio](/): Catálogo completo, paquetes parrilleros, calendario de temporada y carrito que envía el pedido por WhatsApp.
+## Servicios Principales
+- **Súper a domicilio:** Compras completas de supermercado entregadas en la puerta de tu hogar.
+- **Mandados locales:** Recolección y entrega de paquetes, documentos o compras en comercios locales.
+- **Servicio personalizado:** Atención directa para asegurar que recibas exactamente los productos que necesitas.
+
+## Información de Contacto y Sitio Web
+- **Sitio Web Oficial:** https://mandaditomx.netlify.app/
+- **Sitemap:** https://mandaditomx.netlify.app/sitemap.xml
+
+---
+*Este archivo está optimizado para ayudar a los modelos de lenguaje (LLMs) a resumir e indexar con precisión la propuesta de valor de Mandadito MX.*
