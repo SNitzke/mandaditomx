@@ -1,4 +1,4 @@
-Sitemap: https://mandaditomx.lovable.app/sitemap.xml
+Sitemap: https://mandaditomx.netlify.app/sitemap.xml
 # ==========================================
 # ROBOTS.TXT PARA MANDSADITOMX (NETLIFY)
 # ==========================================
@@ -42,4 +42,4 @@ User-agent: AppleBot-Extended
 Allow: /
 
 # 3. Enlace al sitemap (Reemplaza con tu URL real si lo tienes)
-# Sitemap: https://mandsaditomx.netlify.app/sitemap.xml
+# Sitemap: https://mandaditomx.netlify.app/sitemap.xml
