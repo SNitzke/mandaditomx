@@ -13,7 +13,8 @@ import RepeatOrderPrompt from '@/components/RepeatOrderPrompt';
 import SmartOrder from '@/components/SmartOrder';
 import mandaditoLogo from '@/assets/mandadito-logo.png';
 import mandaditoIsotipo from '@/assets/mandadito-isotipo.png';
-import { Clock, Phone, Package, Apple } from 'lucide-react';
+import { Clock, Phone, Package, Apple, Dumbbell } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   
@@ -48,12 +49,28 @@ const Index = () => {
                   <Clock size={16} />
                   <span>Entregas de Lunes a Viernes y Fines de Semana Parrilladas de 12:00 a 18:00</span>
                 </div>
+                <Link
+                  to="/fitness"
+                  className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 font-bold text-primary transition hover:bg-primary/20"
+                >
+                  <Dumbbell size={16} />
+                  <span>Plan Fitness</span>
+                </Link>
               </div>
               
               {/* Mobile contact info */}
-              <div className="lg:hidden flex items-center text-xs text-gray-600">
-                <Phone size={14} />
-                <span className="ml-1">55 6425 9421</span>
+              <div className="lg:hidden flex items-center gap-3 text-xs text-gray-600">
+                <Link
+                  to="/fitness"
+                  aria-label="Plan Fitness"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary"
+                >
+                  <Dumbbell size={16} />
+                </Link>
+                <div className="flex items-center">
+                  <Phone size={14} />
+                  <span className="ml-1">55 6425 9421</span>
+                </div>
               </div>
             </div>
           </div>
@@ -91,6 +108,25 @@ const Index = () => {
               </button>
             </div>
           </div>
+        </section>
+
+        {/* Banner Plan Fitness */}
+        <section className="mx-auto max-w-6xl px-4 md:px-6 pt-6">
+          <Link
+            to="/fitness"
+            className="group flex flex-col items-center gap-3 rounded-2xl border border-primary/20 bg-white/90 p-5 shadow-sm transition-all duration-300 hover:shadow-md sm:flex-row sm:gap-5 sm:px-7"
+          >
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm">
+              <Dumbbell size={22} />
+            </span>
+            <span className="flex-1 text-center sm:text-left">
+              <span className="block text-base font-bold md:text-lg">💪 Arma tu plan de alimentación</span>
+              <span className="block text-sm text-gray-500">Calcula tus calorías y proteínas según cómo entrenas, y pide tu despensa de la semana.</span>
+            </span>
+            <span className="rounded-full bg-primary px-5 py-2 text-sm font-bold text-primary-foreground transition-transform duration-300 group-hover:scale-105">
+              Calcular mi plan
+            </span>
+          </Link>
         </section>
 
         {/* Main Content */}
