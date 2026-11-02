@@ -33,6 +33,18 @@ export const useCartOperations = (initialProducts: Product[]) => {
 
   useEffect(() => { localStorage.setItem('mi-super-pet-products', JSON.stringify(petFoodProducts)); }, [petFoodProducts]);
 
+  // Recarga el carrito cuando otra parte de la app (p. ej. /fitness) lo escribe en localStorage
+  useEffect(() => {
+    const reload = () => {
+      const c = loadFromStorage<unknown>('mi-super-cart', []);
+      const e = loadFromStorage<unknown>('mi-super-extras-cart', []);
+      setCart(Array.isArray(c) ? (c as CartItem[]) : []);
+      setExtrasCart(Array.isArray(e) ? (e as ExtraCartItem[]) : []);
+    };
+    window.addEventListener('mandadito-cart-updated', reload);
+    return () => window.removeEventListener('mandadito-cart-updated', reload);
+  }, []);
+
   useEffect(() => { localStorage.setItem('mi-super-cart', JSON.stringify(cart)); }, [cart]);
   useEffect(() => { localStorage.setItem('mi-super-package-cart', JSON.stringify(packageCart)); }, [packageCart]);
   useEffect(() => { localStorage.setItem('mi-super-pet-cart', JSON.stringify(petFoodCart)); }, [petFoodCart]);
