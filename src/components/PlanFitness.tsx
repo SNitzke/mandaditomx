@@ -98,7 +98,6 @@ interface Form {
 }
 
 interface Plan {
-  ok: true;
   kcal: number;
   mantenimiento: number;
   aviso: boolean;
@@ -109,20 +108,19 @@ interface Plan {
   carbs: number;
   agua: string;
 }
-interface SinPlan { ok: false; error: string }
-type Resultado = Plan | SinPlan;
+interface Resultado { plan: Plan | null; error: string | null }
 
 function calcular(f: Form): Resultado {
   const edad = +f.edad, peso = +f.peso, est = +f.estatura;
   if (![edad, peso, est].every((n) => Number.isFinite(n))) {
-    return { ok: false, error: "Completa edad, peso y estatura con números válidos." };
+    return { plan: null, error: "Completa edad, peso y estatura con números válidos." };
   }
-  if (edad < 18 || edad > 65) return { ok: false, error: "Esta herramienta es solo para adultos de 18 a 65 años. Consulta a un nutriólogo." };
-  if (peso < 40 || peso > 200 || est < 140 || est > 210) return { ok: false, error: "Revisa tu peso (40–200 kg) y estatura (140–210 cm)." };
+  if (edad < 18 || edad > 65) return { plan: null, error: "Esta herramienta es solo para adultos de 18 a 65 años. Consulta a un nutriólogo." };
+  if (peso < 40 || peso > 200 || est < 140 || est > 210) return { plan: null, error: "Revisa tu peso (40–200 kg) y estatura (140–210 cm)." };
 
   const act = ACTIVIDADES.find((a) => a.id === f.actividad);
   const meta = act ? METAS[act.id].find((m) => m.id === f.metaId) : undefined;
-  if (!act || !meta) return { ok: false, error: "Elige una actividad y un objetivo para continuar." };
+  if (!act || !meta) return { plan: null, error: "Elige una actividad y un objetivo para continuar." };
 
   const bmr = 10 * peso + 6.25 * est - 5 * edad + (f.sexo === "hombre" ? 5 : -161);
   const dias = Math.min(7, Math.max(0, +f.dias || 0));
@@ -142,9 +140,12 @@ function calcular(f: Form): Resultado {
   const grasa = Math.max(0.8 * peso, (kcal * 0.25) / 9);
   const carbs = Math.max(0, (kcal - prot * 4 - grasa * 9) / 4);
   return {
-    ok: true, kcal, mantenimiento: Math.round(mantenimiento / 10) * 10, aviso, meta, act,
-    prot: Math.round(prot), grasa: Math.round(grasa), carbs: Math.round(carbs),
-    agua: (peso * 0.035).toFixed(1),
+    plan: {
+      kcal, mantenimiento: Math.round(mantenimiento / 10) * 10, aviso, meta, act,
+      prot: Math.round(prot), grasa: Math.round(grasa), carbs: Math.round(carbs),
+      agua: (peso * 0.035).toFixed(1),
+    },
+    error: null,
   };
 }
 
@@ -163,7 +164,8 @@ export default function PlanFitness() {
     actividad: "", metaId: "", dias: "4", minutos: "60", intensidad: "1", km: "20",
     dieta: "omnivoro", acepta: false,
   });
-  const [res, setRes] = useState<Resultado | null>(null);
+  const [res, setRes] = useState<Plan | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setF((p) => ({ ...p, [k]: v }));
 
   const metas = f.actividad ? METAS[f.actividad].filter((m) => !m.sexo || m.sexo === f.sexo) : [];
@@ -254,13 +256,13 @@ export default function PlanFitness() {
         <span>Entiendo que Mandadito <b>no es un servicio médico ni de nutrición</b>. Esta herramienta es solo orientativa y consultaré a un nutriólogo, sobre todo si tengo alguna condición de salud, alergia, estoy embarazada o tomo medicamentos.</span>
       </label>
 
-      <Button size="lg" className="w-full" disabled={!listo} onClick={() => { const r = calcular(f); setRes(r); if (r.ok) setTimeout(() => document.getElementById("plan")?.scrollIntoView({ behavior: "smooth" }), 50); }}>
+      <Button size="lg" className="w-full" disabled={!listo} onClick={() => { const r = calcular(f); if (r.plan) { setRes(r.plan); setError(null); setTimeout(() => document.getElementById("plan")?.scrollIntoView({ behavior: "smooth" }), 50); } else { setRes(null); setError(r.error ?? "Completa tus datos para generar el plan."); } }}>
         Generar mi plan
       </Button>
 
-      {res && !res.ok && <p className="rounded-lg border border-destructive p-3 text-sm text-destructive">{res.error}</p>}
+      {error && <p className="rounded-lg border border-destructive p-3 text-sm text-destructive">{error}</p>}
 
-      {res && res.ok && (
+      {res && (
         <div id="plan" className="space-y-4">
           <Card>
             <CardHeader><CardTitle>Tu plan: {res.act.label} · {res.meta.label}</CardTitle></CardHeader>
