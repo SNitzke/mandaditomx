@@ -17,7 +17,13 @@ const CARD_SURCHARGE = 0.043; // 4.3%
 
 const ShoppingCartComponent: React.FC = () => {
   const { cart, packageCart, petFoodCart, extrasCart, updateExtraQuantity, removeExtraFromCart, updateWeight, removeFromCart, removePackageFromCart, removePetFoodFromCart, clearCart, getTotalPrice, getTotalItems, saveLastOrder } = useCart();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('carrito') !== '1') return false;
+    window.history.replaceState(null, '', window.location.pathname);
+    return true;
+  });
   const [address, setAddress] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');

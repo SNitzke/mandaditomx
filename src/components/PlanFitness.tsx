@@ -1,6 +1,10 @@
 import { useState, type ButtonHTMLAttributes } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { initialProducts } from "@/data/initialProducts";
+import { tortilleriaProducts } from "@/data/tortilleriaProducts";
+import type { CartItem, ExtraCartItem } from "@/types/product";
 
 /* ---------- CONFIG ---------- */
 const WHATSAPP = "525564259421"; // WhatsApp de Mandadito (con lada 52)
@@ -87,6 +91,33 @@ const COMIDAS: Record<Dieta, Record<string, string[]>> = {
   },
 };
 const REPARTO: [string, number][] = [["Desayuno", 0.25], ["Comida", 0.35], ["Colación", 0.15], ["Cena", 0.25]];
+
+/* Productos del menú que se agregan al carrito (id del catálogo) */
+const MENU_IDS: Record<Dieta, string[]> = {
+  omnivoro: ["119", "104", "81", "44", "7", "51", "34", "43", "62", "40", "45", "41", "42", "22", "16"],
+  vegetariano: ["119", "107", "42", "41", "45", "22", "62", "40", "43", "7", "16"],
+};
+const TORTILLERIA_IDS: Record<Dieta, string[]> = { omnivoro: ["Tortilla de Harina Integral"], vegetariano: ["Tortilla de Harina Integral", "Tostadas"] };
+
+function llenarCarrito(dieta: Dieta) {
+  const read = <T,>(k: string): T[] => { try { const v = JSON.parse(localStorage.getItem(k) || "[]"); return Array.isArray(v) ? v : []; } catch { return []; } };
+  const cart = read<CartItem>("mi-super-cart");
+  MENU_IDS[dieta].forEach((id) => {
+    const product = initialProducts.find((p) => p.id === id);
+    if (!product || cart.some((c) => c.product.id === id)) return;
+    const weight = product.minWeight || 500;
+    cart.push({ product, weight, totalPrice: Math.round(product.pricePerKg * weight / 10) / 100 });
+  });
+  const extras = read<ExtraCartItem>("mi-super-extras-cart");
+  const addExtra = (e: ExtraCartItem) => { if (!extras.some((x) => x.id === e.id)) extras.push(e); };
+  TORTILLERIA_IDS[dieta].forEach((name) => {
+    const t = tortilleriaProducts.find((p) => p.name === name); const v = t?.variants[t.variants.length - 1];
+    if (t && v) addExtra({ id: `tortilleria-${t.id}-${v.id}`, name: t.name, variantLabel: v.label, price: v.price, quantity: 1, category: "Tortillería", emoji: t.emoji });
+  });
+  DESPENSA[dieta].aparte.forEach((name) => addExtra({ id: `aparte-${name}`, name, variantLabel: "precio por confirmar", price: 0, quantity: 1, category: "Conseguir por aparte", emoji: "🛍️" }));
+  localStorage.setItem("mi-super-cart", JSON.stringify(cart));
+  localStorage.setItem("mi-super-extras-cart", JSON.stringify(extras));
+}
 
 /* Ingredientes de las comidas: qué está en el catálogo de mandadito y qué se consigue por aparte */
 const DESPENSA: Record<Dieta, { tenemos: string[]; aparte: string[] }> = {
@@ -178,6 +209,7 @@ export default function PlanFitness() {
   });
   const [res, setRes] = useState<Plan | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setF((p) => ({ ...p, [k]: v }));
 
   const metas = f.actividad ? METAS[f.actividad].filter((m) => !m.sexo || m.sexo === f.sexo) : [];
@@ -343,7 +375,7 @@ export default function PlanFitness() {
           </Card>
 
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Button className="flex-1" onClick={() => abrirWhatsApp(wa(res))}>🛒 Pedir mi despensa fitness por WhatsApp</Button>
+            <Button className="flex-1" onClick={() => { llenarCarrito(f.dieta); navigate("/?carrito=1"); }}>🛒 Pedir mi despensa fitness por WhatsApp</Button>
             <Button variant="outline" onClick={() => window.print()}>Imprimir / guardar PDF</Button>
           </div>
 
