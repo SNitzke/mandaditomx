@@ -76,20 +76,228 @@ const METAS: Record<Actividad, Meta[]> = {
   yoga: [mantener(), bajarGrasa(-0.08), { id: "y-tono", label: "Tonificar", ajuste: 0, prot: 1.6, tip: "Proteína en cada comida y algo de fuerza complementaria." }],
 };
 
-const COMIDAS: Record<Dieta, Record<string, string[]>> = {
+/* Las comidas cambian según el objetivo (volumen, rendimiento, definición o mantenimiento)
+   y se combinan distinto según la actividad, para que no se vea igual en todos los apartados. */
+type Clima = "volumen" | "rendimiento" | "definicion" | "mantenimiento";
+
+const CLIMA_LABEL: Record<Clima, string> = {
+  volumen: "ganar músculo",
+  rendimiento: "rendir más en tus entrenamientos",
+  definicion: "bajar grasa conservando músculo",
+  mantenimiento: "mantener tu peso y figura",
+};
+
+const climaDe = (meta: Meta): Clima =>
+  meta.ajuste <= -0.04 ? "definicion"
+    : meta.ajuste >= 0.07 ? "volumen"
+      : meta.ajuste > 0 ? "rendimiento"
+        : "mantenimiento";
+
+const hash = (s: string) => { let h = 7; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h || 1; };
+
+/* De cada bolsa de opciones mostramos 2, elegidas según actividad + objetivo */
+const elegir = (arr: string[], seed: number, n = 2): string[] => {
+  if (arr.length <= n) return arr;
+  const pool = [...arr]; const out: string[] = []; let s = seed % 2147483647 || 1;
+  while (out.length < n && pool.length) { s = (s * 48271) % 2147483647; out.push(pool.splice(s % pool.length, 1)[0]); }
+  return out;
+};
+
+const COMIDAS: Record<Dieta, Record<Clima, Record<string, string[]>>> = {
   omnivoro: {
-    Desayuno: ["Omelette de 3 huevos con nopales + frijoles + tortillas + fruta", "Avena con leche, plátano y crema de cacahuate + 2 huevos cocidos"],
-    Comida: ["Pechuga de pollo a la plancha + arroz + frijoles + ensalada", "Bistec de res magro + papa o camote + verduras al vapor"],
-    Colación: ["Yogurt griego con fruta y nueces", "Sándwich de pavo o atún + fruta"],
-    Cena: ["Tacos de pollo o res con nopales y verduras (2–3 tortillas)", "Pescado o atún con ensalada y camote"],
+    volumen: {
+      Desayuno: [
+        "Avena con leche, plátano y crema de cacahuate + 3 huevos",
+        "Huevos revueltos con frijoles, tortillas, aguacate y fruta + leche",
+        "Omelette de 3 huevos con espinaca y queso + avena con fruta y nueces",
+      ],
+      Comida: [
+        "Pechuga de pollo + arroz + frijoles + tortillas + ensalada",
+        "Bistec de res magro + camote o papa + calabaza y zanahoria + tortillas",
+        "Molida de res con arroz, frijoles y verduras + guacamole",
+      ],
+      Colación: [
+        "Sándwich de pavo o atún + fruta",
+        "Yogurt griego con avena y nueces",
+        "Leche con plátano y crema de cacahuate",
+      ],
+      Cena: [
+        "Tacos de res o pollo con nopales, guacamole y salsa (3 tortillas)",
+        "Pescado o atún con arroz y verduras al vapor",
+        "Huevos a la mexicana con tortillas y frijoles + fruta",
+      ],
+    },
+    rendimiento: {
+      Desayuno: [
+        "Avena con leche, plátano y canela + 2 huevos",
+        "Tortillas con frijoles, huevo y aguacate + fruta",
+        "Avena con yogurt griego, plátano y nueces",
+      ],
+      Comida: [
+        "Pollo a la plancha + arroz + frijoles + ensalada",
+        "Molida de res magra con papa y verduras + tortillas",
+        "Pechuga de pollo con camote, brócoli y tortillas",
+      ],
+      Colación: [
+        "Plátano con crema de cacahuate",
+        "Sándwich de pavo o atún + fruta",
+        "Yogurt griego con avena y fruta",
+      ],
+      Cena: [
+        "Pescado o atún con camote y ensalada",
+        "Tacos de pollo con nopales y verdura (2–3 tortillas)",
+        "Quesadillas de espinaca con queso + frijoles",
+      ],
+    },
+    definicion: {
+      Desayuno: [
+        "Omelette de 3 huevos con espinaca, jitomate y nopales + 1 tortilla",
+        "Yogurt griego con fresas o fruta de temporada y nueces",
+        "2 huevos cocidos con jitomate, aguacate y 2 tortillas",
+      ],
+      Comida: [
+        "Pechuga de pollo a la plancha + ensalada de lechuga, jitomate y aguacate + nopales",
+        "Molida de res magra con calabaza y zanahoria + frijoles",
+        "Filete de pescado al horno con brócoli y espinacas",
+      ],
+      Colación: [
+        "Yogurt griego con fruta y canela",
+        "Huevo cocido + fruta de temporada",
+        "Tostada con requesón y aguacate",
+      ],
+      Cena: [
+        "Tacos de pollo con nopales y salsa (2 tortillas) + ensalada",
+        "Atún con verduras salteadas y aguacate",
+        "Pescado a la plancha con calabaza y espinacas",
+      ],
+    },
+    mantenimiento: {
+      Desayuno: [
+        "Omelette de 3 huevos con nopales + frijoles + tortillas + fruta",
+        "Avena con leche, plátano y crema de cacahuate + 2 huevos cocidos",
+        "Huevos a la mexicana con tortillas, aguacate y jitomate",
+      ],
+      Comida: [
+        "Pechuga de pollo a la plancha + arroz + frijoles + ensalada",
+        "Bistec de res magro + papa o camote + verduras al vapor",
+        "Molida de res con calabaza y zanahoria + arroz + tortillas",
+      ],
+      Colación: [
+        "Yogurt griego con fruta y nueces",
+        "Sándwich de pavo o atún + fruta",
+        "Tostada con requesón y aguacate",
+      ],
+      Cena: [
+        "Tacos de pollo o res con nopales y verduras (2–3 tortillas)",
+        "Pescado o atún con ensalada y camote",
+        "Quesadillas de champiñón y espinaca con queso + frijoles",
+      ],
+    },
   },
   vegetariano: {
-    Desayuno: ["Chilaquiles al horno con huevo y frijoles", "Avena con leche, fruta y nueces + yogurt griego"],
-    Comida: ["Bowl de frijoles, arroz, queso panela, aguacate y verduras", "Lentejas con verduras + tortillas + queso cottage"],
-    Colación: ["Yogurt griego con fruta y granola", "Tostada con requesón y aguacate"],
-    Cena: ["Quesadillas de champiñón con ensalada", "Omelette de verduras + frijoles + tortilla"],
+    volumen: {
+      Desayuno: [
+        "Avena con leche, plátano, nueces y crema de cacahuate + 3 huevos",
+        "Chilaquiles al horno con huevo, frijoles, queso y aguacate",
+        "Omelette de 3 huevos con queso y espinaca + avena con fruta",
+      ],
+      Comida: [
+        "Bowl de frijoles, arroz, queso panela, aguacate y verduras",
+        "Lentejas con verduras + arroz + tortillas + queso cottage",
+        "Huevos rancheros con frijoles, jitomate, queso y tortillas",
+      ],
+      Colación: [
+        "Yogurt griego con granola y fruta",
+        "Sándwich de queso panela y aguacate + fruta",
+        "Leche con avena, plátano y crema de cacahuate",
+      ],
+      Cena: [
+        "Quesadillas de champiñón y espinaca con frijoles y aguacate",
+        "Omelette de verduras con queso + frijoles + tortillas",
+        "Tostadas de frijol, requesón, jitomate y aguacate",
+      ],
+    },
+    rendimiento: {
+      Desayuno: [
+        "Avena con leche, plátano y nueces + 2 huevos",
+        "Tortillas con frijoles, huevo y aguacate + fruta",
+        "Yogurt griego con avena, fruta y crema de cacahuate",
+      ],
+      Comida: [
+        "Arroz con frijoles, queso panela, verduras y aguacate",
+        "Lentejas con arroz, calabaza y zanahoria + tortillas",
+        "Bowl de tortillas, frijoles, jitomate, queso y aguacate",
+      ],
+      Colación: [
+        "Plátano con crema de cacahuate",
+        "Yogurt griego con granola y fruta",
+        "Tostada con requesón y jitomate",
+      ],
+      Cena: [
+        "Quesadillas de champiñón y espinaca con ensalada",
+        "Frijoles con queso, verduras y tortillas + fruta",
+        "Omelette de verduras con queso cottage + tortilla",
+      ],
+    },
+    definicion: {
+      Desayuno: [
+        "Omelette de 3 huevos con espinaca, jitomate y nopales + 1 tortilla",
+        "Yogurt griego con fresas o fruta de temporada y nueces",
+        "Huevo cocido con aguacate, jitomate y 2 tortillas",
+      ],
+      Comida: [
+        "Ensalada grande de lechuga, jitomate, frijoles, queso panela y aguacate",
+        "Lentejas con calabaza y zanahoria + nopales",
+        "Tostadas de frijol, requesón, lechuga y jitomate",
+      ],
+      Colación: [
+        "Yogurt griego con fruta y canela",
+        "Jícama o zanahoria con limón y chile",
+        "Requesón con fruta de temporada",
+      ],
+      Cena: [
+        "Quesadillas de nopales y espinaca con queso (2 tortillas)",
+        "Verduras salteadas con queso cottage y frijoles",
+        "Omelette de verduras con aguacate",
+      ],
+    },
+    mantenimiento: {
+      Desayuno: [
+        "Chilaquiles al horno con huevo y frijoles",
+        "Avena con leche, fruta y nueces + yogurt griego",
+        "Huevos a la mexicana con tortillas, aguacate y frijoles",
+      ],
+      Comida: [
+        "Bowl de frijoles, arroz, queso panela, aguacate y verduras",
+        "Lentejas con verduras + tortillas + queso cottage",
+        "Tostadas de frijol, requesón, lechuga, jitomate y aguacate",
+      ],
+      Colación: [
+        "Yogurt griego con fruta y granola",
+        "Tostada con requesón y aguacate",
+        "Fruta con nueces o crema de cacahuate",
+      ],
+      Cena: [
+        "Quesadillas de champiñón con ensalada",
+        "Omelette de verduras + frijoles + tortilla",
+        "Frijoles con queso panela, nopales y tortillas",
+      ],
+    },
   },
 };
+
+/* Snack alrededor del entrenamiento, según el deporte */
+const PREPOST: Record<Actividad, { pre: string; post: string }> = {
+  gimnasio: { pre: "Plátano con crema de cacahuate o yogurt con avena, 1–2 h antes", post: "Pechuga, atún o huevos con arroz, camote o papa y verdura, hasta 1 h después" },
+  correr: { pre: "Avena con plátano y algo de sal, 1–2 h antes", post: "Yogurt griego con fruta + sándwich de atún o pavo" },
+  ciclismo: { pre: "Avena con fruta, y fruta o jícama en ruta", post: "Sándwich de atún o pavo + fruta + agua con limón y sal" },
+  funcional: { pre: "Yogurt con avena y plátano, 1–2 h antes", post: "Pollo o huevos con camote y verduras" },
+  natacion: { pre: "Avena con leche y plátano, 1–2 h antes", post: "Huevos con tortillas y frijoles + fruta" },
+  deportes: { pre: "Tortillas con frijoles y aguacate, 1–2 h antes", post: "Pollo o res con arroz, verdura y guacamole" },
+  caminata: { pre: "Fruta de temporada o yogurt ligero", post: "Yogurt con nueces o huevo cocido con verdura" },
+  yoga: { pre: "Fruta o yogurt ligero, 30–60 min antes", post: "Verduras con huevo o queso y tortillas" },
+};
+
 const REPARTO: [string, number][] = [["Desayuno", 0.25], ["Comida", 0.35], ["Colación", 0.15], ["Cena", 0.25]];
 
 /* Productos del menú que se agregan al carrito (id del catálogo) */
@@ -122,12 +330,12 @@ function llenarCarrito(dieta: Dieta) {
 /* Ingredientes de las comidas: qué está en el catálogo de mandadito y qué se consigue por aparte */
 const DESPENSA: Record<Dieta, { tenemos: string[]; aparte: string[] }> = {
   omnivoro: {
-    tenemos: ["Huevo (cartón 30 pz)", "Pechuga de pollo", "Bistec / Molida de res", "Nopal", "Plátano", "Papa", "Camote", "Brócoli", "Calabaza", "Zanahoria", "Lechuga", "Jitomate", "Aguacate", "Espinaca", "Fruta de temporada", "Tortillas"],
-    aparte: ["Avena", "Leche", "Crema de cacahuate", "Arroz", "Frijoles", "Yogurt griego", "Nueces", "Pan y pavo", "Atún", "Pescado"],
+    tenemos: ["Huevo (cartón 30 pz)", "Pechuga de pollo", "Bistec / Molida de res", "Nopal", "Plátano", "Papa", "Camote", "Brócoli", "Calabaza", "Zanahoria", "Lechuga", "Jitomate", "Aguacate", "Espinaca", "Jícama", "Fresa", "Limón", "Chile serrano", "Fruta de temporada", "Tortillas"],
+    aparte: ["Avena", "Leche", "Crema de cacahuate", "Arroz", "Frijoles", "Yogurt griego", "Nueces", "Canela", "Pan y pavo", "Atún", "Pescado", "Queso panela", "Requesón", "Champiñones"],
   },
   vegetariano: {
-    tenemos: ["Huevo (cartón 30 pz)", "Queso Oaxaca", "Aguacate", "Jitomate", "Lechuga", "Espinaca", "Calabaza", "Zanahoria", "Brócoli", "Plátano", "Fruta de temporada", "Tortillas", "Tostadas"],
-    aparte: ["Avena", "Leche", "Frijoles", "Arroz", "Lentejas", "Yogurt griego", "Nueces", "Granola", "Queso panela", "Queso cottage", "Requesón", "Champiñones"],
+    tenemos: ["Huevo (cartón 30 pz)", "Queso Oaxaca", "Aguacate", "Jitomate", "Lechuga", "Espinaca", "Calabaza", "Zanahoria", "Brócoli", "Plátano", "Jícama", "Fresa", "Limón", "Chile serrano", "Nopal", "Fruta de temporada", "Tortillas", "Tostadas"],
+    aparte: ["Avena", "Leche", "Frijoles", "Arroz", "Lentejas", "Yogurt griego", "Nueces", "Granola", "Crema de cacahuate", "Canela", "Queso panela", "Queso cottage", "Requesón", "Champiñones"],
   },
 };
 
@@ -213,6 +421,7 @@ export default function PlanFitness() {
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setF((p) => ({ ...p, [k]: v }));
 
   const metas = f.actividad ? METAS[f.actividad].filter((m) => !m.sexo || m.sexo === f.sexo) : [];
+  const clima: Clima = res ? climaDe(res.meta) : "mantenimiento";
   const listo = Boolean(f.edad && f.peso && f.estatura && f.actividad && f.metaId && f.acepta);
 
   const wa = (r: Plan) => {
@@ -343,19 +552,29 @@ export default function PlanFitness() {
           </Card>
 
           <Card>
-            <CardHeader><CardTitle>Ideas de comidas (ejemplo de un día)</CardTitle></CardHeader>
+            <CardHeader>
+              <CardTitle>Ideas de comidas (ejemplo de un día)</CardTitle>
+              <p className="text-sm text-muted-foreground">Menú pensado para {CLIMA_LABEL[clima]}, con {res.act.label.toLowerCase()}.</p>
+            </CardHeader>
             <CardContent className="grid gap-3 sm:grid-cols-2">
               {REPARTO.map(([n, p]) => (
                 <div key={n} className="rounded-lg border p-3 text-sm">
                   <div className="font-semibold">{n} · ~{Math.round(res.kcal * p)} kcal · {Math.round(res.prot * p)} g prot.</div>
                   <ul className="mt-1 list-disc pl-4 text-muted-foreground">
-                    {(COMIDAS[f.dieta][n] ?? []).map((o) => <li key={o}>{o}</li>)}
+                    {elegir(COMIDAS[f.dieta][clima][n] ?? [], hash(`${res.act.id}|${res.meta.id}|${n}`)).map((o) => <li key={o}>{o}</li>)}
                   </ul>
                   {f.dieta === "omnivoro" && (n === "Comida" || n === "Cena") && (
                     <p className="mt-1 text-xs">Referencia: ~{Math.round((res.prot * p) / 0.28 / 10) * 10} g de pollo o carne magra cocida cubren tu proteína de esta comida.</p>
                   )}
                 </div>
               ))}
+              <div className="rounded-lg border border-primary/40 p-3 text-sm sm:col-span-2">
+                <div className="font-semibold">🏋️ Alrededor de tu entrenamiento</div>
+                <ul className="mt-1 list-disc pl-4 text-muted-foreground">
+                  <li><b>Antes:</b> {PREPOST[res.act.id].pre}</li>
+                  <li><b>Después:</b> {PREPOST[res.act.id].post}</li>
+                </ul>
+              </div>
             </CardContent>
           </Card>
 
