@@ -1,0 +1,308 @@
+import { useState, type ButtonHTMLAttributes } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+/* ---------- CONFIG ---------- */
+const WHATSAPP = "525564259421"; // WhatsApp de Mandadito (con lada 52)
+
+type Sexo = "hombre" | "mujer";
+type Actividad =
+  | "gimnasio" | "correr" | "ciclismo" | "funcional"
+  | "natacion" | "deportes" | "caminata" | "yoga";
+type Dieta = "omnivoro" | "vegetariano";
+
+interface Meta {
+  id: string; label: string; sexo?: Sexo;
+  ajuste: number;   // % sobre mantenimiento (+ superávit / - déficit)
+  prot: number;     // g de proteína por kg
+  tip: string;
+}
+
+interface ActividadInfo {
+  id: Actividad; label: string; emoji: string; met: [number, number, number];
+}
+
+const ACTIVIDADES: ActividadInfo[] = [
+  { id: "gimnasio", label: "Gimnasio / pesas", emoji: "🏋️", met: [4, 5, 6] },
+  { id: "correr", label: "Correr", emoji: "🏃", met: [0, 0, 0] },
+  { id: "ciclismo", label: "Ciclismo", emoji: "🚴", met: [6, 8, 10] },
+  { id: "funcional", label: "CrossFit / funcional", emoji: "🤸", met: [6, 8, 10] },
+  { id: "natacion", label: "Natación", emoji: "🏊", met: [5, 7, 9] },
+  { id: "deportes", label: "Fútbol / deportes", emoji: "⚽", met: [5, 7, 9] },
+  { id: "caminata", label: "Caminata / senderismo", emoji: "🥾", met: [3, 4, 5] },
+  { id: "yoga", label: "Yoga / pilates", emoji: "🧘", met: [2.5, 3, 4] },
+];
+
+const rendimiento = (t = "Mejorar rendimiento"): Meta => ({
+  id: "rend", label: t, ajuste: 0.02, prot: 1.5,
+  tip: "Prioriza carbohidratos antes y después de entrenar para sostener el rendimiento y recuperarte mejor.",
+});
+const bajarGrasa = (aj = -0.12): Meta => ({
+  id: "grasa", label: "Bajar grasa / definir", ajuste: aj, prot: 1.9,
+  tip: "Déficit moderado y proteína alta para conservar músculo. Bajar de forma gradual funciona mejor que hacerlo agresivo.",
+});
+const mantener = (): Meta => ({
+  id: "mant", label: "Mantener peso y figura", ajuste: 0, prot: 1.5,
+  tip: "Come en tu mantenimiento y mantén constancia en el entrenamiento.",
+});
+
+const METAS: Record<Actividad, Meta[]> = {
+  gimnasio: [
+    { id: "musculo-h", label: "Ganar músculo", sexo: "hombre", ajuste: 0.10, prot: 1.9, tip: "Superávit ligero y progresión de cargas. Subir 0.25–0.5 kg por semana es un ritmo razonable." },
+    { id: "fornido", label: "Verme más fornido / volumen", sexo: "hombre", ajuste: 0.14, prot: 2.0, tip: "Más calorías para crecer, con carbohidratos altos alrededor del entrenamiento. Vigila que no suba de más la grasa." },
+    { id: "fuerza", label: "Ganar fuerza", ajuste: 0.05, prot: 1.8, tip: "Un superávit pequeño y buen descanso mejoran la fuerza sin ganar grasa de más." },
+    { id: "mantener-m", label: "Mantener figura", sexo: "mujer", ajuste: 0, prot: 1.6, tip: "Calorías de mantenimiento y proteína suficiente en cada comida." },
+    { id: "gluteos", label: "Subir / levantar glúteos", sexo: "mujer", ajuste: 0.07, prot: 1.8, tip: "El crecimiento muscular necesita superávit leve, proteína constante y sobrecarga progresiva en tus ejercicios de glúteo." },
+    { id: "cintura", label: "Definir cintura", sexo: "mujer", ajuste: -0.10, prot: 1.9, tip: "No se puede reducir grasa de una sola zona. Un déficit leve y fuerza en todo el cuerpo es lo que mejor funciona." },
+    { id: "recomp", label: "Tonificar (recomposición)", ajuste: -0.04, prot: 2.0, tip: "Calorías casi de mantenimiento, proteína alta y entrenamiento de fuerza para bajar grasa y ganar músculo." },
+    { id: "musculo-m", label: "Ganar músculo", sexo: "mujer", ajuste: 0.08, prot: 1.8, tip: "Superávit leve y pesas pesadas. Ganar músculo no te hará ver voluminosa por accidente." },
+    bajarGrasa(),
+    { ...mantener(), id: "mant-h", sexo: "hombre" },
+  ],
+  correr: [
+    { id: "r-5-10", label: "Mejorar en 5K / 10K", ajuste: 0.02, prot: 1.5, tip: "Carbohidratos suficientes y una comida con carbohidratos y proteína después de tus rodajes largos." },
+    { id: "r-21-42", label: "Preparar media maratón / maratón", ajuste: 0.05, prot: 1.5, tip: "Volumen alto exige comer suficiente. Practica en tus tiradas largas la hidratación y los geles o snacks que usarás en carrera." },
+    bajarGrasa(-0.10), mantener(),
+  ],
+  ciclismo: [rendimiento("Mejorar rendimiento"), bajarGrasa(-0.10), mantener()],
+  funcional: [rendimiento("Mejorar rendimiento"), { id: "f-mus", label: "Ganar músculo", ajuste: 0.08, prot: 1.9, tip: "Superávit leve con proteína alta y carbohidratos cerca de tus WODs." }, bajarGrasa(), mantener()],
+  natacion: [rendimiento(), bajarGrasa(-0.10), mantener()],
+  deportes: [rendimiento(), bajarGrasa(-0.10), mantener()],
+  caminata: [bajarGrasa(-0.10), mantener(), rendimiento("Más resistencia")],
+  yoga: [mantener(), bajarGrasa(-0.08), { id: "y-tono", label: "Tonificar", ajuste: 0, prot: 1.6, tip: "Proteína en cada comida y algo de fuerza complementaria." }],
+};
+
+const COMIDAS: Record<Dieta, Record<string, string[]>> = {
+  omnivoro: {
+    Desayuno: ["Omelette de 3 huevos con nopales + frijoles + tortillas + fruta", "Avena con leche, plátano y crema de cacahuate + 2 huevos cocidos"],
+    Comida: ["Pechuga de pollo a la plancha + arroz + frijoles + ensalada", "Bistec de res magro + papa o camote + verduras al vapor"],
+    Colación: ["Yogurt griego con fruta y nueces", "Sándwich de pavo o atún + fruta"],
+    Cena: ["Tacos de pollo o res con nopales y verduras (2–3 tortillas)", "Pescado o atún con ensalada y camote"],
+  },
+  vegetariano: {
+    Desayuno: ["Chilaquiles al horno con huevo y frijoles", "Avena con leche, fruta y nueces + yogurt griego"],
+    Comida: ["Bowl de frijoles, arroz, queso panela, aguacate y verduras", "Lentejas con verduras + tortillas + queso cottage"],
+    Colación: ["Yogurt griego con fruta y granola", "Tostada con requesón y aguacate"],
+    Cena: ["Quesadillas de champiñón con ensalada", "Omelette de verduras + frijoles + tortilla"],
+  },
+};
+const REPARTO: [string, number][] = [["Desayuno", 0.25], ["Comida", 0.35], ["Colación", 0.15], ["Cena", 0.25]];
+
+/* ---------- CÁLCULO ---------- */
+interface Form {
+  sexo: Sexo; edad: string; peso: string; estatura: string;
+  trabajo: "1.2" | "1.3" | "1.4";
+  actividad: Actividad | ""; metaId: string;
+  dias: string; minutos: string; intensidad: "0" | "1" | "2"; km: string;
+  dieta: Dieta; acepta: boolean;
+}
+
+interface Plan {
+  ok: true;
+  kcal: number;
+  mantenimiento: number;
+  aviso: boolean;
+  meta: Meta;
+  act: ActividadInfo;
+  prot: number;
+  grasa: number;
+  carbs: number;
+  agua: string;
+}
+interface SinPlan { ok: false; error: string }
+type Resultado = Plan | SinPlan;
+
+function calcular(f: Form): Resultado {
+  const edad = +f.edad, peso = +f.peso, est = +f.estatura;
+  if (![edad, peso, est].every((n) => Number.isFinite(n))) {
+    return { ok: false, error: "Completa edad, peso y estatura con números válidos." };
+  }
+  if (edad < 18 || edad > 65) return { ok: false, error: "Esta herramienta es solo para adultos de 18 a 65 años. Consulta a un nutriólogo." };
+  if (peso < 40 || peso > 200 || est < 140 || est > 210) return { ok: false, error: "Revisa tu peso (40–200 kg) y estatura (140–210 cm)." };
+
+  const act = ACTIVIDADES.find((a) => a.id === f.actividad);
+  const meta = act ? METAS[act.id].find((m) => m.id === f.metaId) : undefined;
+  if (!act || !meta) return { ok: false, error: "Elige una actividad y un objetivo para continuar." };
+
+  const bmr = 10 * peso + 6.25 * est - 5 * edad + (f.sexo === "hombre" ? 5 : -161);
+  const dias = Math.min(7, Math.max(0, +f.dias || 0));
+  const met = act.met[Number(f.intensidad)] ?? 0;
+  const semanal = act.id === "correr"
+    ? Math.max(0, +f.km || 0) * peso * 1.0
+    : dias * ((+f.minutos || 0) / 60) * (met - 1) * peso;
+  const mantenimiento = bmr * +f.trabajo + semanal / 7;
+
+  let kcal = mantenimiento * (1 + meta.ajuste);
+  const piso = f.sexo === "hombre" ? 1800 : 1500;
+  const aviso = kcal < piso;
+  if (aviso) kcal = piso;
+  kcal = Math.round(kcal / 10) * 10;
+
+  const prot = Math.min(2.2, meta.prot) * peso;
+  const grasa = Math.max(0.8 * peso, (kcal * 0.25) / 9);
+  const carbs = Math.max(0, (kcal - prot * 4 - grasa * 9) / 4);
+  return {
+    ok: true, kcal, mantenimiento: Math.round(mantenimiento / 10) * 10, aviso, meta, act,
+    prot: Math.round(prot), grasa: Math.round(grasa), carbs: Math.round(carbs),
+    agua: (peso * 0.035).toFixed(1),
+  };
+}
+
+/* ---------- UI ---------- */
+const input = "mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm";
+const Chip = ({ on, children, ...p }: { on: boolean } & ButtonHTMLAttributes<HTMLButtonElement>) => (
+  <button type="button" {...p}
+    className={`rounded-lg border px-3 py-2 text-sm text-left transition ${on ? "border-primary bg-primary text-primary-foreground shadow-sm" : "bg-card hover:bg-accent"}`}>
+    {children}
+  </button>
+);
+
+export default function PlanFitness() {
+  const [f, setF] = useState<Form>({
+    sexo: "hombre", edad: "", peso: "", estatura: "", trabajo: "1.3",
+    actividad: "", metaId: "", dias: "4", minutos: "60", intensidad: "1", km: "20",
+    dieta: "omnivoro", acepta: false,
+  });
+  const [res, setRes] = useState<Resultado | null>(null);
+  const set = <K extends keyof Form>(k: K, v: Form[K]) => setF((p) => ({ ...p, [k]: v }));
+
+  const metas = f.actividad ? METAS[f.actividad].filter((m) => !m.sexo || m.sexo === f.sexo) : [];
+  const listo = Boolean(f.edad && f.peso && f.estatura && f.actividad && f.metaId && f.acepta);
+
+  const wa = (r: Plan) =>
+    `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+      `Hola Mandadito 👋 Armé mi plan fitness (${r.act.label} – ${r.meta.label}: ${r.kcal} kcal, ${r.prot} g de proteína). Quiero cotizar mi despensa de la semana.`)}`;
+
+  return (
+    <section className="mx-auto max-w-4xl space-y-6 px-4 py-10">
+      <header className="space-y-2 text-center">
+        <h2 className="text-3xl font-bold">Arma tu plan de alimentación 💪</h2>
+        <p className="text-muted-foreground">Cuéntanos cómo entrenas y qué buscas. Te damos una guía de calorías, macros y comidas con ingredientes frescos que te llevamos a casa.</p>
+      </header>
+
+      <Card>
+        <CardHeader><CardTitle>1. Tus datos</CardTitle></CardHeader>
+        <CardContent className="grid gap-4 sm:grid-cols-2">
+          <div className="sm:col-span-2 grid grid-cols-2 gap-2">
+            <Chip on={f.sexo === "hombre"} onClick={() => setF((p) => ({ ...p, sexo: "hombre", metaId: "" }))}>Hombre</Chip>
+            <Chip on={f.sexo === "mujer"} onClick={() => setF((p) => ({ ...p, sexo: "mujer", metaId: "" }))}>Mujer</Chip>
+          </div>
+          <label className="text-sm">Edad<input className={input} type="number" value={f.edad} onChange={(e) => set("edad", e.target.value)} placeholder="25" /></label>
+          <label className="text-sm">Peso (kg)<input className={input} type="number" value={f.peso} onChange={(e) => set("peso", e.target.value)} placeholder="70" /></label>
+          <label className="text-sm">Estatura (cm)<input className={input} type="number" value={f.estatura} onChange={(e) => set("estatura", e.target.value)} placeholder="170" /></label>
+          <label className="text-sm">Tu día a día (fuera del ejercicio)
+            <select className={input} value={f.trabajo} onChange={(e) => set("trabajo", e.target.value as Form["trabajo"])}>
+              <option value="1.2">Sentado la mayor parte del día</option>
+              <option value="1.3">De pie / me muevo moderadamente</option>
+              <option value="1.4">Trabajo físico o muy activo</option>
+            </select>
+          </label>
+          <label className="text-sm sm:col-span-2">Tipo de alimentación
+            <select className={input} value={f.dieta} onChange={(e) => set("dieta", e.target.value as Dieta)}>
+              <option value="omnivoro">Como de todo</option>
+              <option value="vegetariano">Vegetariana</option>
+            </select>
+          </label>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader><CardTitle>2. ¿Qué actividad haces?</CardTitle></CardHeader>
+        <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {ACTIVIDADES.map((a) => (
+            <Chip key={a.id} on={f.actividad === a.id} onClick={() => setF((p) => ({ ...p, actividad: a.id, metaId: "" }))}>
+              <span className="mr-1">{a.emoji}</span>{a.label}
+            </Chip>
+          ))}
+        </CardContent>
+      </Card>
+
+      {f.actividad && (
+        <>
+          <Card>
+            <CardHeader><CardTitle>3. Tu objetivo</CardTitle></CardHeader>
+            <CardContent className="grid gap-2 sm:grid-cols-2">
+              {metas.map((m) => <Chip key={m.id} on={f.metaId === m.id} onClick={() => set("metaId", m.id)}>{m.label}</Chip>)}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader><CardTitle>4. Tu entrenamiento</CardTitle></CardHeader>
+            <CardContent className="grid gap-4 sm:grid-cols-3">
+              {f.actividad === "correr" ? (
+                <label className="text-sm sm:col-span-3">¿Cuántos km corres por semana?
+                  <input className={input} type="number" value={f.km} onChange={(e) => set("km", e.target.value)} />
+                </label>
+              ) : (
+                <>
+                  <label className="text-sm">Días por semana<input className={input} type="number" min={1} max={7} value={f.dias} onChange={(e) => set("dias", e.target.value)} /></label>
+                  <label className="text-sm">Minutos por sesión<input className={input} type="number" value={f.minutos} onChange={(e) => set("minutos", e.target.value)} /></label>
+                  <label className="text-sm">Intensidad
+                    <select className={input} value={f.intensidad} onChange={(e) => set("intensidad", e.target.value as Form["intensidad"])}>
+                      <option value="0">Ligera</option><option value="1">Moderada</option><option value="2">Alta</option>
+                    </select>
+                  </label>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </>
+      )}
+
+      <label className="flex items-start gap-2 rounded-lg border bg-muted/40 p-3 text-sm">
+        <input type="checkbox" className="mt-1" checked={f.acepta} onChange={(e) => set("acepta", e.target.checked)} />
+        <span>Entiendo que Mandadito <b>no es un servicio médico ni de nutrición</b>. Esta herramienta es solo orientativa y consultaré a un nutriólogo, sobre todo si tengo alguna condición de salud, alergia, estoy embarazada o tomo medicamentos.</span>
+      </label>
+
+      <Button size="lg" className="w-full" disabled={!listo} onClick={() => { const r = calcular(f); setRes(r); if (r.ok) setTimeout(() => document.getElementById("plan")?.scrollIntoView({ behavior: "smooth" }), 50); }}>
+        Generar mi plan
+      </Button>
+
+      {res && !res.ok && <p className="rounded-lg border border-destructive p-3 text-sm text-destructive">{res.error}</p>}
+
+      {res && res.ok && (
+        <div id="plan" className="space-y-4">
+          <Card>
+            <CardHeader><CardTitle>Tu plan: {res.act.label} · {res.meta.label}</CardTitle></CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 text-center">
+                {[["Calorías", `${res.kcal}`, "kcal/día"], ["Proteína", `${res.prot}`, "g"], ["Carbohidratos", `${res.carbs}`, "g"], ["Grasas", `${res.grasa}`, "g"]].map(([t, v, u]) => (
+                  <div key={t} className="rounded-lg border p-3"><div className="text-xs text-muted-foreground">{t}</div><div className="text-2xl font-bold">{v}</div><div className="text-xs text-muted-foreground">{u}</div></div>
+                ))}
+              </div>
+              <p className="text-sm text-muted-foreground">Tu mantenimiento estimado es de ~{res.mantenimiento} kcal. Agua sugerida: ~{res.agua} L al día (más si sudas mucho).</p>
+              {res.aviso && <p className="rounded-md bg-muted p-2 text-sm">Ajustamos tus calorías a un mínimo seguro. Si buscas bajar más rápido, hazlo con un nutriólogo.</p>}
+              <p className="text-sm">💡 {res.meta.tip}</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader><CardTitle>Ideas de comidas (ejemplo de un día)</CardTitle></CardHeader>
+            <CardContent className="grid gap-3 sm:grid-cols-2">
+              {REPARTO.map(([n, p]) => (
+                <div key={n} className="rounded-lg border p-3 text-sm">
+                  <div className="font-semibold">{n} · ~{Math.round(res.kcal * p)} kcal · {Math.round(res.prot * p)} g prot.</div>
+                  <ul className="mt-1 list-disc pl-4 text-muted-foreground">
+                    {(COMIDAS[f.dieta][n] ?? []).map((o) => <li key={o}>{o}</li>)}
+                  </ul>
+                  {f.dieta === "omnivoro" && (n === "Comida" || n === "Cena") && (
+                    <p className="mt-1 text-xs">Referencia: ~{Math.round((res.prot * p) / 0.28 / 10) * 10} g de pollo o carne magra cocida cubren tu proteína de esta comida.</p>
+                  )}
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button asChild className="flex-1"><a href={wa(res)} target="_blank" rel="noreferrer">🛒 Pedir mi despensa fitness por WhatsApp</a></Button>
+            <Button variant="outline" onClick={() => window.print()}>Imprimir / guardar PDF</Button>
+          </div>
+
+          <p className="text-xs text-muted-foreground">
+            ⚠️ Esta información es orientativa y no sustituye la consulta con un médico o nutriólogo certificado. Mandadito no ofrece diagnósticos ni tratamientos. Los cálculos son estimaciones y cada cuerpo responde distinto.
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
