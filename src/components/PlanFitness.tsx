@@ -88,6 +88,18 @@ const COMIDAS: Record<Dieta, Record<string, string[]>> = {
 };
 const REPARTO: [string, number][] = [["Desayuno", 0.25], ["Comida", 0.35], ["Colación", 0.15], ["Cena", 0.25]];
 
+/* Ingredientes de las comidas: qué está en el catálogo de mandadito y qué se consigue por aparte */
+const DESPENSA: Record<Dieta, { tenemos: string[]; aparte: string[] }> = {
+  omnivoro: {
+    tenemos: ["Huevo (cartón 30 pz)", "Pechuga de pollo", "Bistec / Molida de res", "Nopal", "Plátano", "Papa", "Camote", "Brócoli", "Calabaza", "Zanahoria", "Lechuga", "Jitomate", "Aguacate", "Espinaca", "Fruta de temporada", "Tortillas"],
+    aparte: ["Avena", "Leche", "Crema de cacahuate", "Arroz", "Frijoles", "Yogurt griego", "Nueces", "Pan y pavo", "Atún", "Pescado"],
+  },
+  vegetariano: {
+    tenemos: ["Huevo (cartón 30 pz)", "Queso Oaxaca", "Aguacate", "Jitomate", "Lechuga", "Espinaca", "Calabaza", "Zanahoria", "Brócoli", "Plátano", "Fruta de temporada", "Tortillas", "Tostadas"],
+    aparte: ["Avena", "Leche", "Frijoles", "Arroz", "Lentejas", "Yogurt griego", "Nueces", "Granola", "Queso panela", "Queso cottage", "Requesón", "Champiñones"],
+  },
+};
+
 /* ---------- CÁLCULO ---------- */
 interface Form {
   sexo: Sexo; edad: string; peso: string; estatura: string;
@@ -171,9 +183,29 @@ export default function PlanFitness() {
   const metas = f.actividad ? METAS[f.actividad].filter((m) => !m.sexo || m.sexo === f.sexo) : [];
   const listo = Boolean(f.edad && f.peso && f.estatura && f.actividad && f.metaId && f.acepta);
 
-  const wa = (r: Plan) =>
-    `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
-      `Hola Mandadito 👋 Armé mi plan fitness (${r.act.label} – ${r.meta.label}: ${r.kcal} kcal, ${r.prot} g de proteína). Quiero cotizar mi despensa de la semana.`)}`;
+  const wa = (r: Plan) => {
+    const d = DESPENSA[f.dieta];
+    const msg = [
+      `Hola mandadito 👋 Armé mi plan fitness:`,
+      `• ${r.act.label} – ${r.meta.label}`,
+      `• ${r.kcal} kcal/día · ${r.prot} g proteína · ${r.carbs} g carbs · ${r.grasa} g grasas`,
+      ``,
+      `✅ *Productos de mandadito:*`,
+      ...d.tenemos.map((x) => `- ${x}`),
+      ``,
+      `🛍️ *Conseguir por aparte (no están en catálogo):*`,
+      ...d.aparte.map((x) => `- ${x}`),
+      ``,
+      `Quiero cotizar mi despensa de la semana.`,
+    ].join("\n");
+    return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  };
+  const abrirWhatsApp = (url: string) => {
+    const w = window.open(url, "_blank", "noopener,noreferrer");
+    if (!w) {
+      try { (window.top ?? window).location.href = url; } catch { window.location.href = url; }
+    }
+  };
 
   return (
     <section className="mx-auto max-w-4xl space-y-6 px-4 py-10">
@@ -295,8 +327,23 @@ export default function PlanFitness() {
             </CardContent>
           </Card>
 
+          <Card>
+            <CardHeader><CardTitle>Tu despensa fitness</CardTitle></CardHeader>
+            <CardContent className="grid gap-4 sm:grid-cols-2 text-sm">
+              <div className="rounded-lg border border-primary/40 p-3">
+                <div className="font-semibold">✅ Lo tenemos en mandadito</div>
+                <ul className="mt-1 list-disc pl-4 text-muted-foreground">{DESPENSA[f.dieta].tenemos.map((x) => <li key={x}>{x}</li>)}</ul>
+              </div>
+              <div className="rounded-lg border p-3">
+                <div className="font-semibold">🛍️ Te lo conseguimos por aparte</div>
+                <ul className="mt-1 list-disc pl-4 text-muted-foreground">{DESPENSA[f.dieta].aparte.map((x) => <li key={x}>{x}</li>)}</ul>
+                <p className="mt-2 text-xs">Estos productos no están en nuestro catálogo, pero los conseguimos para ti y te confirmamos precio por WhatsApp.</p>
+              </div>
+            </CardContent>
+          </Card>
+
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Button asChild className="flex-1"><a href={wa(res)} target="_blank" rel="noreferrer">🛒 Pedir mi despensa fitness por WhatsApp</a></Button>
+            <Button className="flex-1" onClick={() => abrirWhatsApp(wa(res))}>🛒 Pedir mi despensa fitness por WhatsApp</Button>
             <Button variant="outline" onClick={() => window.print()}>Imprimir / guardar PDF</Button>
           </div>
 
