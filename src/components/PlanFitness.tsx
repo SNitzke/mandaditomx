@@ -204,7 +204,7 @@ const COMIDAS: Record<Dieta, Record<Clima, Record<string, string[]>>> = {
       Comida: [
         "Bowl de frijoles, arroz, queso panela, aguacate y verduras",
         "Lentejas con verduras + arroz + tortillas + queso cottage",
-        "Pasta de arroz con lentejas, jitomate y queso",
+        "Huevos rancheros con frijoles, jitomate, queso y tortillas",
       ],
       Colación: [
         "Yogurt griego con granola y fruta",
@@ -551,19 +551,29 @@ export default function PlanFitness() {
           </Card>
 
           <Card>
-            <CardHeader><CardTitle>Ideas de comidas (ejemplo de un día)</CardTitle></CardHeader>
+            <CardHeader>
+              <CardTitle>Ideas de comidas (ejemplo de un día)</CardTitle>
+              <p className="text-sm text-muted-foreground">Menú pensado para {CLIMA_LABEL[clima]}, con {res.act.label.toLowerCase()}.</p>
+            </CardHeader>
             <CardContent className="grid gap-3 sm:grid-cols-2">
               {REPARTO.map(([n, p]) => (
                 <div key={n} className="rounded-lg border p-3 text-sm">
                   <div className="font-semibold">{n} · ~{Math.round(res.kcal * p)} kcal · {Math.round(res.prot * p)} g prot.</div>
                   <ul className="mt-1 list-disc pl-4 text-muted-foreground">
-                    {(COMIDAS[f.dieta][n] ?? []).map((o) => <li key={o}>{o}</li>)}
+                    {elegir(COMIDAS[f.dieta][clima][n] ?? [], hash(`${res.act.id}|${res.meta.id}|${n}`)).map((o) => <li key={o}>{o}</li>)}
                   </ul>
                   {f.dieta === "omnivoro" && (n === "Comida" || n === "Cena") && (
                     <p className="mt-1 text-xs">Referencia: ~{Math.round((res.prot * p) / 0.28 / 10) * 10} g de pollo o carne magra cocida cubren tu proteína de esta comida.</p>
                   )}
                 </div>
               ))}
+              <div className="rounded-lg border border-primary/40 p-3 text-sm sm:col-span-2">
+                <div className="font-semibold">🏋️ Alrededor de tu entrenamiento</div>
+                <ul className="mt-1 list-disc pl-4 text-muted-foreground">
+                  <li><b>Antes:</b> {PREPOST[res.act.id].pre}</li>
+                  <li><b>Después:</b> {PREPOST[res.act.id].post}</li>
+                </ul>
+              </div>
             </CardContent>
           </Card>
 
