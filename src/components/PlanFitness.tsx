@@ -325,6 +325,7 @@ function llenarCarrito(dieta: Dieta) {
   DESPENSA[dieta].aparte.forEach((name) => addExtra({ id: `aparte-${name}`, name, variantLabel: "precio por confirmar", price: 0, quantity: 1, category: "Conseguir por aparte", emoji: "🛍️" }));
   localStorage.setItem("mi-super-cart", JSON.stringify(cart));
   localStorage.setItem("mi-super-extras-cart", JSON.stringify(extras));
+  window.dispatchEvent(new Event("mandadito-cart-updated"));
 }
 
 /* Ingredientes de las comidas: qué está en el catálogo de mandadito y qué se consigue por aparte */
