@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { CartProvider } from '@/contexts/CartContext';
 import ProductMenu from '@/components/ProductMenu';
 import GrillPackages from '@/components/GrillPackages';
 import SeasonCalendar from '@/components/SeasonCalendar';
@@ -27,7 +26,7 @@ const Index = () => {
   };
 
   return (
-    <CartProvider>
+    <>
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
         {/* Header */}
         <header className="bg-white shadow-md sticky top-0 z-30">
@@ -214,7 +213,7 @@ const Index = () => {
         <RepeatOrderPrompt />
 
       </div>
-    </CartProvider>
+    </>
   );
 };
 
