@@ -421,6 +421,7 @@ export default function PlanFitness() {
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setF((p) => ({ ...p, [k]: v }));
 
   const metas = f.actividad ? METAS[f.actividad].filter((m) => !m.sexo || m.sexo === f.sexo) : [];
+  const clima: Clima = res ? climaDe(res.meta) : "mantenimiento";
   const listo = Boolean(f.edad && f.peso && f.estatura && f.actividad && f.metaId && f.acepta);
 
   const wa = (r: Plan) => {
