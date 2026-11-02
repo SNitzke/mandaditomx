@@ -330,12 +330,12 @@ function llenarCarrito(dieta: Dieta) {
 /* Ingredientes de las comidas: qué está en el catálogo de mandadito y qué se consigue por aparte */
 const DESPENSA: Record<Dieta, { tenemos: string[]; aparte: string[] }> = {
   omnivoro: {
-    tenemos: ["Huevo (cartón 30 pz)", "Pechuga de pollo", "Bistec / Molida de res", "Nopal", "Plátano", "Papa", "Camote", "Brócoli", "Calabaza", "Zanahoria", "Lechuga", "Jitomate", "Aguacate", "Espinaca", "Fruta de temporada", "Tortillas"],
-    aparte: ["Avena", "Leche", "Crema de cacahuate", "Arroz", "Frijoles", "Yogurt griego", "Nueces", "Pan y pavo", "Atún", "Pescado"],
+    tenemos: ["Huevo (cartón 30 pz)", "Pechuga de pollo", "Bistec / Molida de res", "Nopal", "Plátano", "Papa", "Camote", "Brócoli", "Calabaza", "Zanahoria", "Lechuga", "Jitomate", "Aguacate", "Espinaca", "Jícama", "Fresa", "Limón", "Chile serrano", "Fruta de temporada", "Tortillas"],
+    aparte: ["Avena", "Leche", "Crema de cacahuate", "Arroz", "Frijoles", "Yogurt griego", "Nueces", "Canela", "Pan y pavo", "Atún", "Pescado", "Queso panela", "Requesón", "Champiñones"],
   },
   vegetariano: {
-    tenemos: ["Huevo (cartón 30 pz)", "Queso Oaxaca", "Aguacate", "Jitomate", "Lechuga", "Espinaca", "Calabaza", "Zanahoria", "Brócoli", "Plátano", "Fruta de temporada", "Tortillas", "Tostadas"],
-    aparte: ["Avena", "Leche", "Frijoles", "Arroz", "Lentejas", "Yogurt griego", "Nueces", "Granola", "Queso panela", "Queso cottage", "Requesón", "Champiñones"],
+    tenemos: ["Huevo (cartón 30 pz)", "Queso Oaxaca", "Aguacate", "Jitomate", "Lechuga", "Espinaca", "Calabaza", "Zanahoria", "Brócoli", "Plátano", "Jícama", "Fresa", "Limón", "Chile serrano", "Nopal", "Fruta de temporada", "Tortillas", "Tostadas"],
+    aparte: ["Avena", "Leche", "Frijoles", "Arroz", "Lentejas", "Yogurt griego", "Nueces", "Granola", "Crema de cacahuate", "Canela", "Queso panela", "Queso cottage", "Requesón", "Champiñones"],
   },
 };
 
