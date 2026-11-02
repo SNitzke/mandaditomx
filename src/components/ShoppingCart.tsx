@@ -24,10 +24,13 @@ const ShoppingCartComponent: React.FC = () => {
     window.history.replaceState(null, '', window.location.pathname);
     return true;
   });
-  const [address, setAddress] = useState('');
-  const [customerName, setCustomerName] = useState('');
-  const [customerPhone, setCustomerPhone] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>('cash');
+  const savedCustomer = (() => {
+    try { return JSON.parse(localStorage.getItem('mandadito-customer') || '{}') || {}; } catch { return {}; }
+  })();
+  const [address, setAddress] = useState<string>(savedCustomer.address || '');
+  const [customerName, setCustomerName] = useState<string>(savedCustomer.customerName || '');
+  const [customerPhone, setCustomerPhone] = useState<string>(savedCustomer.customerPhone || '');
+  const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card'>(savedCustomer.paymentMethod === 'card' ? 'card' : 'cash');
   const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const isCartEmpty = cart.length === 0 && packageCart.length === 0 && petFoodCart.length === 0 && extrasCart.length === 0;
@@ -227,6 +230,7 @@ const ShoppingCartComponent: React.FC = () => {
     message += `¡Gracias!`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    try { localStorage.setItem('mandadito-customer', JSON.stringify({ customerName, address, customerPhone, paymentMethod })); } catch { /* ignore */ }
     saveLastOrder({ cart, packageCart, petFoodCart, extrasCart, customerName, address, paymentMethod });
 
     // Guarda al cliente para el recordatorio semanal por WhatsApp
