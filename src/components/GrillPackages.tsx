@@ -168,7 +168,7 @@ const GrillPackages: React.FC = () => {
             onClick={() => setSelectedPackage(grillPackage)}
           >
             <div className="aspect-[4/3] relative">
-              <img 
+              <img loading="lazy" decoding="async" 
                 src={imageMap[grillPackage.image]} 
                 alt={grillPackage.name}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -202,7 +202,7 @@ const GrillPackages: React.FC = () => {
             <div>
               <DialogHeader>
                 <div className="relative">
-                  <img 
+                  <img loading="lazy" decoding="async" 
                     src={imageMap[selectedPackage.image]} 
                     alt={selectedPackage.name}
                     className="w-full h-48 object-cover rounded-lg mb-4"
