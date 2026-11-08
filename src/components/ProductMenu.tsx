@@ -247,7 +247,7 @@ const ProductMenu: React.FC = () => {
                                 {/* Product Image */}
                                 {getProductImage(product.name, product.category) && (
                                   <div className="relative h-36 md:h-44 overflow-hidden">
-                                    <img 
+                                    <img loading="lazy" decoding="async" 
                                       src={getProductImage(product.name, product.category)} 
                                       alt={product.name}
                                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
