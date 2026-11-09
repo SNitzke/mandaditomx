@@ -141,7 +141,7 @@ export const initialProducts: Product[] = [
 
    // Huevo
   { id: '118', name: 'Cartón Huevo Semi Sucio 30pz', pricePerKg: 55, category: 'Huevo', minWeight: 1500 },
-  { id: '119', name: 'Cartón Huevo Tradicional 30pz', pricePerKg: 70, category: 'Huevo', minWeight: 1500 },
+  { id: '119', name: 'Cartón Huevo Tradicional 30pz', pricePerKg: 65, category: 'Huevo', minWeight: 1500 },
   { id: '120', name: 'Cartón Huevo Alteño 30pz', pricePerKg: 70, category: 'Huevo', minWeight: 1500 },
   { id: '121', name: 'Cartón Huevo Selecto 30pz', pricePerKg: 75, category: 'Huevo', minWeight: 1500 },
   { id: '122', name: 'Cartón Huevo Supremo 30pz', pricePerKg: 85, category: 'Huevo', minWeight: 1500 },
