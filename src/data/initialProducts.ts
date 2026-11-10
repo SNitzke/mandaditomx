@@ -13,7 +13,7 @@ export const initialProducts: Product[] = [
   { id: '8', name: 'Melón Pieza', pricePerKg: 45, category: 'Frutas y Verduras', minWeight: 2000, unit: 'piece', gramsPerPiece: 2000 },
   { id: '9', name: 'Limón', pricePerKg: 45, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '10', name: 'Limón Amarillo', pricePerKg: 120, category: 'Frutas y Verduras', minWeight: 500 },
-  { id: '11', name: 'Sandía Grande', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 7000, unit: 'piece', gramsPerPiece: 7000 },
+  { id: '11', name: 'Sandía Grande', pricePerKg: 30, category: 'Frutas y Verduras', minWeight: 7000, unit: 'piece', gramsPerPiece: 7000 },
   { id: '12', name: 'Sandía Pequeña', pricePerKg: 35, category: 'Frutas y Verduras', minWeight: 2500, unit: 'piece', gramsPerPiece: 2500 },
   { id: '13', name: 'Uva Verde', pricePerKg: 120, category: 'Frutas y Verduras', minWeight: 500 },
   { id: '14', name: 'Uva Roja', pricePerKg: 115, category: 'Frutas y Verduras', minWeight: 500 },
@@ -140,9 +140,9 @@ export const initialProducts: Product[] = [
 
 
    // Huevo
-  { id: '118', name: 'Cartón Huevo Semi Sucio 30pz', pricePerKg: 55, category: 'Huevo', minWeight: 1500 },
-  { id: '119', name: 'Cartón Huevo Tradicional 30pz', pricePerKg: 65, category: 'Huevo', minWeight: 1500 },
-  { id: '120', name: 'Cartón Huevo Alteño 30pz', pricePerKg: 70, category: 'Huevo', minWeight: 1500 },
+  { id: '118', name: 'Cartón Huevo Semi Sucio 30pz', pricePerKg: 55, category: 'Huevo', minWeight: 1700 },
+  { id: '119', name: 'Cartón Huevo Tradicional 30pz', pricePerKg: 65, category: 'Huevo', minWeight: 1700 },
+  { id: '120', name: 'Cartón Huevo Alteño 30pz', pricePerKg: 70, category: 'Huevo', minWeight: 1700 },
   { id: '121', name: 'Cartón Huevo Selecto 30pz', pricePerKg: 75, category: 'Huevo', minWeight: 1500 },
   { id: '122', name: 'Cartón Huevo Supremo 30pz', pricePerKg: 85, category: 'Huevo', minWeight: 1500 },
   { id: '123', name: 'Cartón Huevo San Juan 30pz', pricePerKg: 85, category: 'Huevo', minWeight: 1500 },
