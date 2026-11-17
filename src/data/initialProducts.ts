@@ -116,7 +116,7 @@ export const initialProducts: Product[] = [
 
   
  // Pollo
-  { id: '102', name: 'Milanesa de Pollo', pricePerKg: 155, category: 'Pollo', minWeight: 1000 },
+  { id: '102', name: 'Bitec de Pollo', pricePerKg: 155, category: 'Pollo', minWeight: 1000 },
   { id: '103', name: 'Pechuga Entera', pricePerKg: 150, category: 'Pollo', minWeight: 1000 },
   { id: '104', name: 'Pechuga Partida', pricePerKg: 155, category: 'Pollo', minWeight: 1000 },
   { id: '105', name: 'Muslo y Pierna', pricePerKg: 145, category: 'Pollo', minWeight: 1000 },
