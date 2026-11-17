@@ -1,9 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemap.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://mandaditomx.netlify.app/</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-11-17</lastmod>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/catalogo</loc>
+    <lastmod>2026-11-17</lastmod>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/frutas-y-verduras</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/carnes</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/pollo-y-huevo</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/paquetes</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/zonas-de-entrega</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/valle-dorado</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/arboledas</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/zona-esmeralda</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/lomas-verdes</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/satelite</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/como-funciona</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/preguntas-frecuentes</loc>
+  </url>
+  <url>
+    <loc>https://mandaditomx.netlify.app/contacto</loc>
   </url>
 </urlset>
